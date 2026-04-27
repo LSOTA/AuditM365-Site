@@ -109,6 +109,22 @@
     .btn-hero-p:hover { transform:translateY(-2px); box-shadow:0 0 50px rgba(99,102,241,.6), 0 8px 32px rgba(0,0,0,.4); }
     .btn-hero-s { display:inline-flex; align-items:center; gap:8px; color:var(--text2); padding:15px 28px; border-radius:12px; font-weight:600; font-size:16px; text-decoration:none; border:1px solid var(--border2); background:rgba(255,255,255,.04); backdrop-filter:blur(10px); transition:all .25s; }
     .btn-hero-s:hover { border-color:var(--accent); color:var(--text); transform:translateY(-2px); }
+    .btn-hero-dl { display:inline-flex; align-items:center; gap:10px; background:rgba(16,185,129,.12); color:#34d399; padding:15px 28px; border-radius:12px; font-weight:700; font-size:16px; text-decoration:none; border:1px solid rgba(16,185,129,.3); transition:all .25s; }
+    .btn-hero-dl:hover { background:rgba(16,185,129,.2); border-color:#10b981; transform:translateY(-2px); box-shadow:0 0 32px rgba(16,185,129,.25); }
+
+    /* ── DOWNLOAD SECTION ── */
+    .dl-banner { background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(99,102,241,.08)); border:1px solid rgba(16,185,129,.2); border-radius:20px; padding:40px 48px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap; margin-top:72px; }
+    .dl-info { display:flex; flex-direction:column; gap:8px; }
+    .dl-title { font-size:22px; font-weight:800; letter-spacing:-.5px; }
+    .dl-meta { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+    .dl-badge { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--muted2); background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:100px; padding:4px 12px; }
+    .dl-badge-green { color:#34d399; border-color:rgba(16,185,129,.3); background:rgba(16,185,129,.08); }
+    .dl-btn { display:inline-flex; align-items:center; gap:12px; background:linear-gradient(135deg,#10b981,#059669); color:#fff; padding:16px 36px; border-radius:14px; font-weight:700; font-size:16px; text-decoration:none; box-shadow:0 0 32px rgba(16,185,129,.3), 0 4px 20px rgba(0,0,0,.3); transition:all .25s; white-space:nowrap; flex-shrink:0; }
+    .dl-btn:hover { transform:translateY(-2px); box-shadow:0 0 50px rgba(16,185,129,.45), 0 8px 32px rgba(0,0,0,.3); }
+    .dl-btn-icon { font-size:22px; }
+    .dl-requirements { display:flex; align-items:center; gap:16px; margin-top:12px; flex-wrap:wrap; }
+    .dl-req { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted2); }
+    .dl-req-dot { width:5px; height:5px; border-radius:50%; background:var(--muted); }
 
     .hero-screen { position:relative; max-width:1100px; width:100%; margin:0 auto; animation:fadeUp .8s .4s ease both; }
     .screen-frame { background:var(--bg3); border:1px solid var(--border2); border-radius:16px; overflow:hidden; box-shadow:0 0 0 1px rgba(255,255,255,.04), 0 48px 100px rgba(0,0,0,.7), 0 0 80px rgba(99,102,241,.12); }
@@ -274,6 +290,12 @@
       .metrics-grid { grid-template-columns: repeat(2,1fr); }
     }
 
+    /* ── RESPONSIVE — TABLET (≤768px) download ── */
+    @media(max-width:768px){
+      .dl-banner { padding:28px 24px; flex-direction:column; align-items:flex-start; }
+      .dl-btn { width:100%; justify-content:center; }
+    }
+
     /* ── RESPONSIVE — MOBILE (≤768px) ── */
     @media(max-width:768px){
       .nav-links { display:none; }
@@ -352,6 +374,7 @@
     <a class="nav-link" href="#gallery">Aperçu</a>
     <a class="nav-link" href="#pricing">Tarifs</a>
     <a class="nav-link" href="#faq">FAQ</a>
+    <a class="nav-link" href="#download" style="color:#34d399;">⬇ Télécharger</a>
   </div>
   <div class="nav-right">
     <a class="btn-ghost" href="#contact">Contact</a>
@@ -368,6 +391,7 @@
   <a class="nav-mobile-link" href="#gallery"  onclick="closeMobileMenu()">Aperçu</a>
   <a class="nav-mobile-link" href="#pricing"  onclick="closeMobileMenu()">Tarifs</a>
   <a class="nav-mobile-link" href="#faq"      onclick="closeMobileMenu()">FAQ</a>
+  <a class="nav-mobile-link" href="#download" onclick="closeMobileMenu()" style="color:#34d399;font-weight:700;">⬇ Télécharger l'application</a>
   <a class="nav-mobile-cta"  href="#pricing"  onclick="closeMobileMenu()">🚀 Obtenir une licence</a>
 </div>
 
@@ -380,6 +404,7 @@
   <p class="hero-sub">AuditM365 analyse votre tenant Microsoft 365 et Intune, identifie les risques de sécurité et génère des rapports professionnels prêts à présenter à vos clients.</p>
   <div class="hero-btns">
     <a href="#pricing" class="btn-hero-p">🚀 Obtenir une licence</a>
+    <a href="#download" class="btn-hero-dl">⬇ Télécharger l'application</a>
     <a href="#gallery" class="btn-hero-s">Voir l'application →</a>
   </div>
   <div class="hero-screen">
@@ -531,6 +556,32 @@
       </div>
     </div>
 
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section id="download" style="background:var(--bg); padding-top:0; padding-bottom:96px;">
+  <div class="container">
+    <div class="dl-banner fi">
+      <div class="dl-info">
+        <div class="dl-title">⬇ Télécharger AuditM365</div>
+        <div class="dl-meta">
+          <span class="dl-badge dl-badge-green">✓ Dernière version — v1.0.0</span>
+          <span class="dl-badge">🪟 Windows 10 / 11</span>
+          <span class="dl-badge">📦 24.3 Mo</span>
+          <span class="dl-badge">🔒 100% local — aucune installation de serveur</span>
+        </div>
+        <div class="dl-requirements">
+          <div class="dl-req"><div class="dl-req-dot"></div>Nécessite une licence active pour fonctionner</div>
+          <div class="dl-req"><div class="dl-req-dot"></div>Compatible Windows 10 64-bit et Windows 11</div>
+          <div class="dl-req"><div class="dl-req-dot"></div>Aucune installation — exécutable direct</div>
+        </div>
+      </div>
+      <a href="https://github.com/LSOTA/AuditM365-Site/releases/download/v1.0.0/AuditM365.exe" class="dl-btn">
+        <span class="dl-btn-icon">⬇</span>
+        <span>Télécharger .exe<br><small style="font-weight:400;font-size:12px;opacity:.8">v1.0.0 — 24.3 Mo</small></span>
+      </a>
+    </div>
   </div>
 </section>
 
