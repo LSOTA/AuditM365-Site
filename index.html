@@ -245,8 +245,9 @@
     .section-title {
       font-size: clamp(30px, 4.5vw, 50px); font-weight: 800;
       letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 20px;
+      text-align: left;
     }
-    .section-sub { font-size: 18px; color: var(--muted2); max-width: 520px; line-height: 1.7; }
+    .section-sub { font-size: 18px; color: var(--muted2); max-width: 520px; line-height: 1.7; text-align: left; }
 
     /* Fade in animation */
     .fade-in { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
@@ -306,7 +307,7 @@
 
     /* ── METRICS SECTION ───────────────────────────────────── */
     #metrics { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 56px; }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 48px; }
     .metric-block { background: var(--bg3); padding: 40px 32px; text-align: center; }
     .metric-num { font-size: 52px; font-weight: 900; letter-spacing: -2px; line-height: 1; margin-bottom: 8px; }
     .metric-num.blue   { color: var(--accent); }
@@ -666,8 +667,8 @@
 <!-- METRICS -->
 <section id="metrics">
   <div class="container">
-    <div class="fade-in" style="text-align:center">
-      <div class="section-eyebrow" style="justify-content:center">Conçu pour les pros</div>
+    <div class="fade-in">
+      <div class="section-eyebrow">Conçu pour les pros</div>
       <h2 class="section-title">Puissant, rapide, fiable</h2>
     </div>
     <div class="metrics-grid fade-in">
@@ -784,8 +785,8 @@
 <!-- FAQ -->
 <section id="faq">
   <div class="container">
-    <div class="fade-in" style="text-align:center; margin-bottom:0">
-      <div class="section-eyebrow" style="justify-content:center">FAQ</div>
+    <div class="fade-in">
+      <div class="section-eyebrow">FAQ</div>
       <h2 class="section-title">Questions fréquentes</h2>
     </div>
     <div class="faq-grid fade-in">
