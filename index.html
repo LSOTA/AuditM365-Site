@@ -4,22 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AuditM365 — Audit Microsoft 365 & Intune</title>
-  <meta name="description" content="Auditez votre environnement Microsoft 365 et Intune en quelques clics. Rapports détaillés, conformité, sécurité.">
+  <meta name="description" content="Auditez votre environnement Microsoft 365 et Intune en quelques minutes. Rapports détaillés, conformité, sécurité.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0d1117;
-      --bg2: #161b22;
-      --bg3: #1c2128;
-      --border: #30363d;
-      --accent: #58a6ff;
-      --accent2: #388bfd;
-      --green: #3fb950;
-      --orange: #d29922;
-      --muted: #8b949e;
-      --text: #e6edf3;
-      --text2: #c9d1d9;
+      --bg:      #060910;
+      --bg2:     #0d1117;
+      --bg3:     #161b22;
+      --bg4:     #1c2128;
+      --border:  #21262d;
+      --border2: #30363d;
+      --accent:  #4f9cf9;
+      --accent2: #3b82f6;
+      --green:   #22c55e;
+      --orange:  #f59e0b;
+      --purple:  #a78bfa;
+      --pink:    #ec4899;
+      --muted:   #6e7681;
+      --muted2:  #8b949e;
+      --text:    #f0f6fc;
+      --text2:   #c9d1d9;
     }
 
     html { scroll-behavior: smooth; }
@@ -27,223 +35,425 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    /* ── NAV ─────────────────────────────────────────────────── */
+    /* ── SCROLLBAR ─────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* ── NAV ─────────────────────────────────────────────── */
     nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(13,17,23,.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 68px;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 40px; height: 64px;
+      padding: 0 48px;
+      background: rgba(6,9,16,.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      transition: background .3s;
     }
     .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .nav-logo span { font-size: 22px; }
-    .nav-logo strong { font-size: 18px; color: var(--text); font-weight: 700; }
-    .nav-links { display: flex; align-items: center; gap: 32px; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color .2s; }
-    .nav-links a:hover { color: var(--text); }
-    .btn-nav {
-      background: var(--accent); color: #0d1117;
-      padding: 8px 20px; border-radius: 8px; font-weight: 700;
-      font-size: 14px; text-decoration: none; transition: opacity .2s;
+    .nav-logo-icon {
+      width: 34px; height: 34px; background: linear-gradient(135deg, var(--accent), var(--purple));
+      border-radius: 9px; display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
     }
-    .btn-nav:hover { opacity: .85; color: #0d1117; }
+    .nav-logo-text { font-size: 17px; font-weight: 700; color: var(--text); letter-spacing: -.3px; }
+    .nav-center { display: flex; align-items: center; gap: 8px; }
+    .nav-link {
+      color: var(--muted2); text-decoration: none; font-size: 14px; font-weight: 500;
+      padding: 6px 14px; border-radius: 8px; transition: all .2s;
+    }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,.06); }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .btn-ghost {
+      color: var(--muted2); text-decoration: none; font-size: 14px; font-weight: 500;
+      padding: 8px 16px; border-radius: 9px; border: 1px solid var(--border2);
+      transition: all .2s; background: transparent;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+    .btn-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; text-decoration: none; font-size: 14px; font-weight: 600;
+      padding: 9px 20px; border-radius: 9px; transition: all .2s;
+      box-shadow: 0 0 20px rgba(79,156,249,.3);
+    }
+    .btn-cta:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(79,156,249,.45); }
 
-    /* ── HERO ────────────────────────────────────────────────── */
+    /* ── HERO ─────────────────────────────────────────────── */
     .hero {
       min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center; padding: 120px 24px 80px;
-      background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(88,166,255,.12), transparent);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 140px 24px 80px;
       position: relative; overflow: hidden;
     }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 40% at 50% 100%, rgba(63,185,80,.06), transparent);
-      pointer-events: none;
+
+    /* Animated background */
+    .hero-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% -5%,  rgba(79,156,249,.14) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 50%,  rgba(167,139,250,.07) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 40% at 20% 60%,  rgba(34,197,94,.05)  0%, transparent 50%);
     }
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 70%);
+    }
+
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(88,166,255,.1); border: 1px solid rgba(88,166,255,.3);
-      color: var(--accent); border-radius: 20px; padding: 6px 16px;
-      font-size: 13px; font-weight: 600; margin-bottom: 32px;
+      background: rgba(79,156,249,.1); border: 1px solid rgba(79,156,249,.25);
+      color: var(--accent); border-radius: 100px; padding: 6px 18px 6px 10px;
+      font-size: 13px; font-weight: 600; margin-bottom: 36px;
+      animation: fadeUp .6s ease both;
     }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
     .hero h1 {
-      font-size: clamp(36px, 6vw, 72px);
-      font-weight: 800; line-height: 1.1;
-      letter-spacing: -1.5px; margin-bottom: 24px;
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -2.5px;
+      margin-bottom: 28px;
+      animation: fadeUp .6s .1s ease both;
     }
-    .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(135deg, var(--accent), var(--green));
+    .hero h1 .line2 {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 50%, var(--pink) 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .hero p {
-      font-size: clamp(16px, 2.5vw, 20px);
-      color: var(--muted); max-width: 580px; margin: 0 auto 40px;
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 20px); color: var(--muted2);
+      max-width: 560px; margin: 0 auto 48px;
+      font-weight: 400; line-height: 1.7;
+      animation: fadeUp .6s .2s ease both;
     }
-    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-      background: var(--accent); color: #0d1117;
-      padding: 14px 32px; border-radius: 10px; font-weight: 700;
-      font-size: 16px; text-decoration: none; transition: all .2s;
+    .hero-sub strong { color: var(--text2); font-weight: 500; }
+
+    .hero-btns {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 72px;
+      animation: fadeUp .6s .3s ease both;
+    }
+    .btn-hero-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; padding: 15px 32px; border-radius: 12px;
+      font-weight: 700; font-size: 16px; text-decoration: none;
+      box-shadow: 0 0 30px rgba(79,156,249,.35), 0 4px 20px rgba(0,0,0,.4);
+      transition: all .25s;
+    }
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 0 45px rgba(79,156,249,.5), 0 8px 30px rgba(0,0,0,.4); }
+    .btn-hero-secondary {
       display: inline-flex; align-items: center; gap: 8px;
+      color: var(--text2); padding: 15px 28px; border-radius: 12px;
+      font-weight: 600; font-size: 16px; text-decoration: none;
+      border: 1px solid var(--border2); background: rgba(255,255,255,.03);
+      transition: all .25s; backdrop-filter: blur(10px);
     }
-    .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
-    .btn-secondary {
-      background: transparent; color: var(--text);
-      padding: 14px 32px; border-radius: 10px; font-weight: 600;
-      font-size: 16px; text-decoration: none; border: 1px solid var(--border);
-      transition: all .2s; display: inline-flex; align-items: center; gap: 8px;
-    }
-    .btn-secondary:hover { border-color: var(--muted); transform: translateY(-1px); }
+    .btn-hero-secondary:hover { border-color: var(--muted); background: rgba(255,255,255,.06); transform: translateY(-2px); }
 
-    /* Stats bar */
-    .hero-stats {
-      display: flex; gap: 48px; justify-content: center;
-      margin-top: 72px; flex-wrap: wrap;
+    /* Hero mockup */
+    .hero-mockup {
+      position: relative; max-width: 900px; margin: 0 auto;
+      animation: fadeUp .8s .4s ease both;
     }
-    .hero-stat { text-align: center; }
-    .hero-stat .num { font-size: 32px; font-weight: 800; color: var(--text); }
-    .hero-stat .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .mockup-window {
+      background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.05), 0 40px 80px rgba(0,0,0,.6), 0 0 80px rgba(79,156,249,.08);
+    }
+    .mockup-bar {
+      background: var(--bg4); border-bottom: 1px solid var(--border);
+      padding: 14px 20px; display: flex; align-items: center; gap: 8px;
+    }
+    .mockup-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .mockup-dot.r { background: #ff5f57; }
+    .mockup-dot.y { background: #febc2e; }
+    .mockup-dot.g { background: #28c840; }
+    .mockup-url {
+      flex: 1; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 6px; padding: 5px 14px; font-size: 12px; color: var(--muted);
+      text-align: center; max-width: 340px; margin: 0 auto;
+    }
+    .mockup-body { padding: 28px; }
+    .mockup-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+    .mockup-stat {
+      background: var(--bg4); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px;
+    }
+    .mockup-stat .ms-val { font-size: 24px; font-weight: 800; margin-bottom: 2px; }
+    .mockup-stat .ms-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .mockup-table { background: var(--bg4); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .mockup-th { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+    .mockup-th span { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .mockup-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--border); align-items: center; }
+    .mockup-row:last-child { border-bottom: none; }
+    .mockup-row span { font-size: 12px; color: var(--text2); }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+    .tag-green { background: rgba(34,197,94,.15); color: var(--green); }
+    .tag-orange { background: rgba(245,158,11,.15); color: var(--orange); }
+    .tag-red { background: rgba(239,68,68,.15); color: #f87171; }
 
-    /* ── SECTION BASE ────────────────────────────────────────── */
-    section { padding: 96px 24px; }
+    /* Gradient fade bottom of mockup */
+    .hero-mockup::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+      background: linear-gradient(to top, var(--bg), transparent);
+      pointer-events: none;
+    }
+
+    /* ── LOGOS / TRUST ─────────────────────────────────────── */
+    .trust {
+      padding: 48px 24px; text-align: center;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+    }
+    .trust p { font-size: 13px; color: var(--muted); margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+    .trust-logos { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+    .trust-logo {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 14px; font-weight: 600;
+      opacity: .6; transition: opacity .2s;
+    }
+    .trust-logo:hover { opacity: 1; }
+    .trust-logo-icon { font-size: 20px; }
+
+    /* ── SECTION BASE ──────────────────────────────────────── */
+    section { padding: 100px 24px; }
     .container { max-width: 1100px; margin: 0 auto; }
-    .section-label {
-      font-size: 12px; font-weight: 700; text-transform: uppercase;
-      letter-spacing: 1.5px; color: var(--accent); margin-bottom: 12px;
+    .section-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 700; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px;
     }
+    .section-eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--accent); border-radius: 1px; }
     .section-title {
-      font-size: clamp(28px, 4vw, 44px); font-weight: 800;
-      letter-spacing: -1px; margin-bottom: 16px;
+      font-size: clamp(30px, 4.5vw, 50px); font-weight: 800;
+      letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 20px;
     }
-    .section-sub { font-size: 17px; color: var(--muted); max-width: 540px; }
+    .section-sub { font-size: 18px; color: var(--muted2); max-width: 520px; line-height: 1.7; }
 
-    /* ── FEATURES ────────────────────────────────────────────── */
-    #features { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px; margin-top: 56px;
-    }
-    .feature-card {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 12px; padding: 28px;
-      transition: border-color .2s, transform .2s;
-    }
-    .feature-card:hover { border-color: rgba(88,166,255,.4); transform: translateY(-2px); }
-    .feature-icon {
-      width: 48px; height: 48px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; margin-bottom: 16px;
-    }
-    .icon-blue   { background: rgba(88,166,255,.12); }
-    .icon-green  { background: rgba(63,185,80,.12); }
-    .icon-orange { background: rgba(210,153,34,.12); }
-    .icon-purple { background: rgba(188,140,255,.12); }
-    .icon-red    { background: rgba(248,81,73,.12); }
-    .icon-teal   { background: rgba(56,203,200,.12); }
-    .feature-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-    .feature-card p  { font-size: 14px; color: var(--muted); line-height: 1.6; }
+    /* Fade in animation */
+    .fade-in { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── HOW IT WORKS ────────────────────────────────────────── */
+    /* ── FEATURES ──────────────────────────────────────────── */
+    #features { background: var(--bg); }
+    .features-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; margin-top: 64px; }
+    .features-layout.reverse { direction: rtl; }
+    .features-layout.reverse > * { direction: ltr; }
+    .features-list { display: flex; flex-direction: column; gap: 8px; }
+    .feature-item {
+      display: flex; gap: 16px; padding: 20px; border-radius: 12px;
+      cursor: pointer; transition: background .2s;
+    }
+    .feature-item:hover, .feature-item.active { background: var(--bg3); }
+    .feature-item.active { border-left: 2px solid var(--accent); }
+    .feature-item-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .feature-item h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .feature-item p  { font-size: 13px; color: var(--muted2); line-height: 1.6; }
+
+    .feature-visual {
+      background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: 16px; padding: 32px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+      position: relative; overflow: hidden;
+    }
+    .feature-visual::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(79,156,249,.4), transparent);
+    }
+
+    /* Simple metric cards inside visual */
+    .vis-header { font-size: 13px; font-weight: 700; color: var(--muted2); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .vis-header span { font-size: 11px; padding: 3px 10px; background: rgba(34,197,94,.1); color: var(--green); border-radius: 20px; }
+    .vis-items { display: flex; flex-direction: column; gap: 10px; }
+    .vis-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px; background: var(--bg4);
+      border: 1px solid var(--border); border-radius: 10px;
+    }
+    .vis-item-icon { font-size: 18px; flex-shrink: 0; }
+    .vis-item-info { flex: 1; }
+    .vis-item-info .vi-name { font-size: 13px; font-weight: 600; }
+    .vis-item-info .vi-sub  { font-size: 11px; color: var(--muted); }
+    .vis-item-bar { width: 80px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .vis-item-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
+    .fill-green  { background: var(--green); }
+    .fill-orange { background: var(--orange); }
+    .fill-red    { background: #f87171; }
+    .fill-blue   { background: var(--accent); }
+    .vis-item-pct { font-size: 12px; font-weight: 700; min-width: 36px; text-align: right; }
+
+    /* ── METRICS SECTION ───────────────────────────────────── */
+    #metrics { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-top: 56px; }
+    .metric-block { background: var(--bg3); padding: 40px 32px; text-align: center; }
+    .metric-num { font-size: 52px; font-weight: 900; letter-spacing: -2px; line-height: 1; margin-bottom: 8px; }
+    .metric-num.blue   { color: var(--accent); }
+    .metric-num.green  { color: var(--green); }
+    .metric-num.purple { color: var(--purple); }
+    .metric-num.orange { color: var(--orange); }
+    .metric-lbl { font-size: 14px; color: var(--muted2); font-weight: 500; }
+
+    /* ── HOW IT WORKS ──────────────────────────────────────── */
     #how { background: var(--bg); }
-    .steps {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 32px; margin-top: 56px; position: relative;
-    }
-    .step { text-align: center; padding: 0 16px; }
-    .step-num {
-      width: 52px; height: 52px; border-radius: 50%;
-      background: rgba(88,166,255,.1); border: 2px solid rgba(88,166,255,.3);
-      color: var(--accent); font-size: 20px; font-weight: 800;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
-    }
-    .step h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
-    .step p  { font-size: 14px; color: var(--muted); }
+    .how-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 56px; background: var(--border); border-radius: 16px; overflow: hidden; }
+    .how-step { background: var(--bg3); padding: 40px 32px; position: relative; }
+    .how-step::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--purple)); opacity: 0; transition: opacity .3s; }
+    .how-step:hover::before { opacity: 1; }
+    .step-number { font-size: 64px; font-weight: 900; color: var(--border2); line-height: 1; margin-bottom: 20px; letter-spacing: -2px; }
+    .step-icon { font-size: 32px; margin-bottom: 16px; }
+    .how-step h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; letter-spacing: -.3px; }
+    .how-step p  { font-size: 14px; color: var(--muted2); line-height: 1.7; }
 
-    /* ── PRICING ─────────────────────────────────────────────── */
+    /* ── PRICING ───────────────────────────────────────────── */
     #pricing { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px; margin-top: 56px; align-items: start;
+    .pricing-header { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 56px; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+    .plan {
+      background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: 20px; padding: 36px; position: relative;
+      transition: transform .2s, border-color .2s;
     }
-    .pricing-card {
-      background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 16px; padding: 32px; position: relative;
+    .plan:hover { transform: translateY(-4px); }
+    .plan.featured {
+      border-color: transparent;
+      background: linear-gradient(var(--bg3), var(--bg3)) padding-box,
+                  linear-gradient(135deg, var(--accent), var(--purple)) border-box;
     }
-    .pricing-card.popular {
-      border-color: var(--accent);
-      background: linear-gradient(180deg, rgba(88,166,255,.06) 0%, var(--bg3) 100%);
+    .plan.featured::before {
+      content: '✦ Le plus populaire';
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      color: #fff; font-size: 12px; font-weight: 700;
+      padding: 4px 20px; border-radius: 100px; white-space: nowrap;
     }
-    .popular-badge {
-      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
-      background: var(--accent); color: #0d1117; font-size: 12px; font-weight: 700;
-      padding: 4px 16px; border-radius: 20px; white-space: nowrap;
+    .plan-name { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted2); margin-bottom: 8px; }
+    .plan-price { font-size: 52px; font-weight: 900; letter-spacing: -2px; line-height: 1; margin-bottom: 4px; }
+    .plan-price sup { font-size: 24px; font-weight: 600; vertical-align: super; letter-spacing: 0; }
+    .plan-price sub { font-size: 16px; font-weight: 400; color: var(--muted2); letter-spacing: 0; }
+    .plan-desc { font-size: 14px; color: var(--muted2); margin: 16px 0 28px; padding-bottom: 28px; border-bottom: 1px solid var(--border); line-height: 1.6; }
+    .plan-features { display: flex; flex-direction: column; gap: 13px; margin-bottom: 36px; }
+    .plan-feature { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; }
+    .plan-feature-check { color: var(--green); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .plan-feature-text { color: var(--text2); }
+
+    .btn-plan-primary {
+      display: block; text-align: center; padding: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; border-radius: 12px; font-weight: 700; font-size: 15px;
+      text-decoration: none; transition: all .2s;
+      box-shadow: 0 0 20px rgba(79,156,249,.25);
     }
-    .pricing-tier { font-size: 13px; font-weight: 700; text-transform: uppercase;
-                    letter-spacing: 1px; color: var(--muted); margin-bottom: 8px; }
-    .pricing-price { font-size: 48px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
-    .pricing-price span { font-size: 18px; font-weight: 400; color: var(--muted); }
-    .pricing-desc { font-size: 14px; color: var(--muted); margin-bottom: 28px; padding-bottom: 28px;
-                    border-bottom: 1px solid var(--border); }
-    .pricing-features { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 12px; }
-    .pricing-features li { display: flex; align-items: center; gap: 10px; font-size: 14px; }
-    .pricing-features li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
-    .btn-plan {
-      display: block; text-align: center; padding: 12px;
-      border-radius: 10px; font-weight: 700; font-size: 15px;
+    .btn-plan-primary:hover { transform: translateY(-1px); box-shadow: 0 0 35px rgba(79,156,249,.4); }
+    .btn-plan-outline {
+      display: block; text-align: center; padding: 14px;
+      border: 1px solid var(--border2); color: var(--text2);
+      border-radius: 12px; font-weight: 600; font-size: 15px;
       text-decoration: none; transition: all .2s;
     }
-    .btn-plan-primary { background: var(--accent); color: #0d1117; }
-    .btn-plan-primary:hover { background: var(--accent2); }
-    .btn-plan-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
     .btn-plan-outline:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* ── CTA ─────────────────────────────────────────────────── */
-    #contact {
-      background: var(--bg);
-      text-align: center;
-    }
-    .cta-box {
-      background: linear-gradient(135deg, rgba(88,166,255,.08), rgba(63,185,80,.06));
-      border: 1px solid rgba(88,166,255,.2);
-      border-radius: 20px; padding: 72px 40px; max-width: 700px; margin: 0 auto;
-    }
-    .cta-box h2 { font-size: clamp(28px, 4vw, 42px); font-weight: 800; margin-bottom: 16px; }
-    .cta-box p  { font-size: 17px; color: var(--muted); margin-bottom: 40px; }
-    .cta-email {
-      display: inline-flex; align-items: center; gap: 8px;
-      color: var(--accent); font-size: 18px; font-weight: 600;
-      text-decoration: none; border-bottom: 2px solid transparent;
+    /* ── FAQ ───────────────────────────────────────────────── */
+    #faq { background: var(--bg); }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 56px; }
+    .faq-item {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px; cursor: pointer;
       transition: border-color .2s;
     }
-    .cta-email:hover { border-color: var(--accent); }
+    .faq-item:hover { border-color: var(--border2); }
+    .faq-q { font-size: 15px; font-weight: 700; margin-bottom: 10px; display: flex; justify-content: space-between; gap: 16px; }
+    .faq-a { font-size: 14px; color: var(--muted2); line-height: 1.7; }
 
-    /* ── FOOTER ──────────────────────────────────────────────── */
+    /* ── CTA ───────────────────────────────────────────────── */
+    #contact { padding: 120px 24px; background: var(--bg); }
+    .cta-wrap {
+      max-width: 760px; margin: 0 auto; text-align: center;
+      background: linear-gradient(135deg, rgba(79,156,249,.07), rgba(167,139,250,.05));
+      border: 1px solid rgba(79,156,249,.2); border-radius: 24px;
+      padding: 80px 60px; position: relative; overflow: hidden;
+    }
+    .cta-wrap::before {
+      content: ''; position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(79,156,249,.2), transparent 70%);
+      pointer-events: none;
+    }
+    .cta-wrap h2 { font-size: clamp(30px, 5vw, 48px); font-weight: 900; letter-spacing: -1.5px; margin-bottom: 16px; }
+    .cta-wrap p  { font-size: 18px; color: var(--muted2); margin-bottom: 44px; }
+    .cta-email {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 18px; font-weight: 700; color: var(--accent);
+      text-decoration: none; padding: 18px 36px;
+      background: rgba(79,156,249,.1); border: 1px solid rgba(79,156,249,.3);
+      border-radius: 14px; transition: all .2s;
+    }
+    .cta-email:hover { background: rgba(79,156,249,.18); transform: translateY(-2px); box-shadow: 0 0 30px rgba(79,156,249,.2); }
+    .cta-note { margin-top: 20px; font-size: 13px; color: var(--muted); }
+
+    /* ── FOOTER ─────────────────────────────────────────────── */
     footer {
       background: var(--bg2); border-top: 1px solid var(--border);
-      padding: 40px 24px; text-align: center;
+      padding: 48px 24px;
     }
-    .footer-logo { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-    .footer-sub  { font-size: 13px; color: var(--muted); }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+    }
+    .footer-left { display: flex; align-items: center; gap: 12px; }
+    .footer-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .footer-logo-icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--accent), var(--purple)); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .footer-logo-text { font-size: 15px; font-weight: 700; color: var(--text); }
+    .footer-sep { width: 1px; height: 20px; background: var(--border); }
+    .footer-copy { font-size: 13px; color: var(--muted); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color .2s; }
+    .footer-links a:hover { color: var(--text2); }
 
-    /* ── RESPONSIVE ──────────────────────────────────────────── */
-    @media (max-width: 640px) {
-      nav { padding: 0 20px; }
-      .nav-links { gap: 16px; }
-      .nav-links a:not(.btn-nav) { display: none; }
-      section { padding: 72px 20px; }
-      .hero-stats { gap: 32px; }
+    /* ── ANIMATIONS ─────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ─────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-center { display: none; }
+      .features-layout { grid-template-columns: 1fr; gap: 40px; }
+      .features-layout.reverse { direction: ltr; }
+      .how-steps { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 420px; }
+      .faq-grid { grid-template-columns: 1fr; }
+      .mockup-stats { grid-template-columns: repeat(2, 1fr); }
+      .cta-wrap { padding: 48px 28px; }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { letter-spacing: -1.5px; }
+      .trust-logos { gap: 28px; }
+      .footer-inner { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -252,90 +462,230 @@
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="#">
-    <span>🛡️</span>
-    <strong>AuditM365</strong>
+    <div class="nav-logo-icon">🛡️</div>
+    <span class="nav-logo-text">AuditM365</span>
   </a>
-  <div class="nav-links">
-    <a href="#features">Fonctionnalités</a>
-    <a href="#how">Comment ça marche</a>
-    <a href="#pricing">Tarifs</a>
-    <a href="#contact" class="btn-nav">Obtenir une licence</a>
+  <div class="nav-center">
+    <a class="nav-link" href="#features">Fonctionnalités</a>
+    <a class="nav-link" href="#how">Comment ça marche</a>
+    <a class="nav-link" href="#pricing">Tarifs</a>
+    <a class="nav-link" href="#faq">FAQ</a>
+  </div>
+  <div class="nav-right">
+    <a class="btn-ghost" href="#contact">Contact</a>
+    <a class="btn-cta" href="#pricing">Obtenir une licence →</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div>
-    <div class="hero-badge">
-      <span>🛡️</span> Audit Microsoft 365 &amp; Intune
-    </div>
-    <h1>Auditez votre tenant M365<br><em>en quelques minutes</em></h1>
-    <p>
-      AuditM365 analyse votre environnement Microsoft 365 et Intune,
-      génère des rapports détaillés et identifie les failles de conformité et de sécurité.
-    </p>
-    <div class="hero-btns">
-      <a href="#pricing" class="btn-primary">
-        🚀 Obtenir une licence
-      </a>
-      <a href="#features" class="btn-secondary">
-        Découvrir les fonctionnalités →
-      </a>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="num">3</div>
-        <div class="lbl">Tiers de licence</div>
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+
+  <div class="hero-badge">
+    <div class="hero-badge-dot"></div>
+    Outil professionnel Microsoft 365 &amp; Intune
+  </div>
+
+  <h1>
+    Auditez votre M365<br>
+    <span class="line2">en quelques minutes</span>
+  </h1>
+
+  <p class="hero-sub">
+    AuditM365 analyse votre tenant <strong>Microsoft 365</strong> et <strong>Intune</strong>,
+    détecte les failles de sécurité et génère des rapports prêts à présenter.
+  </p>
+
+  <div class="hero-btns">
+    <a href="#pricing" class="btn-hero-primary">
+      🚀 Commencer maintenant
+    </a>
+    <a href="#features" class="btn-hero-secondary">
+      Voir les fonctionnalités →
+    </a>
+  </div>
+
+  <!-- Mockup -->
+  <div class="hero-mockup">
+    <div class="mockup-window">
+      <div class="mockup-bar">
+        <div class="mockup-dot r"></div>
+        <div class="mockup-dot y"></div>
+        <div class="mockup-dot g"></div>
+        <div class="mockup-url">AuditM365 — Tableau de bord</div>
       </div>
-      <div class="hero-stat">
-        <div class="num">100%</div>
-        <div class="lbl">Microsoft Graph</div>
-      </div>
-      <div class="hero-stat">
-        <div class="num">∞</div>
-        <div class="lbl">Rapports générés</div>
+      <div class="mockup-body">
+        <div class="mockup-stats">
+          <div class="mockup-stat">
+            <div class="ms-val" style="color:var(--accent)">247</div>
+            <div class="ms-lbl">Utilisateurs</div>
+          </div>
+          <div class="mockup-stat">
+            <div class="ms-val" style="color:var(--green)">98%</div>
+            <div class="ms-lbl">Conformité</div>
+          </div>
+          <div class="mockup-stat">
+            <div class="ms-val" style="color:var(--orange)">12</div>
+            <div class="ms-lbl">Alertes</div>
+          </div>
+          <div class="mockup-stat">
+            <div class="ms-val" style="color:var(--purple)">5</div>
+            <div class="ms-lbl">Tenants</div>
+          </div>
+        </div>
+        <div class="mockup-table">
+          <div class="mockup-th">
+            <span>Utilisateur</span><span>Licence</span><span>MFA</span><span>Statut</span>
+          </div>
+          <div class="mockup-row">
+            <span>alice@contoso.com</span>
+            <span>Microsoft 365 E3</span>
+            <span>✓ Activé</span>
+            <span><div class="tag tag-green">Conforme</div></span>
+          </div>
+          <div class="mockup-row">
+            <span>bob@contoso.com</span>
+            <span>Microsoft 365 E3</span>
+            <span>⚠ Désactivé</span>
+            <span><div class="tag tag-orange">Avertissement</div></span>
+          </div>
+          <div class="mockup-row">
+            <span>carol@contoso.com</span>
+            <span>Exchange Online P1</span>
+            <span>✗ Absent</span>
+            <span><div class="tag tag-red">Non conforme</div></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- TRUST -->
+<div class="trust">
+  <p>Compatible avec les environnements</p>
+  <div class="trust-logos">
+    <div class="trust-logo"><span class="trust-logo-icon">🏢</span> Microsoft 365</div>
+    <div class="trust-logo"><span class="trust-logo-icon">📱</span> Microsoft Intune</div>
+    <div class="trust-logo"><span class="trust-logo-icon">🔷</span> Azure Active Directory</div>
+    <div class="trust-logo"><span class="trust-logo-icon">📊</span> Exchange Online</div>
+    <div class="trust-logo"><span class="trust-logo-icon">💬</span> Microsoft Teams</div>
+  </div>
+</div>
+
 <!-- FEATURES -->
 <section id="features">
   <div class="container">
-    <div class="section-label">Fonctionnalités</div>
-    <h2 class="section-title">Tout ce dont vous avez besoin<br>pour auditer M365</h2>
-    <p class="section-sub">Un outil complet pour les administrateurs IT, MSP et consultants Microsoft 365.</p>
+    <div class="fade-in">
+      <div class="section-eyebrow">Fonctionnalités</div>
+      <h2 class="section-title">Tout ce dont vous avez besoin<br>pour un audit M365 complet</h2>
+      <p class="section-sub">Un outil tout-en-un pour les administrateurs IT, consultants et MSP.</p>
+    </div>
 
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon icon-blue">🔍</div>
-        <h3>Audit complet M365</h3>
-        <p>Analyse de votre tenant Microsoft 365 : utilisateurs, licences, groupes, boîtes mail, Teams et SharePoint.</p>
+    <div class="features-layout fade-in" style="margin-top:64px">
+      <div class="features-list">
+        <div class="feature-item active">
+          <div class="feature-item-icon" style="background:rgba(79,156,249,.12)">🔍</div>
+          <div>
+            <h3>Audit utilisateurs & licences</h3>
+            <p>Inventaire complet des utilisateurs, licences assignées, groupes, rôles d'administration et boîtes mail.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item-icon" style="background:rgba(34,197,94,.12)">🔐</div>
+          <div>
+            <h3>Analyse de sécurité</h3>
+            <p>Détection des comptes sans MFA, politiques d'accès conditionnel manquantes et risques de compromission.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item-icon" style="background:rgba(167,139,250,.12)">📊</div>
+          <div>
+            <h3>Rapports exportables</h3>
+            <p>Génération de rapports professionnels en HTML et Excel, prêts à présenter à vos clients ou votre DSI.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item-icon" style="background:rgba(245,158,11,.12)">📱</div>
+          <div>
+            <h3>Audit Intune complet</h3>
+            <p>Inventaire des appareils gérés, politiques de conformité, profils de configuration et applications.</p>
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon icon-green">📱</div>
-        <h3>Audit Intune</h3>
-        <p>Inventaire complet des appareils gérés, politiques de conformité, profils de configuration et applications déployées.</p>
+
+      <div class="feature-visual">
+        <div class="vis-header">
+          Analyse de sécurité — Contoso Corp
+          <span>✓ Terminé</span>
+        </div>
+        <div class="vis-items">
+          <div class="vis-item">
+            <div class="vis-item-icon">🔐</div>
+            <div class="vis-item-info">
+              <div class="vi-name">MFA activé</div>
+              <div class="vi-sub">196 / 247 utilisateurs</div>
+            </div>
+            <div class="vis-item-bar"><div class="vis-item-fill fill-green" style="width:79%"></div></div>
+            <div class="vis-item-pct" style="color:var(--green)">79%</div>
+          </div>
+          <div class="vis-item">
+            <div class="vis-item-icon">🛡️</div>
+            <div class="vis-item-info">
+              <div class="vi-name">Accès conditionnel</div>
+              <div class="vi-sub">6 / 8 politiques actives</div>
+            </div>
+            <div class="vis-item-bar"><div class="vis-item-fill fill-orange" style="width:75%"></div></div>
+            <div class="vis-item-pct" style="color:var(--orange)">75%</div>
+          </div>
+          <div class="vis-item">
+            <div class="vis-item-icon">📱</div>
+            <div class="vis-item-info">
+              <div class="vi-name">Appareils conformes</div>
+              <div class="vi-sub">142 / 163 appareils</div>
+            </div>
+            <div class="vis-item-bar"><div class="vis-item-fill fill-green" style="width:87%"></div></div>
+            <div class="vis-item-pct" style="color:var(--green)">87%</div>
+          </div>
+          <div class="vis-item">
+            <div class="vis-item-icon">📧</div>
+            <div class="vis-item-info">
+              <div class="vi-name">Licences optimisées</div>
+              <div class="vi-sub">18 licences non utilisées détectées</div>
+            </div>
+            <div class="vis-item-bar"><div class="vis-item-fill fill-blue" style="width:93%"></div></div>
+            <div class="vis-item-pct" style="color:var(--accent)">93%</div>
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon icon-orange">📊</div>
-        <h3>Rapports détaillés</h3>
-        <p>Export en HTML et Excel de vos audits. Rapports prêts à présenter à vos clients ou à votre DSI.</p>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section id="metrics">
+  <div class="container">
+    <div class="fade-in" style="text-align:center">
+      <div class="section-eyebrow" style="justify-content:center">Conçu pour les pros</div>
+      <h2 class="section-title">Puissant, rapide, fiable</h2>
+    </div>
+    <div class="metrics-grid fade-in">
+      <div class="metric-block">
+        <div class="metric-num blue">∞</div>
+        <div class="metric-lbl">Rapports générés</div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon icon-purple">🔐</div>
-        <h3>Analyse de sécurité</h3>
-        <p>Détection des comptes sans MFA, des politiques d'accès conditionnel manquantes et des risques de sécurité.</p>
+      <div class="metric-block">
+        <div class="metric-num green">&lt; 5<span style="font-size:28px">min</span></div>
+        <div class="metric-lbl">Durée d'un audit complet</div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon icon-teal">🏢</div>
-        <h3>Multi-tenant</h3>
-        <p>Gérez plusieurs tenants depuis une seule interface. Idéal pour les MSP gérant des dizaines de clients.</p>
+      <div class="metric-block">
+        <div class="metric-num purple">100%</div>
+        <div class="metric-lbl">Microsoft Graph API</div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon icon-red">⚡</div>
-        <h3>Rapide et local</h3>
-        <p>Application Windows native (.exe), aucune installation complexe. Vos données restent chez vous, aucun cloud tiers.</p>
+      <div class="metric-block">
+        <div class="metric-num orange">0</div>
+        <div class="metric-lbl">Données envoyées dans le cloud</div>
       </div>
     </div>
   </div>
@@ -344,25 +694,29 @@
 <!-- HOW IT WORKS -->
 <section id="how">
   <div class="container">
-    <div class="section-label">Démarrage rapide</div>
-    <h2 class="section-title">Opérationnel en 3 étapes</h2>
-    <p class="section-sub">Pas de configuration complexe, pas de serveur à déployer.</p>
-
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
+    <div class="fade-in">
+      <div class="section-eyebrow">Démarrage rapide</div>
+      <h2 class="section-title">Opérationnel en 3 étapes</h2>
+      <p class="section-sub">Pas de serveur, pas de configuration complexe. Juste un .exe et votre clé.</p>
+    </div>
+    <div class="how-steps fade-in">
+      <div class="how-step">
+        <div class="step-number">01</div>
+        <div class="step-icon">🔑</div>
         <h3>Obtenez votre licence</h3>
-        <p>Choisissez votre tier (Standard, Pro ou MSP) et recevez votre clé de licence par email en quelques minutes.</p>
+        <p>Choisissez votre tier selon vos besoins et recevez votre clé de licence par email en quelques minutes.</p>
       </div>
-      <div class="step">
-        <div class="step-num">2</div>
+      <div class="how-step">
+        <div class="step-number">02</div>
+        <div class="step-icon">⚡</div>
         <h3>Lancez AuditM365.exe</h3>
-        <p>Téléchargez l'application Windows, entrez votre clé de licence et connectez-vous à votre tenant Microsoft 365.</p>
+        <p>Téléchargez l'application Windows, activez votre licence et connectez votre tenant Microsoft 365 en un clic.</p>
       </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <h3>Générez vos rapports</h3>
-        <p>Lancez l'audit en un clic. Obtenez un rapport complet de votre environnement M365 &amp; Intune en quelques minutes.</p>
+      <div class="how-step">
+        <div class="step-number">03</div>
+        <div class="step-icon">📋</div>
+        <h3>Rapport en main</h3>
+        <p>Obtenez un audit complet de votre environnement M365 &amp; Intune en moins de 5 minutes. Exportez en HTML ou Excel.</p>
       </div>
     </div>
   </div>
@@ -371,92 +725,152 @@
 <!-- PRICING -->
 <section id="pricing">
   <div class="container">
-    <div class="section-label">Tarifs</div>
-    <h2 class="section-title">Des tarifs adaptés à vos besoins</h2>
-    <p class="section-sub">Licence perpétuelle ou abonnement mensuel. Sans engagement.</p>
+    <div class="fade-in">
+      <div class="section-eyebrow">Tarifs</div>
+      <h2 class="section-title">Des licences adaptées à<br>chaque besoin</h2>
+      <p class="section-sub">Sans engagement. Renouvellement mensuel ou annuel.</p>
+    </div>
+    <div class="pricing-grid fade-in">
 
-    <div class="pricing-grid">
-
-      <!-- Standard -->
-      <div class="pricing-card">
-        <div class="pricing-tier">Standard</div>
-        <div class="pricing-price">29 <span>€/mois</span></div>
-        <p class="pricing-desc">Pour les administrateurs gérant jusqu'à 3 tenants.</p>
-        <ul class="pricing-features">
-          <li>Jusqu'à 3 tenants</li>
-          <li>Audit M365 complet</li>
-          <li>Audit Intune</li>
-          <li>Export HTML &amp; Excel</li>
-          <li>Mises à jour incluses</li>
-          <li>Support par email</li>
-        </ul>
-        <a href="mailto:contact-licence@m365intune.com?subject=Licence Standard AuditM365" class="btn-plan btn-plan-outline">
-          Demander une licence
-        </a>
+      <div class="plan">
+        <div class="plan-name">Standard</div>
+        <div class="plan-price"><sup>€</sup>29<sub>/mois</sub></div>
+        <div class="plan-desc">Pour les administrateurs IT gérant jusqu'à 3 tenants Microsoft 365.</div>
+        <div class="plan-features">
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Jusqu'à <strong>3 tenants</strong></span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Audit M365 complet</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Audit Intune</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Export HTML &amp; Excel</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Mises à jour incluses</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Support par email</span></div>
+        </div>
+        <a href="mailto:contact-licence@m365intune.com?subject=Licence Standard AuditM365" class="btn-plan-outline">Demander une licence</a>
       </div>
 
-      <!-- Pro -->
-      <div class="pricing-card popular">
-        <div class="popular-badge">⭐ Le plus populaire</div>
-        <div class="pricing-tier">Pro</div>
-        <div class="pricing-price">79 <span>€/mois</span></div>
-        <p class="pricing-desc">Pour les consultants et petites équipes gérant jusqu'à 10 tenants.</p>
-        <ul class="pricing-features">
-          <li>Jusqu'à 10 tenants</li>
-          <li>Audit M365 complet</li>
-          <li>Audit Intune</li>
-          <li>Export HTML &amp; Excel</li>
-          <li>Mises à jour incluses</li>
-          <li>Support prioritaire</li>
-        </ul>
-        <a href="mailto:contact-licence@m365intune.com?subject=Licence Pro AuditM365" class="btn-plan btn-plan-primary">
-          Demander une licence
-        </a>
+      <div class="plan featured">
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><sup>€</sup>79<sub>/mois</sub></div>
+        <div class="plan-desc">Pour les consultants et équipes IT gérant jusqu'à 10 tenants.</div>
+        <div class="plan-features">
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Jusqu'à <strong>10 tenants</strong></span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Audit M365 complet</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Audit Intune</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Export HTML &amp; Excel</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Mises à jour incluses</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Support prioritaire</span></div>
+        </div>
+        <a href="mailto:contact-licence@m365intune.com?subject=Licence Pro AuditM365" class="btn-plan-primary">Demander une licence</a>
       </div>
 
-      <!-- MSP -->
-      <div class="pricing-card">
-        <div class="pricing-tier">MSP</div>
-        <div class="pricing-price">149 <span>€/mois</span></div>
-        <p class="pricing-desc">Pour les MSP gérant un nombre illimité de tenants clients.</p>
-        <ul class="pricing-features">
-          <li>Tenants illimités</li>
-          <li>Audit M365 complet</li>
-          <li>Audit Intune</li>
-          <li>Export HTML &amp; Excel</li>
-          <li>Mises à jour incluses</li>
-          <li>Support dédié</li>
-        </ul>
-        <a href="mailto:contact-licence@m365intune.com?subject=Licence MSP AuditM365" class="btn-plan btn-plan-outline">
-          Demander une licence
-        </a>
+      <div class="plan">
+        <div class="plan-name">MSP</div>
+        <div class="plan-price"><sup>€</sup>149<sub>/mois</sub></div>
+        <div class="plan-desc">Pour les MSP gérant un nombre illimité de tenants clients.</div>
+        <div class="plan-features">
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text"><strong>Tenants illimités</strong></span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Audit M365 complet</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Audit Intune</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Export HTML &amp; Excel</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Mises à jour incluses</span></div>
+          <div class="plan-feature"><span class="plan-feature-check">✓</span><span class="plan-feature-text">Support dédié</span></div>
+        </div>
+        <a href="mailto:contact-licence@m365intune.com?subject=Licence MSP AuditM365" class="btn-plan-outline">Demander une licence</a>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- CONTACT / CTA -->
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="fade-in" style="text-align:center; margin-bottom:0">
+      <div class="section-eyebrow" style="justify-content:center">FAQ</div>
+      <h2 class="section-title">Questions fréquentes</h2>
+    </div>
+    <div class="faq-grid fade-in">
+      <div class="faq-item">
+        <div class="faq-q">Mes données sont-elles envoyées dans le cloud ? <span>→</span></div>
+        <div class="faq-a">Non. AuditM365 est une application Windows locale. Toutes les données restent sur votre machine. La connexion à Microsoft 365 se fait directement via Microsoft Graph API.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">La licence est-elle liée à un seul PC ? <span>→</span></div>
+        <div class="faq-a">Oui, chaque licence est liée à une machine. Si vous changez de PC, contactez-nous pour un reset gratuit de votre licence.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Puis-je tester avant d'acheter ? <span>→</span></div>
+        <div class="faq-a">Oui, nous proposons une licence de test d'1 jour. Contactez-nous à contact-licence@m365intune.com pour en obtenir une.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Quels droits Microsoft 365 sont nécessaires ? <span>→</span></div>
+        <div class="faq-a">Un compte avec les droits de lecture sur votre tenant suffit. AuditM365 utilise Microsoft Graph avec des permissions en lecture seule uniquement.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Les mises à jour sont-elles incluses ? <span>→</span></div>
+        <div class="faq-a">Oui, toutes les mises à jour sont incluses dans votre licence. Nouvelles fonctionnalités, correctifs et améliorations sont disponibles sans frais supplémentaires.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Quel format pour les rapports exportés ? <span>→</span></div>
+        <div class="faq-a">AuditM365 génère des rapports en HTML (lisibles dans n'importe quel navigateur) et en Excel, prêts à partager avec vos clients ou votre direction.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
 <section id="contact">
   <div class="container">
-    <div class="cta-box">
+    <div class="cta-wrap fade-in">
       <h2>Prêt à auditer votre M365 ?</h2>
-      <p>
-        Contactez-nous pour obtenir votre licence ou pour toute question.
-        Réponse sous 24h.
-      </p>
+      <p>Obtenez votre licence en quelques minutes.<br>Réponse garantie sous 24h.</p>
       <a href="mailto:contact-licence@m365intune.com" class="cta-email">
         ✉️ contact-licence@m365intune.com
       </a>
+      <p class="cta-note">Licence de test disponible sur demande • Pas d'engagement</p>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">🛡️ AuditM365</div>
-  <div class="footer-sub">© 2026 AuditM365 — Audit Microsoft 365 &amp; Intune</div>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <a class="footer-logo" href="#">
+        <div class="footer-logo-icon">🛡️</div>
+        <span class="footer-logo-text">AuditM365</span>
+      </a>
+      <div class="footer-sep"></div>
+      <span class="footer-copy">© 2026 AuditM365. Tous droits réservés.</span>
+    </div>
+    <div class="footer-links">
+      <a href="#features">Fonctionnalités</a>
+      <a href="#pricing">Tarifs</a>
+      <a href="#faq">FAQ</a>
+      <a href="mailto:contact-licence@m365intune.com">Contact</a>
+    </div>
+  </div>
 </footer>
 
+<script>
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Feature items interaction
+  document.querySelectorAll('.feature-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.feature-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.background =
+      window.scrollY > 40 ? 'rgba(6,9,16,.95)' : 'rgba(6,9,16,.7)';
+  });
+</script>
 </body>
 </html>
