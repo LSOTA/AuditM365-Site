@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nouveautés — AuditM365</title>
+  <meta name="description" content="Suivez les dernières mises à jour et nouveautés d'AuditM365. Partagez vos idées et suggestions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080c1a; --bg2: #0d1128; --bg3: #111830; --bg4: #161e38;
+      --border: #1e2845; --border2: #2a3660;
+      --accent: #6366f1; --accent2: #8b5cf6;
+      --green: #10b981; --orange: #f59e0b; --pink: #ec4899; --blue: #3b82f6;
+      --muted: #64748b; --muted2: #94a3b8; --text: #f1f5f9; --text2: #cbd5e1;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px,5vw,72px);
+      background: rgba(8,12,26,.92); backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(99,102,241,.15);
+    }
+    .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0; }
+    .nav-logo-icon { width:36px; height:36px; background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+    .nav-logo-text { font-size:17px; font-weight:800; color:var(--text); letter-spacing:-.3px; }
+    .nav-links { display:flex; gap:4px; }
+    .nav-link { color:var(--muted2); text-decoration:none; font-size:14px; font-weight:500; padding:6px 14px; border-radius:8px; transition:all .2s; }
+    .nav-link:hover, .nav-link.active { color:var(--text); background:rgba(255,255,255,.06); }
+    .nav-link.active { color:#a5b4fc; }
+    .nav-right { display:flex; gap:10px; align-items:center; }
+    .btn-cta { background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; text-decoration:none; font-size:14px; font-weight:700; padding:9px 22px; border-radius:9px; box-shadow:0 0 24px rgba(99,102,241,.4); transition:all .2s; white-space:nowrap; }
+    .btn-cta:hover { transform:translateY(-1px); box-shadow:0 0 36px rgba(99,102,241,.6); }
+    .nav-burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; border-radius:8px; border:none; background:transparent; }
+    .nav-burger span { display:block; width:22px; height:2px; background:var(--text2); border-radius:2px; transition:all .25s; }
+    .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav-burger.open span:nth-child(2){opacity:0}
+    .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .nav-mobile-menu { display:none; position:fixed; top:68px; left:0; right:0; z-index:199; background:rgba(8,12,26,.98); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:20px clamp(20px,5vw,72px) 28px; flex-direction:column; gap:6px; }
+    .nav-mobile-menu.open { display:flex; }
+    .nav-mobile-link { color:var(--text2); text-decoration:none; font-size:16px; font-weight:500; padding:12px 16px; border-radius:10px; transition:all .2s; }
+    .nav-mobile-link:hover { color:var(--text); background:rgba(255,255,255,.05); }
+    .nav-mobile-cta { margin-top:8px; display:block; text-align:center; padding:14px; background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border-radius:12px; font-weight:700; font-size:15px; text-decoration:none; }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 140px clamp(20px,5vw,72px) 72px;
+      background: radial-gradient(ellipse 80% 50% at 50% -5%, rgba(99,102,241,.18) 0%, transparent 60%);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background-image: linear-gradient(rgba(99,102,241,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,.05) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 70%);
+    }
+    .page-hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(99,102,241,.12); border:1px solid rgba(99,102,241,.3); color:#a5b4fc; border-radius:100px; padding:6px 18px 6px 10px; font-size:13px; font-weight:600; margin-bottom:24px; }
+    .badge-dot { width:7px; height:7px; border-radius:50%; background:#818cf8; box-shadow:0 0 10px #6366f1; animation:pulse 2s infinite; }
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+    .page-hero h1 { font-size:clamp(30px,4vw,52px); font-weight:800; letter-spacing:-1.5px; line-height:1.1; margin-bottom:16px; }
+    .grad { background:linear-gradient(135deg,#818cf8,#c084fc,#f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .page-hero p { font-size:17px; color:var(--muted2); max-width:520px; margin:0 auto; }
+
+    /* TABS */
+    .tabs-bar { display:flex; justify-content:center; gap:8px; padding:0 clamp(20px,5vw,72px); margin:48px 0 0; flex-wrap:wrap; }
+    .tab-btn { background:var(--bg3); border:1px solid var(--border2); color:var(--muted2); padding:10px 24px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .tab-btn:hover { border-color:var(--accent); color:var(--text); }
+    .tab-btn.active { background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.15)); border-color:var(--accent); color:#a5b4fc; }
+    .tab-content { display:none; }
+    .tab-content.active { display:block; }
+
+    /* LAYOUT */
+    .content-wrap { max-width:1100px; margin:0 auto; padding:60px clamp(20px,5vw,72px) 100px; }
+
+    /* CHANGELOG */
+    .changelog { position:relative; }
+    .changelog::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--accent),var(--accent2),transparent); opacity:.3; }
+    .cl-item { display:flex; gap:32px; margin-bottom:48px; position:relative; }
+    .cl-dot { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; border:2px solid; z-index:1; }
+    .cl-dot.major  { background:rgba(99,102,241,.15); border-color:var(--accent); }
+    .cl-dot.minor  { background:rgba(16,185,129,.12); border-color:var(--green); }
+    .cl-dot.fix    { background:rgba(245,158,11,.12); border-color:var(--orange); }
+    .cl-dot.coming { background:rgba(139,92,246,.12); border-color:var(--accent2); }
+    .cl-body { flex:1; }
+    .cl-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+    .cl-version { font-size:20px; font-weight:800; letter-spacing:-.5px; }
+    .cl-tag { display:inline-flex; align-items:center; padding:3px 10px; border-radius:100px; font-size:11px; font-weight:700; }
+    .cl-tag.latest  { background:rgba(99,102,241,.15); color:#818cf8; border:1px solid rgba(99,102,241,.3); }
+    .cl-tag.coming  { background:rgba(139,92,246,.12); color:#c084fc; border:1px solid rgba(139,92,246,.3); }
+    .cl-date { font-size:13px; color:var(--muted); margin-left:auto; }
+    .cl-title { font-size:16px; font-weight:700; margin-bottom:8px; }
+    .cl-desc { font-size:14px; color:var(--muted2); line-height:1.8; margin-bottom:16px; }
+    .cl-items { display:flex; flex-direction:column; gap:6px; }
+    .cl-li { display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--text2); }
+    .cl-li-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:7px; }
+    .cl-li-dot.new   { background:var(--accent); }
+    .cl-li-dot.fix   { background:var(--orange); }
+    .cl-li-dot.imp   { background:var(--green); }
+    .cl-li-dot.soon  { background:var(--accent2); opacity:.6; }
+
+    /* ROADMAP */
+    .roadmap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .rm-card { background:var(--bg3); border:1px solid var(--border2); border-radius:16px; padding:28px; transition:transform .2s, border-color .2s; }
+    .rm-card:hover { transform:translateY(-3px); border-color:var(--accent); }
+    .rm-icon { font-size:32px; margin-bottom:14px; }
+    .rm-title { font-size:16px; font-weight:700; margin-bottom:8px; }
+    .rm-desc { font-size:14px; color:var(--muted2); line-height:1.75; margin-bottom:16px; }
+    .rm-eta { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--muted2); background:var(--bg4); border:1px solid var(--border); border-radius:100px; padding:4px 12px; }
+
+    /* SUGGESTIONS FORM */
+    #suggestions { background:var(--bg2); border-top:1px solid var(--border); }
+    .form-wrap { max-width:680px; margin:0 auto; }
+    .form-title { font-size:clamp(24px,3vw,38px); font-weight:800; letter-spacing:-1px; margin-bottom:12px; }
+    .form-sub { font-size:16px; color:var(--muted2); margin-bottom:40px; line-height:1.7; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-field { display:flex; flex-direction:column; gap:6px; }
+    .form-field.full { grid-column:1/-1; }
+    label { font-size:13px; font-weight:600; color:var(--muted2); }
+    input, select, textarea {
+      background:var(--bg3); border:1px solid var(--border2); color:var(--text);
+      border-radius:10px; padding:12px 16px; font-size:14px; font-family:'Inter',sans-serif;
+      transition:border-color .2s; outline:none; width:100%;
+    }
+    input:focus, select:focus, textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(99,102,241,.15); }
+    select option { background:var(--bg3); }
+    textarea { resize:vertical; min-height:140px; line-height:1.6; }
+    .btn-submit {
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      width:100%; padding:16px; background:linear-gradient(135deg,#6366f1,#8b5cf6);
+      color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700;
+      cursor:pointer; box-shadow:0 0 24px rgba(99,102,241,.3); transition:all .25s; margin-top:8px;
+    }
+    .btn-submit:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(99,102,241,.5); }
+    .btn-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+    .form-success { display:none; text-align:center; padding:48px 32px; background:rgba(16,185,129,.08); border:1px solid rgba(16,185,129,.25); border-radius:16px; }
+    .form-success h3 { font-size:20px; font-weight:700; color:#34d399; margin-bottom:8px; }
+    .form-success p { color:var(--muted2); font-size:15px; }
+    .char-count { font-size:11px; color:var(--muted); text-align:right; margin-top:4px; }
+
+    /* SECTION */
+    .section { padding:72px clamp(20px,5vw,72px); }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; color:#a5b4fc; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px; }
+    .eyebrow::before { content:''; width:18px; height:2px; background:linear-gradient(90deg,#6366f1,#8b5cf6); border-radius:1px; }
+
+    /* FOOTER */
+    footer { background:var(--bg2); border-top:1px solid var(--border); padding:44px clamp(20px,5vw,72px); }
+    .footer-inner { max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+    .footer-logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .footer-logo-icon { width:28px; height:28px; background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:14px; }
+    .footer-logo-text { font-size:15px; font-weight:800; color:var(--text); }
+    .footer-copy { font-size:13px; color:var(--muted); }
+    .footer-links { display:flex; gap:24px; flex-wrap:wrap; }
+    .footer-links a { font-size:13px; color:var(--muted); text-decoration:none; transition:color .2s; }
+    .footer-links a:hover { color:#a5b4fc; }
+
+    @media(max-width:768px){
+      .nav-links,.nav-right{display:none} .nav-burger{display:flex}
+      .roadmap-grid{grid-template-columns:1fr}
+      .form-grid{grid-template-columns:1fr}
+      .changelog::before{display:none}
+      .cl-item{gap:16px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-icon">🛡️</div>
+    <span class="nav-logo-text">AuditM365</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html#features">Fonctionnalités</a>
+    <a class="nav-link" href="index.html#gallery">Aperçu</a>
+    <a class="nav-link active" href="nouveautes.html">Nouveautés</a>
+    <a class="nav-link" href="index.html#pricing">Tarifs</a>
+    <a class="nav-link" href="index.html#faq">FAQ</a>
+  </div>
+  <div class="nav-right">
+    <a class="btn-cta" href="index.html#pricing">Obtenir une licence →</a>
+  </div>
+  <button class="nav-burger" id="nav-burger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile-menu" id="nav-mobile-menu">
+  <a class="nav-mobile-link" href="index.html#features" onclick="closeMobileMenu()">Fonctionnalités</a>
+  <a class="nav-mobile-link" href="index.html#gallery"  onclick="closeMobileMenu()">Aperçu</a>
+  <a class="nav-mobile-link" href="nouveautes.html"     onclick="closeMobileMenu()" style="color:#a5b4fc">Nouveautés</a>
+  <a class="nav-mobile-link" href="index.html#pricing"  onclick="closeMobileMenu()">Tarifs</a>
+  <a class="nav-mobile-link" href="index.html#faq"      onclick="closeMobileMenu()">FAQ</a>
+  <a class="nav-mobile-cta"  href="index.html#pricing"  onclick="closeMobileMenu()">🚀 Obtenir une licence</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-badge"><div class="badge-dot"></div>Mises à jour &amp; Roadmap</div>
+  <h1>Nouveautés<br><span class="grad">AuditM365</span></h1>
+  <p>Suivez l'évolution de l'outil, les correctifs et les fonctionnalités à venir. Vos retours façonnent la roadmap.</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs-bar">
+  <button class="tab-btn active" onclick="switchTab('changelog')">📋 Changelog</button>
+  <button class="tab-btn" onclick="switchTab('roadmap')">🗺️ Roadmap</button>
+  <button class="tab-btn" onclick="switchTab('suggestions')">💬 Suggestions</button>
+</div>
+
+<!-- TAB : CHANGELOG -->
+<div class="tab-content active" id="tab-changelog">
+  <div class="content-wrap">
+    <div class="changelog">
+
+      <!-- v1.0.0 -->
+      <div class="cl-item">
+        <div class="cl-dot major">🚀</div>
+        <div class="cl-body">
+          <div class="cl-header">
+            <span class="cl-version">v1.0.0</span>
+            <span class="cl-tag latest">Dernière version</span>
+            <span class="cl-date">28 avril 2026</span>
+          </div>
+          <div class="cl-title">Lancement officiel d'AuditM365</div>
+          <div class="cl-desc">Première version publique de l'outil d'audit Microsoft 365 &amp; Intune. Disponible en téléchargement direct.</div>
+          <div class="cl-items">
+            <div class="cl-li"><div class="cl-li-dot new"></div>14 modules d'audit : Entra ID, Exchange, Teams, SharePoint, Intune, Defender, PIM, MCAS, Sentinel…</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>Tableau de bord avec score de conformité global et historique des audits</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>Rapport PDF généré à la demande avec mise en page professionnelle</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>Rapport Word (.docx) complet généré automatiquement après chaque audit</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>Export CSV des constats pour analyse dans Excel</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>Gestion multi-tenant : plusieurs clients dans la même application</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>Alertes automatiques par email et Microsoft Teams après chaque audit</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>Planification des audits automatiques (journalier, hebdomadaire)</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>100% local — aucune donnée envoyée à un serveur externe</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>Système de licences avec activation par machine</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- TAB : ROADMAP -->
+<div class="tab-content" id="tab-roadmap">
+  <div class="content-wrap">
+    <div class="eyebrow">Prochaines fonctionnalités</div>
+    <h2 style="font-size:clamp(24px,3vw,40px);font-weight:800;letter-spacing:-1px;margin-bottom:12px">Ce qui arrive prochainement</h2>
+    <p style="font-size:16px;color:var(--muted2);margin-bottom:48px;max-width:540px;line-height:1.75">La roadmap est construite en priorité à partir de vos suggestions. Votez et proposez vos idées dans l'onglet Suggestions.</p>
+    <div class="roadmap-grid">
+      <div class="rm-card">
+        <div class="rm-icon">📊</div>
+        <div class="rm-title">Rapport PowerPoint automatique</div>
+        <div class="rm-desc">Génération d'un deck PowerPoint complet après chaque audit, prêt à présenter à vos clients.</div>
+        <span class="rm-eta">⏱ Q2 2026</span>
+      </div>
+      <div class="rm-card">
+        <div class="rm-icon">🔔</div>
+        <div class="rm-title">Notifications Webhook</div>
+        <div class="rm-desc">Envoi des résultats d'audit vers n'importe quelle URL Webhook (Slack, Jira, ServiceNow, etc.).</div>
+        <span class="rm-eta">⏱ Q2 2026</span>
+      </div>
+      <div class="rm-card">
+        <div class="rm-icon">📈</div>
+        <div class="rm-title">Comparaison de tenants</div>
+        <div class="rm-desc">Comparez les scores et constats de plusieurs tenants côte à côte pour identifier les retardataires.</div>
+        <span class="rm-eta">⏱ Q3 2026</span>
+      </div>
+      <div class="rm-card">
+        <div class="rm-icon">🤖</div>
+        <div class="rm-title">Recommandations IA</div>
+        <div class="rm-desc">Analyse par IA des constats pour prioriser automatiquement les actions et estimer l'effort de remédiation.</div>
+        <span class="rm-eta">⏱ Q3 2026</span>
+      </div>
+      <div class="rm-card">
+        <div class="rm-icon">🔄</div>
+        <div class="rm-title">Remédiation assistée</div>
+        <div class="rm-desc">Application des correctifs directement depuis l'interface pour les constats les plus courants.</div>
+        <span class="rm-eta">⏱ Q4 2026</span>
+      </div>
+      <div class="rm-card">
+        <div class="rm-icon">🌐</div>
+        <div class="rm-title">Portail client en ligne</div>
+        <div class="rm-desc">Accès sécurisé pour vos clients à leurs rapports d'audit sans avoir besoin de l'application.</div>
+        <span class="rm-eta">⏱ Q4 2026</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB : SUGGESTIONS -->
+<div class="tab-content" id="tab-suggestions">
+  <div class="section" style="background:var(--bg2);border-top:1px solid var(--border)">
+    <div class="form-wrap" style="max-width:680px;margin:0 auto">
+      <div class="eyebrow">Espace clients</div>
+      <div class="form-title">Partagez vos idées 💬</div>
+      <div class="form-sub">Vous utilisez AuditM365 ? Dites-nous ce que vous souhaitez améliorer. Chaque suggestion est lue et prise en compte dans la roadmap.</div>
+
+      <div class="form-success" id="form-success">
+        <div style="font-size:48px;margin-bottom:16px">✅</div>
+        <h3>Suggestion envoyée !</h3>
+        <p>Merci pour votre retour. Nous l'avons bien reçu et il sera examiné pour la prochaine roadmap.</p>
+      </div>
+
+      <form id="suggestion-form">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="s-name">Votre nom <span style="color:var(--muted)">(optionnel)</span></label>
+            <input type="text" id="s-name" placeholder="Jean Dupont" maxlength="100">
+          </div>
+          <div class="form-field">
+            <label for="s-email">Votre email <span style="color:var(--muted)">(optionnel)</span></label>
+            <input type="email" id="s-email" placeholder="vous@exemple.com">
+          </div>
+          <div class="form-field full">
+            <label for="s-category">Catégorie</label>
+            <select id="s-category">
+              <option value="nouvelle_fonctionnalite">🚀 Nouvelle fonctionnalité</option>
+              <option value="amelioration">✨ Amélioration d'une fonctionnalité existante</option>
+              <option value="rapport">📄 Rapport / Export</option>
+              <option value="module_audit">🔍 Module d'audit</option>
+              <option value="interface">🎨 Interface utilisateur</option>
+              <option value="bug">🐛 Signalement de bug</option>
+              <option value="autre">💡 Autre</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label for="s-message">Votre suggestion <span style="color:#ef4444">*</span></label>
+            <textarea id="s-message" placeholder="Décrivez votre idée ou le problème rencontré. Plus votre description est détaillée, mieux nous pouvons l'évaluer..." maxlength="2000" oninput="updateCharCount(this)"></textarea>
+            <div class="char-count" id="char-count">0 / 2000</div>
+          </div>
+        </div>
+        <button type="submit" class="btn-submit" id="btn-submit">
+          <span id="btn-text">💬 Envoyer ma suggestion</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <a class="footer-logo" href="index.html">
+        <div class="footer-logo-icon">🛡️</div>
+        <span class="footer-logo-text">AuditM365</span>
+      </a>
+      <span class="footer-copy">© 2026 AuditM365. Tous droits réservés.</span>
+    </div>
+    <div class="footer-links">
+      <a href="index.html#features">Fonctionnalités</a>
+      <a href="index.html#pricing">Tarifs</a>
+      <a href="nouveautes.html">Nouveautés</a>
+      <a href="mailto:contact-licence@m365intune.com">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Tabs
+  function switchTab(name) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    if(name === 'suggestions') {
+      setTimeout(() => document.getElementById('tab-suggestions').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+    }
+  }
+
+  // Mobile menu
+  function toggleMobileMenu() {
+    document.getElementById('nav-mobile-menu').classList.toggle('open');
+    document.getElementById('nav-burger').classList.toggle('open');
+  }
+  function closeMobileMenu() {
+    document.getElementById('nav-mobile-menu').classList.remove('open');
+    document.getElementById('nav-burger').classList.remove('open');
+  }
+
+  // Char count
+  function updateCharCount(el) {
+    document.getElementById('char-count').textContent = el.value.length + ' / 2000';
+  }
+
+  // Form submit
+  document.getElementById('suggestion-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const msg = document.getElementById('s-message').value.trim();
+    if (!msg) { document.getElementById('s-message').focus(); return; }
+
+    const btn  = document.getElementById('btn-submit');
+    const txt  = document.getElementById('btn-text');
+    btn.disabled = true;
+    txt.textContent = '⏳ Envoi en cours…';
+
+    try {
+      const res = await fetch('https://web-production-5834.up.railway.app/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:     document.getElementById('s-name').value.trim(),
+          email:    document.getElementById('s-email').value.trim(),
+          category: document.getElementById('s-category').value,
+          message:  msg
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        document.getElementById('suggestion-form').style.display = 'none';
+        document.getElementById('form-success').style.display = 'block';
+      } else {
+        throw new Error(data.error || 'Erreur serveur');
+      }
+    } catch(err) {
+      alert('Erreur lors de l\'envoi : ' + err.message + '\n\nVeuillez réessayer ou nous contacter par email.');
+      btn.disabled = false;
+      txt.textContent = '💬 Envoyer ma suggestion';
+    }
+  });
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').style.background = window.scrollY > 40 ? 'rgba(8,12,26,.97)' : 'rgba(8,12,26,.92)';
+  });
+
+  // Auto-open suggestions tab if #suggestions in URL
+  if(window.location.hash === '#suggestions') {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => { if(i===2) b.click(); });
+  }
+</script>
+</body>
+</html>
