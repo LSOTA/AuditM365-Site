@@ -29,6 +29,9 @@
   .ac-chip{background:#111830;border:1px solid #2a3660;color:#cbd5e1;border-radius:100px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
   .ac-chip:hover{border-color:#6366f1;color:#fff}
   .ac-chip.ac-ask{border-color:rgba(99,102,241,.6);color:#c7d2fe}
+  .ac-chip.ac-more{display:none}
+  #ac-chips.folded .ac-chip:not(.ac-ask):not(.ac-more){display:none}
+  #ac-chips.folded .ac-chip.ac-more{display:inline-block}
   #ac-form{display:none;flex-direction:column;gap:6px;padding:10px 14px 12px;border-top:1px solid #1e2845}
   #ac-form.open{display:flex}
   .ac-row{display:flex;gap:8px}
@@ -102,8 +105,14 @@
     return m;
   }
 
+  // après une réponse, les boutons se replient pour laisser la place à la conversation
+  const fold = on => chips.classList.toggle("folded", on);
+
   function renderChips() {
     chips.innerHTML = "";
+    const more = el("button", { type: "button", className: "ac-chip ac-more", textContent: "💡 Autres questions ▾" });
+    more.onclick = () => fold(false);
+    chips.appendChild(more);
     faq.forEach(item => {
       const c = el("button", { type: "button", className: "ac-chip", textContent: item.label });
       c.onclick = () => answerFaq(item);
@@ -125,6 +134,7 @@
     let html = item.answer;
     if (item.link) html += `<br><a class="ac-link" href="${esc(item.link.href)}">${esc(item.link.label)} →</a>`;
     add("bot", html);
+    fold(true);
   }
 
   function openForm() {
@@ -187,6 +197,7 @@
       const reply = j.reply || "Je ne peux pas répondre pour le moment. Écrivez-nous à bonjour@m365intune.com.";
       typing.remove();
       add("bot", renderAI(reply));
+      fold(true);
       if (r.ok && !j.fallback) {
         history = msgs.concat([{ role: "assistant", content: reply }]).slice(-12);
         store.set("history", history);
@@ -221,6 +232,7 @@
     if (transcript.length) transcript.forEach(m => add(m.role, m.html, false));
     else add("bot", "Bonjour 👋 Je réponds à vos questions sur AuditM365. Choisissez un sujet ci-dessous" + (cfg.ai ? " ou posez votre question." : "."));
     renderChips();
+    fold(transcript.length > 1);
   }
 
   function toggle(open) {
