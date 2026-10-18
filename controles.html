@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contrôles de sécurité Microsoft 365 — AuditM365</title>
+  <meta name="description" content="Les 76 contrôles de sécurité Microsoft 365 et Intune évalués par AuditM365 : identités, accès conditionnel, Exchange, SharePoint, Teams, Intune, Defender, Purview, Sentinel.">
+  <link rel="canonical" href="https://audit.m365intune.com/controles.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AuditM365">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Contrôles de sécurité Microsoft 365 — AuditM365">
+  <meta property="og:description" content="Les 76 contrôles de sécurité Microsoft 365 et Intune évalués par AuditM365 : identités, accès conditionnel, Exchange, SharePoint, Teams, Intune, Defender, Purview, Sentinel.">
+  <meta property="og:url" content="https://audit.m365intune.com/controles.html">
+  <meta property="og:image" content="https://audit.m365intune.com/img/dashboard.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    .ctl-wrap { max-width: 1000px; margin: 0 auto; padding: 0 24px 80px; }
+    .ctl-summary { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin: -10px 0 40px; }
+    .ctl-summary span { background: var(--bg3); border:1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 13px; color: var(--muted2, #94a3b8); }
+    .ctl-summary b { color: #fff; }
+    .dom { background: var(--bg2); border:1px solid var(--border); border-radius: 14px; padding: 22px 24px; margin-bottom: 18px; }
+    .dom h2 { font-size: 18px; display:flex; align-items:center; gap:10px; margin-bottom: 14px; }
+    .dom h2 em { font-style: normal; margin-left:auto; font-size: 12px; color: #a5b4fc; background: rgba(99,102,241,.12); border-radius: 12px; padding: 2px 10px; }
+    .dom ul { list-style: none; }
+    .dom li { display:grid; grid-template-columns: 80px 1fr auto auto; gap: 12px; align-items:center; padding: 10px 0; border-top: 1px solid var(--border); font-size: 14px; }
+    .cid { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: #64748b; }
+    .ctitle { color: #e2e8f0; }
+    .sev { font-size: 11px; font-weight: 700; border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+    .sev.crit { background: rgba(239,68,68,.15); color: #f87171; } .sev.high { background: rgba(245,158,11,.15); color: #fbbf24; }
+    .sev.med { background: rgba(59,130,246,.15); color: #93c5fd; } .sev.low { background: rgba(16,185,129,.15); color: #6ee7b7; }
+    .fws { display:flex; gap:4px; } .fw { font-size: 10px; color: #94a3b8; border:1px solid var(--border2); border-radius: 5px; padding: 1px 6px; white-space: nowrap; }
+    .ctl-note { color: #94a3b8; font-size: 13px; text-align:center; margin-top: 26px; line-height: 1.6; }
+    @media (max-width: 720px) { .dom li { grid-template-columns: 1fr auto; } .cid { grid-column: 1 / -1; } .fws { grid-column: 1 / -1; } }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080c1a; --bg2: #0d1128; --bg3: #111830; --bg4: #161e38;
+      --border: #1e2845; --border2: #2a3660;
+      --accent: #6366f1; --accent2: #8b5cf6;
+      --green: #10b981; --orange: #f59e0b; --pink: #ec4899; --blue: #3b82f6;
+      --muted: #64748b; --muted2: #94a3b8; --text: #f1f5f9; --text2: #cbd5e1;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 68px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px,5vw,72px);
+      background: rgba(8,12,26,.92); backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(99,102,241,.15);
+    }
+    .nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0; }
+    .nav-logo-icon { width:36px; height:36px; background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; }
+    .nav-logo-text { font-size:17px; font-weight:800; color:var(--text); letter-spacing:-.3px; }
+    .nav-links { display:flex; gap:4px; }
+    .nav-link { color:var(--muted2); text-decoration:none; font-size:14px; font-weight:500; padding:6px 14px; border-radius:8px; transition:all .2s; }
+    .nav-link:hover, .nav-link.active { color:var(--text); background:rgba(255,255,255,.06); }
+    .nav-link.active { color:#a5b4fc; }
+    .nav-right { display:flex; gap:10px; align-items:center; }
+    .btn-cta { background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; text-decoration:none; font-size:14px; font-weight:700; padding:9px 22px; border-radius:9px; box-shadow:0 0 24px rgba(99,102,241,.4); transition:all .2s; white-space:nowrap; }
+    .btn-cta:hover { transform:translateY(-1px); box-shadow:0 0 36px rgba(99,102,241,.6); }
+    .nav-burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:6px; border-radius:8px; border:none; background:transparent; }
+    .nav-burger span { display:block; width:22px; height:2px; background:var(--text2); border-radius:2px; transition:all .25s; }
+    .nav-burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .nav-burger.open span:nth-child(2){opacity:0}
+    .nav-burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .nav-mobile-menu { display:none; position:fixed; top:68px; left:0; right:0; z-index:199; background:rgba(8,12,26,.98); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:20px clamp(20px,5vw,72px) 28px; flex-direction:column; gap:6px; }
+    .nav-mobile-menu.open { display:flex; }
+    .nav-mobile-link { color:var(--text2); text-decoration:none; font-size:16px; font-weight:500; padding:12px 16px; border-radius:10px; transition:all .2s; }
+    .nav-mobile-link:hover { color:var(--text); background:rgba(255,255,255,.05); }
+    .nav-mobile-cta { margin-top:8px; display:block; text-align:center; padding:14px; background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border-radius:12px; font-weight:700; font-size:15px; text-decoration:none; }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 140px clamp(20px,5vw,72px) 72px;
+      background: radial-gradient(ellipse 80% 50% at 50% -5%, rgba(99,102,241,.18) 0%, transparent 60%);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content:''; position:absolute; inset:0; pointer-events:none;
+      background-image: linear-gradient(rgba(99,102,241,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,.05) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 70%);
+    }
+    .page-hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(99,102,241,.12); border:1px solid rgba(99,102,241,.3); color:#a5b4fc; border-radius:100px; padding:6px 18px 6px 10px; font-size:13px; font-weight:600; margin-bottom:24px; }
+    .badge-dot { width:7px; height:7px; border-radius:50%; background:#818cf8; box-shadow:0 0 10px #6366f1; animation:pulse 2s infinite; }
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+    .page-hero h1 { font-size:clamp(30px,4vw,52px); font-weight:800; letter-spacing:-1.5px; line-height:1.1; margin-bottom:16px; }
+    .grad { background:linear-gradient(135deg,#818cf8,#c084fc,#f472b6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .page-hero p { font-size:17px; color:var(--muted2); max-width:520px; margin:0 auto; }
+
+    /* TABS */
+    .tabs-bar { display:flex; justify-content:center; gap:8px; padding:0 clamp(20px,5vw,72px); margin:48px 0 0; flex-wrap:wrap; }
+    .tab-btn { background:var(--bg3); border:1px solid var(--border2); color:var(--muted2); padding:10px 24px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; transition:all .2s; }
+    .tab-btn:hover { border-color:var(--accent); color:var(--text); }
+    .tab-btn.active { background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.15)); border-color:var(--accent); color:#a5b4fc; }
+    .tab-content { display:none; }
+    .tab-content.active { display:block; }
+
+    /* LAYOUT */
+    .content-wrap { max-width:1100px; margin:0 auto; padding:60px clamp(20px,5vw,72px) 100px; }
+
+    /* CHANGELOG */
+    .changelog { position:relative; }
+    .changelog::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--accent),var(--accent2),transparent); opacity:.3; }
+    .cl-item { display:flex; gap:32px; margin-bottom:48px; position:relative; }
+    .cl-dot { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; border:2px solid; z-index:1; }
+    .cl-dot.major  { background:rgba(99,102,241,.15); border-color:var(--accent); }
+    .cl-dot.minor  { background:rgba(16,185,129,.12); border-color:var(--green); }
+    .cl-dot.fix    { background:rgba(245,158,11,.12); border-color:var(--orange); }
+    .cl-dot.coming { background:rgba(139,92,246,.12); border-color:var(--accent2); }
+    .cl-body { flex:1; }
+    .cl-header { display:flex; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+    .cl-version { font-size:20px; font-weight:800; letter-spacing:-.5px; }
+    .cl-tag { display:inline-flex; align-items:center; padding:3px 10px; border-radius:100px; font-size:11px; font-weight:700; }
+    .cl-tag.latest  { background:rgba(99,102,241,.15); color:#818cf8; border:1px solid rgba(99,102,241,.3); }
+    .cl-tag.coming  { background:rgba(139,92,246,.12); color:#c084fc; border:1px solid rgba(139,92,246,.3); }
+    .cl-date { font-size:13px; color:var(--muted); margin-left:auto; }
+    .cl-title { font-size:16px; font-weight:700; margin-bottom:8px; }
+    .cl-desc { font-size:14px; color:var(--muted2); line-height:1.8; margin-bottom:16px; }
+    .cl-items { display:flex; flex-direction:column; gap:6px; }
+    .cl-li { display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--text2); }
+    .cl-li-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:7px; }
+    .cl-li-dot.new   { background:var(--accent); }
+    .cl-li-dot.fix   { background:var(--orange); }
+    .cl-li-dot.imp   { background:var(--green); }
+    .cl-li-dot.soon  { background:var(--accent2); opacity:.6; }
+
+    /* ROADMAP */
+    .roadmap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .rm-card { background:var(--bg3); border:1px solid var(--border2); border-radius:16px; padding:28px; transition:transform .2s, border-color .2s; }
+    .rm-card:hover { transform:translateY(-3px); border-color:var(--accent); }
+    .rm-icon { font-size:32px; margin-bottom:14px; }
+    .rm-title { font-size:16px; font-weight:700; margin-bottom:8px; }
+    .rm-desc { font-size:14px; color:var(--muted2); line-height:1.75; margin-bottom:16px; }
+    .rm-eta { display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--muted2); background:var(--bg4); border:1px solid var(--border); border-radius:100px; padding:4px 12px; }
+
+    /* SUGGESTIONS FORM */
+    #suggestions { background:var(--bg2); border-top:1px solid var(--border); }
+    .form-wrap { max-width:680px; margin:0 auto; }
+    .form-title { font-size:clamp(24px,3vw,38px); font-weight:800; letter-spacing:-1px; margin-bottom:12px; }
+    .form-sub { font-size:16px; color:var(--muted2); margin-bottom:40px; line-height:1.7; }
+    .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-field { display:flex; flex-direction:column; gap:6px; }
+    .form-field.full { grid-column:1/-1; }
+    label { font-size:13px; font-weight:600; color:var(--muted2); }
+    input, select, textarea {
+      background:var(--bg3); border:1px solid var(--border2); color:var(--text);
+      border-radius:10px; padding:12px 16px; font-size:14px; font-family:'Inter',sans-serif;
+      transition:border-color .2s; outline:none; width:100%;
+    }
+    input:focus, select:focus, textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(99,102,241,.15); }
+    select option { background:var(--bg3); }
+    textarea { resize:vertical; min-height:140px; line-height:1.6; }
+    .btn-submit {
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      width:100%; padding:16px; background:linear-gradient(135deg,#6366f1,#8b5cf6);
+      color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:700;
+      cursor:pointer; box-shadow:0 0 24px rgba(99,102,241,.3); transition:all .25s; margin-top:8px;
+    }
+    .btn-submit:hover { transform:translateY(-2px); box-shadow:0 0 40px rgba(99,102,241,.5); }
+    .btn-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+    .form-success { display:none; text-align:center; padding:48px 32px; background:rgba(16,185,129,.08); border:1px solid rgba(16,185,129,.25); border-radius:16px; }
+    .form-success h3 { font-size:20px; font-weight:700; color:#34d399; margin-bottom:8px; }
+    .form-success p { color:var(--muted2); font-size:15px; }
+    .char-count { font-size:11px; color:var(--muted); text-align:right; margin-top:4px; }
+
+    /* SECTION */
+    .section { padding:72px clamp(20px,5vw,72px); }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; color:#a5b4fc; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px; }
+    .eyebrow::before { content:''; width:18px; height:2px; background:linear-gradient(90deg,#6366f1,#8b5cf6); border-radius:1px; }
+
+    /* FOOTER */
+    footer { background:var(--bg2); border-top:1px solid var(--border); padding:44px clamp(20px,5vw,72px); }
+    .footer-inner { max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+    .footer-logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
+    .footer-logo-icon { width:28px; height:28px; background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:14px; }
+    .footer-logo-text { font-size:15px; font-weight:800; color:var(--text); }
+    .footer-copy { font-size:13px; color:var(--muted); }
+    .footer-links { display:flex; gap:24px; flex-wrap:wrap; }
+    .footer-links a { font-size:13px; color:var(--muted); text-decoration:none; transition:color .2s; }
+    .footer-links a:hover { color:#a5b4fc; }
+
+    @media(max-width:768px){
+      .nav-links,.nav-right{display:none} .nav-burger{display:flex}
+      .roadmap-grid{grid-template-columns:1fr}
+      .form-grid{grid-template-columns:1fr}
+      .changelog::before{display:none}
+      .cl-item{gap:16px}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-icon">🛡️</div>
+    <span class="nav-logo-text">AuditM365</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html#features">Fonctionnalités</a>
+    <a class="nav-link active" href="controles.html">Contrôles</a>
+    <a class="nav-link" href="index.html#gallery">Aperçu</a>
+    <a class="nav-link" href="nouveautes.html">Nouveautés</a>
+    <a class="nav-link" href="index.html#pricing">Tarifs</a>
+    <a class="nav-link" href="index.html#faq">FAQ</a>
+  </div>
+  <div class="nav-right">
+    <a class="btn-cta" href="index.html#pricing">Obtenir une licence →</a>
+  </div>
+  <button class="nav-burger" id="nav-burger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile-menu" id="nav-mobile-menu">
+  <a class="nav-mobile-link" href="index.html#features" onclick="closeMobileMenu()">Fonctionnalités</a>
+  <a class="nav-mobile-link" href="controles.html" onclick="closeMobileMenu()">Contrôles</a>
+  <a class="nav-mobile-link" href="index.html#gallery"  onclick="closeMobileMenu()">Aperçu</a>
+  <a class="nav-mobile-link" href="nouveautes.html"     onclick="closeMobileMenu()" style="color:#a5b4fc">Nouveautés</a>
+  <a class="nav-mobile-link" href="index.html#pricing"  onclick="closeMobileMenu()">Tarifs</a>
+  <a class="nav-mobile-link" href="index.html#faq"      onclick="closeMobileMenu()">FAQ</a>
+  <a class="nav-mobile-cta"  href="index.html#pricing"  onclick="closeMobileMenu()">🚀 Obtenir une licence</a>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-badge"><div class="badge-dot"></div>Catalogue des contrôles</div>
+  <h1>76 contrôles de sécurité<br><span class="grad">Microsoft 365 &amp; Intune</span></h1>
+  <p>Chaque audit évalue ces points sur votre tenant, en lecture seule, et classe chaque résultat : conforme, partiel, non conforme ou indéterminé, avec la remédiation à appliquer.</p>
+</div>
+
+<div class="ctl-wrap">
+  <div class="ctl-summary">
+    <span><b>76</b> contrôles</span><span><b>15</b> domaines</span>
+    <span><b>5</b> critiques</span><span><b>37</b> de sévérité élevée</span>
+    <span>Référentiels : <b>CIS M365</b>, <b>ISO 27001</b>, <b>NIS2</b></span>
+  </div>
+    <section class="dom">
+      <h2><span>👤</span>Identités et accès conditionnel<em>7</em></h2>
+      <ul>
+        <li><span class="cid">IAM-001</span><span class="ctitle">Nombre d&#x27;administrateurs globaux</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">IAM-002</span><span class="ctitle">Protection MFA des comptes administrateurs</span><span class="sev crit">Critique</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">IAM-003</span><span class="ctitle">Comptes invités sans activité récente</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">IAM-006</span><span class="ctitle">Comptes d&#x27;accès d&#x27;urgence (break-glass) configurés</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">CA-001</span><span class="ctitle">Blocage de l&#x27;authentification héritée (legacy auth)</span><span class="sev crit">Critique</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">CA-002</span><span class="ctitle">MFA obligatoire pour tous les administrateurs</span><span class="sev crit">Critique</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">CA-003</span><span class="ctitle">Exclusions trop larges dans les politiques d&#x27;accès conditionnel</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>🛡️</span>Protection avancée des identités<em>5</em></h2>
+      <ul>
+        <li><span class="cid">ADV-001</span><span class="ctitle">PIM : rôles privilégiés éligibles plutôt que permanents</span><span class="sev crit">Critique</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">ADV-002</span><span class="ctitle">Emplacements nommés configurés pour l&#x27;accès conditionnel</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">ADV-003</span><span class="ctitle">Politiques de risque Identity Protection (accès conditionnel)</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">ADV-004</span><span class="ctitle">Revues d&#x27;accès configurées pour les rôles privilégiés</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">ADV-005</span><span class="ctitle">Authentification sans mot de passe (passwordless)</span><span class="sev low">Faible</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>🧩</span>Applications Entra ID<em>5</em></h2>
+      <ul>
+        <li><span class="cid">APP-001</span><span class="ctitle">Applications avec permissions administrateur excessives</span><span class="sev crit">Critique</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">APP-002</span><span class="ctitle">Secrets d&#x27;application expirés ou expirant sous 30 jours</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">APP-003</span><span class="ctitle">Applications sans propriétaire</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">APP-004</span><span class="ctitle">Applications multi-tenant ayant accès au tenant</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">APP-005</span><span class="ctitle">Identifiants d&#x27;applications non renouvelés depuis plus d&#x27;un an</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>✉️</span>Messagerie Exchange Online<em>7</em></h2>
+      <ul>
+        <li><span class="cid">EXO-001</span><span class="ctitle">SPF configuré sur les domaines de messagerie</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">EXO-002</span><span class="ctitle">DKIM configuré sur les domaines de messagerie</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">EXO-003</span><span class="ctitle">DMARC en mode quarantaine ou rejet</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">EXO-004</span><span class="ctitle">Transfert externe des e-mails non maîtrisé</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">EXO-005</span><span class="ctitle">Règles de boîte de réception transférant vers l&#x27;extérieur</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">EXO-006</span><span class="ctitle">Domaines acceptés sans enregistrement MX valide</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">EXO-007</span><span class="ctitle">Journalisation d&#x27;audit des boîtes aux lettres</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>🎣</span>Defender for Office 365<em>5</em></h2>
+      <ul>
+        <li><span class="cid">DEF-001</span><span class="ctitle">Politique anti-hameçonnage avancée</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">DEF-002</span><span class="ctitle">Safe Links sur les e-mails et Office</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">DEF-003</span><span class="ctitle">Safe Attachments (analyse des pièces jointes)</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">DEF-004</span><span class="ctitle">Score de sécurité Defender for Office 365</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">DEF-005</span><span class="ctitle">Simulations d&#x27;attaque configurées</span><span class="sev low">Faible</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>📁</span>Partage et collaboration<em>7</em></h2>
+      <ul>
+        <li><span class="cid">COL-001</span><span class="ctitle">Niveau de partage externe SharePoint</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">COL-002</span><span class="ctitle">Expiration des liens anonymes</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">COL-003</span><span class="ctitle">Type de lien de partage par défaut</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">COL-004</span><span class="ctitle">Domaines externes autorisés au partage</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">COL-005</span><span class="ctitle">Équipes Teams sans propriétaire actif</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">COL-006</span><span class="ctitle">Équipes Teams publiques</span><span class="sev low">Faible</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">COL-007</span><span class="ctitle">Synchronisation OneDrive limitée aux domaines autorisés</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>🔒</span>Prévention des pertes de données<em>5</em></h2>
+      <ul>
+        <li><span class="cid">DLP-001</span><span class="ctitle">Politique DLP active</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">DLP-002</span><span class="ctitle">DLP couvrant Exchange (e-mails)</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">DLP-003</span><span class="ctitle">DLP couvrant SharePoint et OneDrive</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">DLP-004</span><span class="ctitle">DLP couvrant Microsoft Teams</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">DLP-005</span><span class="ctitle">Politiques DLP en mode blocage (pas seulement audit)</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>💻</span>Appareils Intune<em>8</em></h2>
+      <ul>
+        <li><span class="cid">INT-001</span><span class="ctitle">Taux de conformité des appareils Intune</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">INT-002</span><span class="ctitle">Chiffrement des appareils (BitLocker / FileVault)</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">INT-003</span><span class="ctitle">Politiques de conformité Intune par système</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">INT-004</span><span class="ctitle">Appareils inactifs depuis plus de 90 jours</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">INT-005</span><span class="ctitle">Appareils avec une version de système obsolète</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">INT-006</span><span class="ctitle">Applications requises déployées par Intune</span><span class="sev low">Faible</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">INT-007</span><span class="ctitle">Politiques de protection des applications (MAM)</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">INT-008</span><span class="ctitle">Windows Hello for Business configuré</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>🖥️</span>Defender for Endpoint<em>5</em></h2>
+      <ul>
+        <li><span class="cid">MDE-001</span><span class="ctitle">Taux d&#x27;intégration des appareils dans Defender for Endpoint</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">MDE-002</span><span class="ctitle">Alertes Defender for Endpoint élevées ou critiques</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">MDE-003</span><span class="ctitle">Score d&#x27;exposition Defender for Endpoint</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">MDE-004</span><span class="ctitle">Score de sécurité des appareils</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">MDE-005</span><span class="ctitle">Base de sécurité Windows déployée</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>☁️</span>Defender for Cloud Apps<em>4</em></h2>
+      <ul>
+        <li><span class="cid">MCAS-001</span><span class="ctitle">Alertes Defender for Cloud Apps à traiter</span><span class="sev high">Élevée</span><span class="fws"></span></li><li><span class="cid">MCAS-002</span><span class="ctitle">Applications OAuth non autorisées</span><span class="sev high">Élevée</span><span class="fws"></span></li><li><span class="cid">MCAS-003</span><span class="ctitle">Politiques Defender for Cloud Apps actives</span><span class="sev med">Moyenne</span><span class="fws"></span></li><li><span class="cid">MCAS-004</span><span class="ctitle">Shadow IT : applications cloud non approuvées</span><span class="sev med">Moyenne</span><span class="fws"></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>📋</span>Purview, audit et Secure Score<em>5</em></h2>
+      <ul>
+        <li><span class="cid">PUR-001</span><span class="ctitle">Journal d&#x27;audit unifié actif</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">PUR-002</span><span class="ctitle">Étiquettes de confidentialité configurées et publiées</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">PUR-003</span><span class="ctitle">Microsoft Secure Score</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">PUR-004</span><span class="ctitle">Conservation des journaux d&#x27;audit d&#x27;au moins 90 jours</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">PUR-005</span><span class="ctitle">Alertes de sécurité actives</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>📜</span>Journaux de connexion et d&#x27;audit<em>4</em></h2>
+      <ul>
+        <li><span class="cid">LOG-001</span><span class="ctitle">Journaux de connexion accessibles</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">LOG-002</span><span class="ctitle">Taux d&#x27;échec de connexion inférieur à 10 %</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">LOG-003</span><span class="ctitle">Connexions à risque traitées</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">LOG-004</span><span class="ctitle">Journaux d&#x27;audit de l&#x27;annuaire actifs</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>🔭</span>Microsoft Sentinel<em>4</em></h2>
+      <ul>
+        <li><span class="cid">SEN-001</span><span class="ctitle">Microsoft Sentinel configuré</span><span class="sev high">Élevée</span><span class="fws"></span></li><li><span class="cid">SEN-002</span><span class="ctitle">Connecteurs de données Sentinel actifs</span><span class="sev high">Élevée</span><span class="fws"></span></li><li><span class="cid">SEN-003</span><span class="ctitle">Règles analytiques Sentinel actives</span><span class="sev med">Moyenne</span><span class="fws"></span></li><li><span class="cid">SEN-004</span><span class="ctitle">Automatisation Sentinel (playbooks)</span><span class="sev low">Faible</span><span class="fws"></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>⚡</span>Power Platform<em>2</em></h2>
+      <ul>
+        <li><span class="cid">PWR-001</span><span class="ctitle">Politiques DLP Power Platform</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">PWR-002</span><span class="ctitle">Environnement Power Platform par défaut protégé par DLP</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+    <section class="dom">
+      <h2><span>🔑</span>Licences de sécurité<em>3</em></h2>
+      <ul>
+        <li><span class="cid">LIC-001</span><span class="ctitle">Licence Entra ID P2 ou Microsoft 365 E5</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">LIC-002</span><span class="ctitle">Licence Intune pour la gestion des appareils</span><span class="sev med">Moyenne</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li><li><span class="cid">LIC-003</span><span class="ctitle">Licence Defender for Office 365 Plan 2</span><span class="sev high">Élevée</span><span class="fws"><span class="fw">CIS M365</span><span class="fw">ISO 27001</span><span class="fw">NIS2</span></span></li>
+      </ul>
+    </section>
+  <p class="ctl-note">Certains contrôles nécessitent une licence Microsoft particulière (Entra ID P2, Defender, Purview, Sentinel).<br>
+  Sans la licence ou la donnée correspondante, le contrôle est indiqué « indéterminé » dans le rapport plutôt que d'afficher un faux résultat.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <a class="footer-logo" href="index.html">
+        <div class="footer-logo-icon">🛡️</div>
+        <span class="footer-logo-text">AuditM365</span>
+      </a>
+      <span class="footer-copy">© 2026 AuditM365. Tous droits réservés.</span>
+    </div>
+    <div class="footer-links">
+      <a href="index.html#features">Fonctionnalités</a>
+      <a href="controles.html">Contrôles</a>
+      <a href="index.html#pricing">Tarifs</a>
+      <a href="nouveautes.html">Nouveautés</a>
+      <a href="mailto:bonjour@m365intune.com">Contact</a>
+      <a href="https://billing.stripe.com/p/login/bJe00i2Eu1uf6yTe2s6wE00">Gérer mon abonnement</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Tabs
+  function switchTab(name) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+    if(name === 'suggestions') {
+      setTimeout(() => document.getElementById('tab-suggestions').scrollIntoView({behavior:'smooth', block:'start'}), 100);
+    }
+  }
+
+  // Mobile menu
+  function toggleMobileMenu() {
+    document.getElementById('nav-mobile-menu').classList.toggle('open');
+    document.getElementById('nav-burger').classList.toggle('open');
+  }
+  function closeMobileMenu() {
+    document.getElementById('nav-mobile-menu').classList.remove('open');
+    document.getElementById('nav-burger').classList.remove('open');
+  }
+
+  // Char count
+  function updateCharCount(el) {
+    document.getElementById('char-count').textContent = el.value.length + ' / 2000';
+  }
+
+  // Form submit
+  document.getElementById('suggestion-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const msg = document.getElementById('s-message').value.trim();
+    if (!msg) { document.getElementById('s-message').focus(); return; }
+
+    const btn  = document.getElementById('btn-submit');
+    const txt  = document.getElementById('btn-text');
+    btn.disabled = true;
+    txt.textContent = '⏳ Envoi en cours…';
+
+    try {
+      const res = await fetch('https://web-production-5834.up.railway.app/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:     document.getElementById('s-name').value.trim(),
+          email:    document.getElementById('s-email').value.trim(),
+          category: document.getElementById('s-category').value,
+          message:  msg
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        document.getElementById('suggestion-form').style.display = 'none';
+        document.getElementById('form-success').style.display = 'block';
+      } else {
+        throw new Error(data.error || 'Erreur serveur');
+      }
+    } catch(err) {
+      alert('Erreur lors de l\'envoi : ' + err.message + '\n\nVeuillez réessayer ou nous contacter par email.');
+      btn.disabled = false;
+      txt.textContent = '💬 Envoyer ma suggestion';
+    }
+  });
+
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').style.background = window.scrollY > 40 ? 'rgba(8,12,26,.97)' : 'rgba(8,12,26,.92)';
+  });
+
+  // Auto-open suggestions tab if #suggestions in URL
+  if(window.location.hash === '#suggestions') {
+    document.querySelectorAll('.tab-btn').forEach((b,i) => { if(i===2) b.click(); });
+  }
+</script>
+</body>
+</html>
