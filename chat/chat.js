@@ -79,7 +79,7 @@
   btn.setAttribute("aria-label", "Ouvrir l'assistant AuditM365");
   btn.setAttribute("aria-expanded", "false");
   const panel = el("div", { id: "ac-panel" }, `
-    <div class="ac-head"><span style="font-size:22px">🛡️</span><b>Assistant AuditM365<small>Réponses sur l'application, les licences et l'essai</small></b>
+    <div class="ac-head"><span style="font-size:22px">🛡️</span><b>Assistant AuditM365<small>Assistant IA · application, licences et essai</small></b>
       <button class="ac-close" type="button" aria-label="Fermer l'assistant">✕</button></div>
     <div id="ac-log" aria-live="polite"></div>
     <div id="ac-ts" style="padding:0 14px"></div>
@@ -88,7 +88,6 @@
       <div class="ac-row"><textarea id="ac-input" maxlength="${MAX}" rows="1" placeholder="Votre question…" aria-label="Votre question"></textarea>
         <button id="ac-send" type="submit">Envoyer</button></div>
       <div class="ac-count" id="ac-count">0 / ${MAX}</div>
-      <div class="ac-note">Ne saisissez pas de données personnelles. Vos questions sont traitées par une IA (Anthropic) et ne sont pas conservées.</div>
     </form>`);
   panel.setAttribute("role", "dialog");
   panel.setAttribute("aria-label", "Assistant AuditM365");
@@ -235,7 +234,17 @@
     fold(transcript.length > 1);
   }
 
+  // fermer le chat efface la conversation (le laisser-passer anti-robot est conservé)
+  function reset() {
+    history = []; transcript = [];
+    store.set("history", null); store.set("transcript", null);
+    log.innerHTML = ""; input.value = "";
+    form.classList.remove("open");
+    loaded = false;
+  }
+
   function toggle(open) {
+    if (!open && panel.classList.contains("open")) reset();
     panel.classList.toggle("open", open);
     btn.setAttribute("aria-expanded", String(open));
     btn.textContent = open ? "✕" : "💬";
