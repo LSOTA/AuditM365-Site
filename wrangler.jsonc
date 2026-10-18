@@ -1,13 +1,21 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "auditm365-site",
+  "main": "worker/index.js",
   "compatibility_date": "2026-04-27",
   "observability": {
     "enabled": true
   },
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
   },
+  // Compteurs du chatbot (questions par jour), aucun texte conservé
+  "durable_objects": {
+    "bindings": [{ "name": "QUOTA", "class_name": "ChatQuota" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["ChatQuota"] }],
   "compatibility_flags": [
     "nodejs_compat"
   ]

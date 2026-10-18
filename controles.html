@@ -387,7 +387,7 @@
   }
 
   // Form submit
-  document.getElementById('suggestion-form').addEventListener('submit', async function(e) {
+  document.getElementById('suggestion-form')?.addEventListener('submit', async function(e) {
     e.preventDefault();
     const msg = document.getElementById('s-message').value.trim();
     if (!msg) { document.getElementById('s-message').focus(); return; }
@@ -432,5 +432,6 @@
     document.querySelectorAll('.tab-btn').forEach((b,i) => { if(i===2) b.click(); });
   }
 </script>
+<script src="/chat/chat.js" defer></script>
 </body>
 </html>

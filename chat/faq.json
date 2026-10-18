@@ -1,0 +1,41 @@
+{
+  "items": [
+    {
+      "id": "fonctionnement",
+      "label": "Comment ça marche ?",
+      "answer": "En trois étapes :<br>1. <b>Obtenez une licence</b> : abonnement ou <a href=\"/#essai\">essai gratuit de 24 h</a>.<br>2. <b>Installez l'application Windows</b> et connectez votre tenant : l'application affiche un code, que vous saisissez sur la page Microsoft avec un compte administrateur Microsoft 365.<br>3. <b>Lancez l'audit</b> : en moins de 5 minutes, vous obtenez un score, les points à corriger par priorité et un rapport HTML ou Excel."
+    },
+    {
+      "id": "acces",
+      "label": "Quels accès faut-il ?",
+      "answer": "Un compte administrateur Microsoft 365 suffit pour la connexion initiale. L'application configure ensuite automatiquement les accès nécessaires <b>en lecture seule</b> : l'audit ne modifie rien dans votre tenant."
+    },
+    {
+      "id": "donnees",
+      "label": "Mes données sortent-elles ?",
+      "answer": "Non. AuditM365 est une application Windows locale : les données de votre tenant restent sur votre ordinateur et ne sont envoyées à aucun serveur externe."
+    },
+    {
+      "id": "prix",
+      "label": "Prix et licences",
+      "answer": "Abonnement mensuel sans engagement, prix hors taxes (TVA 20 % en sus) :<br>• <b>Standard</b> : 29 € HT/mois, jusqu'à 3 tenants<br>• <b>Pro</b> : 79 € HT/mois, jusqu'à 10 tenants<br>• <b>MSP</b> : 149 € HT/mois, tenants illimités<br>Tous les modules d'audit, les rapports et les mises à jour sont inclus. Paiement par Stripe, clé envoyée par e-mail. <a href=\"/#pricing\">Voir les tarifs</a>"
+    },
+    {
+      "id": "essai",
+      "label": "Essai gratuit",
+      "answer": "Oui : l'essai dure <b>24 h</b>, gratuit et sans carte bancaire. Remplissez le formulaire, votre clé d'essai arrive par e-mail en quelques minutes (pensez à vérifier les courriers indésirables).",
+      "link": { "label": "Aller au formulaire d'essai", "href": "/#essai" }
+    },
+    {
+      "id": "installation",
+      "label": "Installation bloquée",
+      "answer": "L'application fonctionne sous Windows 10 (64 bits) et Windows 11, sans droits administrateur sur le poste.<br>• Si Windows affiche « Windows a protégé votre ordinateur », cliquez sur <b>Informations complémentaires</b> puis <b>Exécuter quand même</b>, à condition d'avoir téléchargé l'installateur depuis ce site.<br>• Pour connecter le tenant, ouvrez microsoft.com/devicelogin, saisissez le code affiché par l'application et connectez-vous avec un compte administrateur Microsoft 365.<br>Toujours bloqué ? Écrivez à <a href=\"mailto:bonjour@m365intune.com\">bonjour@m365intune.com</a> en précisant le message affiché."
+    },
+    {
+      "id": "controles",
+      "label": "Voir les 78 contrôles",
+      "answer": "AuditM365 évalue 78 contrôles répartis en 15 domaines : identités et accès conditionnel, messagerie Exchange Online, Defender, partage et collaboration, appareils Intune, Purview, Sentinel, Power Platform, etc. Chaque contrôle est détaillé sur la page dédiée.",
+      "link": { "label": "Ouvrir la liste des contrôles", "href": "/controles" }
+    }
+  ]
+}
