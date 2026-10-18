@@ -52,8 +52,10 @@
   };
 
   let cfg = null, faq = [], loaded = false, busy = false;
-  let history = store.get("history") || [];   // échanges avec l'IA uniquement
-  let transcript = store.get("transcript") || []; // affichage
+  // conversation en mémoire seulement : rien n'est gardé après fermeture ou rechargement
+  let history = [];      // échanges avec l'IA uniquement
+  let transcript = [];   // affichage
+  store.set("history", null); store.set("transcript", null); // anciennes versions
   let pass = store.get("pass");
   let tsWidget = null, tsToken = null, tsWaiters = [];
 
@@ -100,7 +102,7 @@
     const m = el("div", { className: "ac-msg " + (role === "user" ? "ac-user" : "ac-bot") }, html);
     log.appendChild(m);
     log.scrollTop = log.scrollHeight;
-    if (save) { transcript.push({ role, html }); transcript = transcript.slice(-40); store.set("transcript", transcript); }
+    if (save) { transcript.push({ role, html }); transcript = transcript.slice(-40); }
     return m;
   }
 
@@ -199,7 +201,6 @@
       fold(true);
       if (r.ok && !j.fallback) {
         history = msgs.concat([{ role: "assistant", content: reply }]).slice(-12);
-        store.set("history", history);
       }
     } catch {
       typing.remove();
@@ -237,7 +238,6 @@
   // fermer le chat efface la conversation (le laisser-passer anti-robot est conservé)
   function reset() {
     history = []; transcript = [];
-    store.set("history", null); store.set("transcript", null);
     log.innerHTML = ""; input.value = "";
     form.classList.remove("open");
     loaded = false;
