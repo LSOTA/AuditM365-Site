@@ -159,10 +159,13 @@
     const typing = add("bot", "<span class='ac-typing'>L'assistant rédige sa réponse…</span>", false);
     const msgs = history.concat([{ role: "user", content: question }]).slice(-12);
     try {
-      let r, j;
+      let r, j = {};
       for (let attempt = 0; attempt < 2; attempt++) {
         const payload = { messages: msgs, pass };
-        if (cfg.turnstile && !pass) payload.turnstile = await turnstileToken();
+        if (cfg.turnstile && !pass) {
+          payload.turnstile = await turnstileToken();
+          if (!payload.turnstile) { j = { error: "challenge" }; break; }  // vérification non passée : inutile d'appeler le serveur
+        }
         r = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
         j = await r.json().catch(() => ({}));
         if (j.error === "challenge") {   // laisser-passer expiré : nouveau jeton anti-robot
@@ -174,6 +177,13 @@
       }
       if (j.pass) { pass = j.pass; store.set("pass", pass); }
       tsToken = null;
+      if (j.error === "challenge") {
+        typing.remove();
+        add("bot", "🔒 Vérification anti-robot nécessaire : si une case apparaît au-dessus des boutons, cochez-la, puis renvoyez votre question.", false);
+        input.value = question;
+        if (window.turnstile && tsWidget !== null) window.turnstile.reset(tsWidget);
+        return;
+      }
       const reply = j.reply || "Je ne peux pas répondre pour le moment. Écrivez-nous à bonjour@m365intune.com.";
       typing.remove();
       add("bot", renderAI(reply));
