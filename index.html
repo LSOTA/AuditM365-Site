@@ -589,9 +589,9 @@
       <div class="dl-info">
         <div class="dl-title">⬇ Télécharger AuditM365</div>
         <div class="dl-meta">
-          <span class="dl-badge dl-badge-green">✓ Dernière version — v1.2.14</span>
+          <span class="dl-badge dl-badge-green" id="dl-version">✓ Dernière version — v1.3.4</span>
           <span class="dl-badge">🪟 Windows 10 / 11</span>
-          <span class="dl-badge">📦 38,4 Mo</span>
+          <span class="dl-badge" id="dl-size">📦 38,4 Mo</span>
           <span class="dl-badge">🔄 Mises à jour automatiques</span>
           <span class="dl-badge">🔒 100% local — aucune installation de serveur</span>
         </div>
@@ -603,7 +603,7 @@
       </div>
       <a href="https://github.com/LSOTA/AuditM365-Site/releases/latest/download/AuditM365-Setup.exe" class="dl-btn">
         <span class="dl-btn-icon">⬇</span>
-        <span>Télécharger l'installateur<br><small style="font-weight:400;font-size:12px;opacity:.8">v1.2.14 — 38,4 Mo</small></span>
+        <span>Télécharger l'installateur<br><small id="dl-btn-meta" style="font-weight:400;font-size:12px;opacity:.8">v1.3.4 — 38,4 Mo</small></span>
       </a>
     </div>
   </div>
@@ -955,6 +955,32 @@ document.getElementById('trial-form').addEventListener('submit', async (e) => {
     if(e.key === 'ArrowLeft')  lbNav(-1);
     if(e.key === 'ArrowRight') lbNav(1);
   });
+</script>
+<script>
+  // Version et taille de l'installateur lues sur la dernière publication GitHub ;
+  // le texte écrit dans la page reste affiché si l'API ne répond pas.
+  (function () {
+    var KEY = 'auditm365-latest', d = null;
+    function show(x) {
+      if (!x || !/^v\d+\.\d+\.\d+$/.test(x.v)) return;
+      var size = x.s > 0 ? (x.s / 1048576).toLocaleString('fr-FR', { maximumFractionDigits: 1 }) + ' Mo' : null;
+      var b = document.getElementById('dl-version'); if (b) b.textContent = '✓ Dernière version — ' + x.v;
+      var z = document.getElementById('dl-size'); if (z && size) z.textContent = '📦 ' + size;
+      var m = document.getElementById('dl-btn-meta'); if (m) m.textContent = x.v + (size ? ' — ' + size : '');
+    }
+    try { d = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) {}
+    if (d) { show(d); return; }
+    fetch('https://api.github.com/repos/LSOTA/AuditM365-Site/releases/latest', { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j) return;
+        var a = (j.assets || []).filter(function (x) { return x.name === 'AuditM365-Setup.exe'; })[0];
+        var x = { v: j.tag_name, s: a ? a.size : 0 };
+        try { sessionStorage.setItem(KEY, JSON.stringify(x)); } catch (e) {}
+        show(x);
+      })
+      .catch(function () {});
+  })();
 </script>
 <script src="/chat/chat.js" defer></script>
 </body>

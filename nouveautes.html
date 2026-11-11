@@ -233,13 +233,143 @@
   <div class="content-wrap">
     <div class="changelog">
 
+      <!-- v1.3.4 -->
+      <div class="cl-item">
+        <div class="cl-dot">🔧</div>
+        <div class="cl-body">
+          <div class="cl-header">
+            <span class="cl-version">v1.3.4</span>
+            <span class="cl-tag latest">Dernière version</span>
+            <span class="cl-date">4 novembre 2026</span>
+          </div>
+          <div class="cl-title">Administrateurs désactivés écartés du contrôle MFA</div>
+          <div class="cl-desc">Le contrôle MFA des administrateurs ne compte plus les comptes désactivés, et le contrôle de rétention du journal d’audit indique quoi vérifier quand sa valeur n’est pas lisible en lecture seule.</div>
+          <div class="cl-items">
+            <div class="cl-li"><div class="cl-li-dot fix"></div>IAM-002 : seuls les administrateurs actifs sont comptés ; les comptes désactivés sont cités à part</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>PUR-004 : quand la stratégie de rétention personnalisée n’est lisible qu’avec un rôle d’écriture, l’observation le dit et indique où vérifier dans Purview</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v1.3.3 -->
+      <div class="cl-item">
+        <div class="cl-dot">🔧</div>
+        <div class="cl-body">
+          <div class="cl-header">
+            <span class="cl-version">v1.3.3</span>
+            <span class="cl-date">4 novembre 2026</span>
+          </div>
+          <div class="cl-title">« Connecter » : accès eDiscovery plus fiable</div>
+          <div class="cl-desc">Lors de l’ajout de l’accès eDiscovery, l’application attend que Microsoft Purview reconnaisse l’application d’audit au lieu d’échouer.</div>
+          <div class="cl-items">
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Nouvelles tentatives automatiques (jusqu’à environ 3 minutes) quand Purview ne voit pas encore l’application qu’il vient d’enregistrer</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v1.3.2 -->
+      <div class="cl-item">
+        <div class="cl-dot">🔧</div>
+        <div class="cl-body">
+          <div class="cl-header">
+            <span class="cl-version">v1.3.2</span>
+            <span class="cl-date">4 novembre 2026</span>
+          </div>
+          <div class="cl-title">Fonctions absentes des licences du tenant reconnues</div>
+          <div class="cl-desc">Quand une fonction Purview n’est pas incluse dans les licences du tenant, l’audit le dit clairement au lieu d’afficher une erreur technique.</div>
+          <div class="cl-items">
+            <div class="cl-li"><div class="cl-li-dot fix"></div>DLP-001 à DLP-005 : « Non disponible avec les licences du tenant » (DLP : Business Premium, E3 / A3 ou supérieur)</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>PUR-004 : sans Audit Premium, la rétention standard de 180 jours est reconnue</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>EXO-004 et EXO-007 : une liste vide (aucun transfert externe, aucun compte exempté d’audit) n’est plus affichée comme « non lue »</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v1.3.1 -->
+      <div class="cl-item">
+        <div class="cl-dot">🔧</div>
+        <div class="cl-body">
+          <div class="cl-header">
+            <span class="cl-version">v1.3.1</span>
+            <span class="cl-date">4 novembre 2026</span>
+          </div>
+          <div class="cl-title">Contrôles plus justes et droits réduits</div>
+          <div class="cl-desc">Un contrôle dont les données n’ont pas pu être lues est signalé « indéterminé » ou « partiel » au lieu d’un faux résultat, et « Connecter » demande moins de droits.</div>
+          <div class="cl-items">
+            <div class="cl-li"><div class="cl-li-dot fix"></div>CA-002 : « indéterminé » quand les rôles ou les membres des groupes administrateurs n’ont pas pu être lus</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>CA-001 / CA-002 : une politique MFA limitée (niveau de risque, emplacement, plateforme, type d’application) ne compte plus comme une protection permanente</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Score « Non évalué » quand aucun contrôle n’a pu être évalué, au lieu de 100/100</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>INT-001, PUR-004, IAM-001, EXO-004 : les données non lues sont signalées dans l’observation</div>
+            <div class="cl-li"><div class="cl-li-dot imp"></div>« Connecter » : le droit de gestion des rôles n’est demandé que si la lecture Exchange et Purview est cochée</div>
+            <div class="cl-li"><div class="cl-li-dot imp"></div>Licence : changement de clé et vérification en arrière-plan fiabilisés</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v1.3.0 -->
+      <div class="cl-item">
+        <div class="cl-dot major">🚀</div>
+        <div class="cl-body">
+          <div class="cl-header">
+            <span class="cl-version">v1.3.0</span>
+            <span class="cl-date">3 novembre 2026</span>
+          </div>
+          <div class="cl-title">Audit plus précis : score honnête, accès conditionnel, Exchange et Purview</div>
+          <div class="cl-desc">Le score ne compte plus comme réussis les contrôles impossibles à vérifier, l’accès conditionnel est évalué sur sa portée réelle, et Exchange Online et Purview sont lus en PowerShell, en lecture seule.</div>
+          <div class="cl-items">
+            <div class="cl-li"><div class="cl-li-dot imp"></div>Score : contrôles « indéterminés » retirés du calcul, poids fixe par sévérité, évolution comparée à l’audit précédent</div>
+            <div class="cl-li"><div class="cl-li-dot imp"></div>CA-001 à CA-003 : exclusions comptées (groupes compris) ; chaque administrateur doit être couvert par une politique MFA, comptes d’urgence tolérés</div>
+            <div class="cl-li"><div class="cl-li-dot imp"></div>IAM-001 à IAM-006 : chaque personne comptée une seule fois, méthodes résistantes au hameçonnage, comptes désactivés à part</div>
+            <div class="cl-li"><div class="cl-li-dot imp"></div>INT-001 : la conformité « par défaut » n’est comptée que si une stratégie évalue réellement les appareils</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>DLP-001 à DLP-005 : stratégies DLP réellement lues (emplacements visés, mode simulation exclu)</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>EXO-004, EXO-007, PUR-004 : transfert externe, audit des boîtes et rétention du journal d’audit lus en PowerShell</div>
+            <div class="cl-li"><div class="cl-li-dot new"></div>« Connecter » : option « Lecture Exchange et Purview » (rôle Entra Lecteur général, lecture seule)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v1.2.16 -->
+      <div class="cl-item">
+        <div class="cl-dot">✨</div>
+        <div class="cl-body">
+          <div class="cl-header">
+            <span class="cl-version">v1.2.16</span>
+            <span class="cl-date">3 novembre 2026</span>
+          </div>
+          <div class="cl-title">Changer de clé de licence depuis l’application</div>
+          <div class="cl-desc">Passez de Standard à Pro ou MSP, ou renouvelez votre licence, sans réinstaller : la nouvelle clé est activée et le badge mis à jour immédiatement.</div>
+          <div class="cl-items">
+            <div class="cl-li"><div class="cl-li-dot new"></div>Lien « Changer de clé » sous le badge de licence</div>
+            <div class="cl-li"><div class="cl-li-dot imp"></div>Si la nouvelle clé est refusée, la licence en place reste active</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Date d’expiration et e-mail affichés aussi hors ligne</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v1.2.15 -->
+      <div class="cl-item">
+        <div class="cl-dot">🔧</div>
+        <div class="cl-body">
+          <div class="cl-header">
+            <span class="cl-version">v1.2.15</span>
+            <span class="cl-date">3 novembre 2026</span>
+          </div>
+          <div class="cl-title">Fin d’audit fiable</div>
+          <div class="cl-desc">Un audit dont l’analyse échoue n’est plus annoncé « terminé », et une donnée Defender incomplète ne bloque plus l’analyse.</div>
+          <div class="cl-items">
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Erreur explicite si l’analyse ne produit pas de résultats ; la date du dernier audit reste exacte</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Sévérité manquante dans Defender for Endpoint ou Defender for Cloud Apps : plus de blocage de l’analyse</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Un fichier de collecte illisible est ignoré avec un avertissement au lieu d’arrêter l’audit</div>
+          </div>
+        </div>
+      </div>
+
       <!-- v1.2.14 -->
       <div class="cl-item">
         <div class="cl-dot">🇫🇷</div>
         <div class="cl-body">
           <div class="cl-header">
             <span class="cl-version">v1.2.14</span>
-            <span class="cl-tag latest">Dernière version</span>
             <span class="cl-date">18 octobre 2026</span>
           </div>
           <div class="cl-title">Résultats d’audit entièrement en français</div>
