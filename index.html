@@ -215,6 +215,9 @@
     .step-block p  { font-size:14px; color:var(--muted2); line-height:1.75; }
 
     /* ── GALLERY ── */
+    .demo-video { max-width:960px; margin:48px auto 0; border-radius:16px; overflow:hidden; border:1px solid var(--border2); box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 32px rgba(99,102,241,.15); background:#000; }
+    .demo-video video { display:block; width:100%; height:auto; aspect-ratio:16/9; }
+    .demo-caption { text-align:center; font-size:13px; color:var(--muted2); margin-top:12px; }
     #gallery { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
     .gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:48px; }
     .gallery-item { border-radius:12px; overflow:hidden; border:1px solid var(--border2); cursor:pointer; transition:all .25s; position:relative; }
@@ -428,7 +431,7 @@
   <div class="hero-btns">
     <a href="#pricing" class="btn-hero-p">🚀 Obtenir une licence</a>
     <a href="#download" class="btn-hero-dl">⬇ Télécharger l'application</a>
-    <a href="#gallery" class="btn-hero-s">Voir l'application →</a>
+    <a href="#demo" class="btn-hero-s">▶ Voir la démo (2 min)</a>
   </div>
   <div class="hero-screen">
     <div class="screen-frame">
@@ -675,8 +678,16 @@
     <div class="fi">
       <div class="eyebrow">Aperçu de l'application</div>
       <h2 class="st">Découvrez l'interface</h2>
-      <p class="ss">Un outil complet, intuitif et 100% en français. Cliquez sur une capture pour l'agrandir.</p>
+      <p class="ss">Un outil complet, intuitif et 100% en français. Regardez la démo de 2 minutes, puis cliquez sur une capture pour l'agrandir.</p>
     </div>
+    <div class="demo-video fi" id="demo">
+      <video controls preload="none" playsinline poster="video/auditm365-demo-affiche.jpg" aria-label="Démonstration d'AuditM365 en 2 minutes">
+        <source src="video/auditm365-demo-web.mp4" type="video/mp4">
+        <track kind="subtitles" src="video/auditm365-demo.fr.vtt" srclang="fr" label="Français">
+        Votre navigateur ne lit pas la vidéo : <a href="video/auditm365-demo-web.mp4">téléchargez-la ici</a>.
+      </video>
+    </div>
+    <p class="demo-caption">Démonstration sur un tenant fictif — sous-titres disponibles dans le lecteur.</p>
     <div class="gallery-grid fi fi-d1">
       <div class="gallery-item" onclick="openLB(0)">
         <img src="img/sharepoint.png" alt="SharePoint">
