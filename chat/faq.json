@@ -33,8 +33,8 @@
     },
     {
       "id": "controles",
-      "label": "Voir les 78 contrôles",
-      "answer": "AuditM365 évalue 78 contrôles répartis en 15 domaines : identités et accès conditionnel, messagerie Exchange Online, Defender, partage et collaboration, appareils Intune, Purview, Sentinel, Power Platform, etc. Chaque contrôle est détaillé sur la page dédiée.",
+      "label": "Voir les 86 contrôles",
+      "answer": "AuditM365 évalue 86 contrôles répartis en 15 domaines : identités et accès conditionnel, messagerie Exchange Online, Defender, partage et collaboration, appareils Intune, Purview, Sentinel, Power Platform, etc. Chaque contrôle est détaillé sur la page dédiée.",
       "link": { "label": "Ouvrir la liste des contrôles", "href": "/controles" }
     }
   ]
