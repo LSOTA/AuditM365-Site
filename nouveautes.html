@@ -180,6 +180,9 @@
       .cl-item{gap:16px}
     }
   </style>
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/img/icon-192.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 </head>
 <body>
 
@@ -233,13 +236,35 @@
   <div class="content-wrap">
     <div class="changelog">
 
+      <!-- v1.5.9 -->
+      <div class="cl-item">
+        <div class="cl-dot minor">📊</div>
+        <div class="cl-body">
+          <div class="cl-header">
+            <span class="cl-version">v1.5.9</span>
+            <span class="cl-tag latest">Dernière version</span>
+            <span class="cl-date">13 novembre 2026</span>
+          </div>
+          <div class="cl-title">Des rapports complets, et 17 guides de correction de plus</div>
+          <div class="cl-desc">Le rapport PowerPoint montre désormais toutes les actions à mener, les plus graves en premier. Purview, Defender for Office 365 et Defender for Endpoint ont leurs guides pas à pas. Et l'audit reste juste et rapide quand les services Microsoft répondent mal.</div>
+          <div class="cl-items">
+            <div class="cl-li"><div class="cl-li-dot new"></div>Guides de correction pour 17 contrôles de plus (Purview, Defender for Office 365, Defender for Endpoint) : étapes dans le portail, script PowerShell à relire et vérification — 57 contrôles guidés sur 86</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Rapport PowerPoint : tous les constats prioritaires et toutes les actions du plan de remédiation, sur autant de diapositives que nécessaire (avant : les 5 et les 14 premiers), et une diapositive pour chaque domaine audité</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Rapports Word et PowerPoint : les constats critiques sont classés en premier (ils l'étaient en dernier)</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Secure Score : une liste incomplète renvoyée par Microsoft est détectée et relue, au lieu de fausser les contrôles Defender for Office 365</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Erreur passagère de Microsoft (502, 503, 504) pendant une lecture : nouvel essai automatique au lieu d'un contrôle « non évaluable »</div>
+            <div class="cl-li"><div class="cl-li-dot fix"></div>Connexion Purview bloquée chez Microsoft : abandon au bout de 3 minutes par essai au lieu de 10, l'audit n'est plus retardé d'une demi-heure</div>
+            <div class="cl-li"><div class="cl-li-dot imp"></div>Composants des rapports installés dans leurs versions testées</div>
+          </div>
+        </div>
+      </div>
+
       <!-- v1.5.8 -->
       <div class="cl-item">
         <div class="cl-dot minor">🩺</div>
         <div class="cl-body">
           <div class="cl-header">
             <span class="cl-version">v1.5.8</span>
-            <span class="cl-tag latest">Dernière version</span>
             <span class="cl-date">13 novembre 2026</span>
           </div>
           <div class="cl-title">Vous savez si l’audit est complet, même pendant un incident Microsoft</div>
