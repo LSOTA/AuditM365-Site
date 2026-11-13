@@ -18,7 +18,7 @@
     {
       "id": "prix",
       "label": "Prix et licences",
-      "answer": "Abonnement mensuel sans engagement, prix hors taxes (TVA 20 % en sus) :<br>• <b>Standard</b> : 29 € HT/mois, jusqu'à 3 tenants<br>• <b>Pro</b> : 79 € HT/mois, jusqu'à 10 tenants<br>• <b>MSP</b> : 149 € HT/mois, tenants illimités<br>Tous les modules d'audit, les rapports et les mises à jour sont inclus. Paiement par Stripe, clé envoyée par e-mail. <a href=\"/#pricing\">Voir les tarifs</a>"
+      "answer": "Abonnement mensuel sans engagement, prix hors taxes (TVA 20 % en sus) :<br>• <b>Standard</b> : 29 € HT/mois, 1 tenant<br>• <b>Pro</b> : 79 € HT/mois, jusqu'à 5 tenants<br>• <b>MSP</b> : 149 € HT/mois, tenants illimités<br>Tous les modules d'audit, les rapports et les mises à jour sont inclus. Paiement par Stripe, clé envoyée par e-mail. <a href=\"/#pricing\">Voir les tarifs</a>"
     },
     {
       "id": "essai",
