@@ -218,6 +218,11 @@
     .demo-video { max-width:960px; margin:48px auto 0; border-radius:16px; overflow:hidden; border:1px solid var(--border2); box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 32px rgba(99,102,241,.15); background:#000; }
     .demo-video video { display:block; width:100%; height:auto; aspect-ratio:16/9; }
     .demo-caption { text-align:center; font-size:13px; color:var(--muted2); margin-top:12px; }
+    .demo-chapters-title { text-align:center; font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted2); margin-top:28px; }
+    .demo-chapters { max-width:960px; margin:12px auto 0; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+    .demo-chapters button { font:inherit; font-size:12.5px; color:var(--muted2); background:rgba(255,255,255,.03); border:1px solid var(--border2); border-radius:999px; padding:6px 12px; cursor:pointer; transition:color .2s, background .2s, border-color .2s; }
+    .demo-chapters button span { color:#a5b4fc; font-variant-numeric:tabular-nums; margin-right:6px; }
+    .demo-chapters button:hover, .demo-chapters button:focus-visible, .demo-chapters button.on { color:#fff; border-color:rgba(99,102,241,.6); background:rgba(99,102,241,.15); outline:none; }
     #gallery { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
     .gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:48px; }
     .gallery-item { border-radius:12px; overflow:hidden; border:1px solid var(--border2); cursor:pointer; transition:all .25s; position:relative; }
@@ -431,7 +436,7 @@
   <div class="hero-btns">
     <a href="#pricing" class="btn-hero-p">🚀 Obtenir une licence</a>
     <a href="#download" class="btn-hero-dl">⬇ Télécharger l'application</a>
-    <a href="#demo" class="btn-hero-s">▶ Voir la démo (2 min)</a>
+    <a href="#demo" class="btn-hero-s">▶ Voir la démo (11 min)</a>
   </div>
   <div class="hero-screen">
     <div class="screen-frame">
@@ -678,15 +683,105 @@
     <div class="fi">
       <div class="eyebrow">Aperçu de l'application</div>
       <h2 class="st">Découvrez l'interface</h2>
-      <p class="ss">Un outil complet, intuitif et 100% en français. Regardez la démo de 2 minutes, puis cliquez sur une capture pour l'agrandir.</p>
+      <p class="ss">Un outil complet, intuitif et 100% en français. Regardez la démo complète (11 min, chaque onglet expliqué) ou allez directement au chapitre qui vous intéresse, puis cliquez sur une capture pour l'agrandir.</p>
     </div>
     <div class="demo-video fi" id="demo">
-      <video controls preload="none" playsinline poster="video/auditm365-demo-affiche.jpg" aria-label="Démonstration d'AuditM365 en 2 minutes">
-        <source src="video/auditm365-demo-web.mp4" type="video/mp4">
-        Votre navigateur ne lit pas la vidéo : <a href="video/auditm365-demo-web.mp4">téléchargez-la ici</a>.
+      <video id="demo-player" controls preload="none" playsinline poster="video/demo/affiche.jpg" aria-label="Démonstration complète d'AuditM365 (11 minutes)">
+        Votre navigateur ne lit pas cette vidéo.
       </video>
     </div>
-    <p class="demo-caption">Démonstration sur un tenant fictif, avec voix off et sous-titres.</p>
+    <p class="demo-caption" id="demo-caption">Démonstration sur un tenant fictif, avec voix off et sous-titres. Qualité jusqu'à 1080p, adaptée à votre connexion.</p>
+    <div class="demo-chapters-title">Chapitres</div>
+    <div class="demo-chapters" id="demo-chapters">
+      <button type="button" data-t="0"><span>0:00</span>Présentation</button>
+      <button type="button" data-t="18"><span>0:18</span>Connexion du tenant</button>
+      <button type="button" data-t="69"><span>1:09</span>Vue d'ensemble</button>
+      <button type="button" data-t="119"><span>1:59</span>Résultats de l'audit</button>
+      <button type="button" data-t="203"><span>3:23</span>Entra ID</button>
+      <button type="button" data-t="245"><span>4:05</span>Sécurité</button>
+      <button type="button" data-t="278"><span>4:38</span>Exchange Online</button>
+      <button type="button" data-t="313"><span>5:13</span>Teams</button>
+      <button type="button" data-t="338"><span>5:38</span>SharePoint</button>
+      <button type="button" data-t="369"><span>6:09</span>Intune</button>
+      <button type="button" data-t="400"><span>6:40</span>Applications</button>
+      <button type="button" data-t="423"><span>7:03</span>Journaux</button>
+      <button type="button" data-t="444"><span>7:24</span>Licences</button>
+      <button type="button" data-t="483"><span>8:03</span>Defender</button>
+      <button type="button" data-t="497"><span>8:17</span>Accès privilégiés</button>
+      <button type="button" data-t="520"><span>8:40</span>Conformité Purview</button>
+      <button type="button" data-t="538"><span>8:58</span>Secure Score</button>
+      <button type="button" data-t="554"><span>9:14</span>Power Platform</button>
+      <button type="button" data-t="569"><span>9:29</span>Sentinel</button>
+      <button type="button" data-t="584"><span>9:44</span>Alertes</button>
+      <button type="button" data-t="603"><span>10:03</span>Planification</button>
+      <button type="button" data-t="619"><span>10:19</span>Rapports</button>
+      <button type="button" data-t="632"><span>10:32</span>En résumé</button>
+    </div>
+    <script>
+    // Vidéo de démonstration en streaming (HLS) : 1080p ou 720p selon la connexion, morceaux de moins de 25 Mo
+    // (limite Cloudflare). Le lecteur se charge à l'approche de la section, la vidéo seulement à la lecture.
+    (function () {
+      const v = document.getElementById('demo-player');
+      const SRC = 'video/demo/master.m3u8';
+      let hls = null, ready = null, started = false;
+      function loadScript(src) {
+        return new Promise((ok, ko) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ko; document.head.appendChild(s); });
+      }
+      function ensure() {
+        if (ready) return ready;
+        ready = (async () => {
+          const native = v.canPlayType('application/vnd.apple.mpegurl');
+          if (native && !window.MediaSource) { v.src = SRC; return; }
+          try { await loadScript('video/hls.light.min.js'); } catch (e) { /* lecteur non chargé : lecture native ci-dessous */ }
+          if (window.Hls && window.Hls.isSupported()) {
+            hls = new Hls({ autoStartLoad: false });
+            hls.on(Hls.Events.ERROR, (ev, d) => {
+              if (!d.fatal) return;
+              if (d.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad();
+              else if (d.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError();
+            });
+            const parsed = new Promise(r => hls.once(Hls.Events.MANIFEST_PARSED, r));
+            hls.loadSource(SRC); hls.attachMedia(v);
+            await parsed;
+          } else if (native) {
+            v.src = SRC;
+          } else {
+            document.getElementById('demo-caption').textContent = "Votre navigateur ne lit pas cette vidéo : essayez avec Edge, Chrome, Firefox ou Safari à jour.";
+          }
+        })();
+        return ready;
+      }
+      async function playAt(t) {
+        await ensure();
+        if (hls) {
+          if (!started) { started = true; hls.startLoad(t == null ? -1 : t); }
+          else if (t != null) v.currentTime = t;
+        } else {
+          started = true;
+          if (t != null) {
+            if (v.readyState >= 1) v.currentTime = t;
+            else v.addEventListener('loadedmetadata', () => { v.currentTime = t; }, { once: true });
+          }
+        }
+        v.play().catch(() => {});
+      }
+      v.addEventListener('play', () => { if (!started) playAt(null); });
+      const chapters = [...document.querySelectorAll('#demo-chapters button')];
+      chapters.forEach(b => b.addEventListener('click', () => {
+        playAt(+b.dataset.t);
+        document.getElementById('demo').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }));
+      v.addEventListener('timeupdate', () => {
+        let cur = null;
+        for (const b of chapters) if (+b.dataset.t <= v.currentTime + 0.5) cur = b;
+        chapters.forEach(b => b.classList.toggle('on', b === cur));
+      });
+      if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { obs.disconnect(); ensure(); } }, { rootMargin: '600px' });
+        obs.observe(v);
+      } else ensure();
+    })();
+    </script>
     <div class="gallery-grid fi fi-d1">
       <div class="gallery-item" onclick="openLB(0)">
         <img src="img/sharepoint.png" alt="SharePoint">
