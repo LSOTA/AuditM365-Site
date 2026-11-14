@@ -3,7 +3,7 @@
     {
       "id": "fonctionnement",
       "label": "Comment ça marche ?",
-      "answer": "En trois étapes :<br>1. <b>Obtenez une licence</b> : abonnement ou <a href=\"/#essai\">essai gratuit de 24 h</a>.<br>2. <b>Installez l'application Windows</b> et connectez votre tenant : l'application affiche un code, que vous saisissez sur la page Microsoft avec un compte administrateur Microsoft 365.<br>3. <b>Lancez l'audit</b> : en moins de 5 minutes, vous obtenez un score, les points à corriger par priorité et un rapport HTML ou Excel."
+      "answer": "En trois étapes :<br>1. <b>Obtenez une licence</b> : abonnement ou <a href=\"/#essai\">essai gratuit de 24 h</a>.<br>2. <b>Installez l'application Windows</b> et connectez votre tenant : l'application affiche un code, que vous saisissez sur la page Microsoft avec un compte administrateur Microsoft 365.<br>3. <b>Lancez l'audit</b> : en moins de 5 minutes, vous obtenez un score, les points à corriger par priorité et un rapport PDF, Word ou PowerPoint."
     },
     {
       "id": "acces",
