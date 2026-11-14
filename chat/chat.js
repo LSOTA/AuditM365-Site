@@ -6,14 +6,14 @@
 
   const CSS = `
   #ac-btn{position:fixed;right:20px;bottom:20px;z-index:900;width:58px;height:58px;border-radius:50%;border:0;cursor:pointer;
-    background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:26px;box-shadow:0 8px 28px rgba(99,102,241,.45);transition:transform .2s}
+    background:#2f6bff;color:#fff;font-size:26px;box-shadow:0 8px 28px rgba(47,107,255,.45);transition:transform .2s}
   #ac-btn:hover{transform:translateY(-2px)}
-  #ac-btn:focus-visible,#ac-panel button:focus-visible,#ac-panel a:focus-visible,#ac-input:focus-visible{outline:2px solid #a5b4fc;outline-offset:2px}
+  #ac-btn:focus-visible,#ac-panel button:focus-visible,#ac-panel a:focus-visible,#ac-input:focus-visible{outline:2px solid #9db8ff;outline-offset:2px}
   #ac-panel{position:fixed;right:20px;bottom:90px;z-index:901;width:380px;max-width:calc(100vw - 32px);height:560px;max-height:calc(100vh - 120px);
-    display:none;flex-direction:column;background:#0d1128;border:1px solid #2a3660;border-radius:18px;overflow:hidden;
+    display:none;flex-direction:column;background:#0c1324;border:1px solid #2a3660;border-radius:18px;overflow:hidden;
     box-shadow:0 24px 60px rgba(0,0,0,.55);font-family:inherit;color:#e2e8f0}
   #ac-panel.open{display:flex}
-  .ac-head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#111830;border-bottom:1px solid #1e2845}
+  .ac-head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#121b31;border-bottom:1px solid #1e2845}
   .ac-head b{flex:1;font-size:15px}
   .ac-head small{display:block;font-weight:400;color:#94a3b8;font-size:12px}
   .ac-close{background:none;border:0;color:#94a3b8;font-size:20px;cursor:pointer;padding:4px 8px;border-radius:8px}
@@ -21,23 +21,23 @@
   #ac-log{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.5}
   .ac-msg{max-width:88%;padding:10px 13px;border-radius:14px;word-wrap:break-word}
   .ac-bot{align-self:flex-start;background:#161e38;border:1px solid #1e2845;border-bottom-left-radius:4px}
-  .ac-user{align-self:flex-end;background:linear-gradient(135deg,#6366f1,#7c3aed);color:#fff;border-bottom-right-radius:4px}
-  .ac-bot a{color:#a5b4fc}
-  .ac-link{display:inline-block;margin-top:8px;padding:7px 12px;border-radius:10px;background:rgba(99,102,241,.18);border:1px solid rgba(99,102,241,.4);color:#c7d2fe!important;text-decoration:none;font-weight:600;font-size:13px}
+  .ac-user{align-self:flex-end;background:linear-gradient(135deg,#2f6bff,#7c3aed);color:#fff;border-bottom-right-radius:4px}
+  .ac-bot a{color:#9db8ff}
+  .ac-link{display:inline-block;margin-top:8px;padding:7px 12px;border-radius:10px;background:rgba(47,107,255,.18);border:1px solid rgba(47,107,255,.4);color:#c7d2fe!important;text-decoration:none;font-weight:600;font-size:13px}
   .ac-typing{color:#94a3b8;font-style:italic}
   #ac-chips{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-top:1px solid #1e2845;max-height:110px;overflow-y:auto}
-  .ac-chip{background:#111830;border:1px solid #2a3660;color:#cbd5e1;border-radius:100px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
-  .ac-chip:hover{border-color:#6366f1;color:#fff}
-  .ac-chip.ac-ask{border-color:rgba(99,102,241,.6);color:#c7d2fe}
+  .ac-chip{background:#121b31;border:1px solid #2a3660;color:#cbd5e1;border-radius:100px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+  .ac-chip:hover{border-color:#2f6bff;color:#fff}
+  .ac-chip.ac-ask{border-color:rgba(47,107,255,.6);color:#c7d2fe}
   .ac-chip.ac-more{display:none}
   #ac-chips.folded .ac-chip:not(.ac-ask):not(.ac-more){display:none}
   #ac-chips.folded .ac-chip.ac-more{display:inline-block}
   #ac-form{display:none;flex-direction:column;gap:6px;padding:10px 14px 12px;border-top:1px solid #1e2845}
   #ac-form.open{display:flex}
   .ac-row{display:flex;gap:8px}
-  #ac-input{flex:1;resize:none;height:42px;max-height:110px;padding:10px 12px;border-radius:12px;border:1px solid #2a3660;background:#111830;color:#e2e8f0;font:inherit;font-size:14px}
-  #ac-input:focus{outline:none;border-color:#6366f1}
-  #ac-send{border:0;border-radius:12px;padding:0 16px;font:inherit;font-weight:700;color:#fff;cursor:pointer;background:linear-gradient(135deg,#6366f1,#8b5cf6)}
+  #ac-input{flex:1;resize:none;height:42px;max-height:110px;padding:10px 12px;border-radius:12px;border:1px solid #2a3660;background:#121b31;color:#e2e8f0;font:inherit;font-size:14px}
+  #ac-input:focus{outline:none;border-color:#2f6bff}
+  #ac-send{border:0;border-radius:12px;padding:0 16px;font:inherit;font-weight:700;color:#fff;cursor:pointer;background:#2f6bff}
   #ac-send:disabled{opacity:.5;cursor:wait}
   .ac-note{font-size:11px;color:#64748b;line-height:1.4}
   .ac-count{font-size:11px;color:#64748b;text-align:right}

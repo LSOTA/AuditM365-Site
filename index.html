@@ -17,687 +17,429 @@
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "SoftwareApplication", "name": "AuditM365", "applicationCategory": "SecurityApplication", "operatingSystem": "Windows 10, Windows 11", "url": "https://audit.m365intune.com/", "inLanguage": "fr", "description": "Application Windows d'audit de sécurité Microsoft 365 et Intune : Entra ID, Exchange, SharePoint, Teams, Intune, Defender, Purview. Rapports PDF, Word et PowerPoint, exécution 100 % locale.", "offers": [{"@type": "Offer", "name": "Standard", "price": "29", "priceCurrency": "EUR", "priceSpecification": {"@type": "UnitPriceSpecification", "price": "29", "priceCurrency": "EUR", "unitText": "mois", "valueAddedTaxIncluded": false}}, {"@type": "Offer", "name": "Pro", "price": "79", "priceCurrency": "EUR", "priceSpecification": {"@type": "UnitPriceSpecification", "price": "79", "priceCurrency": "EUR", "unitText": "mois", "valueAddedTaxIncluded": false}}, {"@type": "Offer", "name": "MSP", "price": "149", "priceCurrency": "EUR", "priceSpecification": {"@type": "UnitPriceSpecification", "price": "149", "priceCurrency": "EUR", "unitText": "mois", "valueAddedTaxIncluded": false}}]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg:      #080c1a;
-      --bg2:     #0d1128;
-      --bg3:     #111830;
-      --bg4:     #161e38;
-      --border:  #1e2845;
-      --border2: #2a3660;
-      --accent:  #6366f1;
-      --accent2: #8b5cf6;
-      --blue:    #3b82f6;
-      --green:   #10b981;
-      --orange:  #f59e0b;
-      --pink:    #ec4899;
-      --muted:   #64748b;
-      --muted2:  #94a3b8;
-      --text:    #f1f5f9;
-      --text2:   #cbd5e1;
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --ink:#070b16; --ink2:#0c1324; --line-d:rgba(255,255,255,.08);
+      --paper:#ffffff; --paper2:#f5f7fb; --line:#e3e7ef;
+      --text:#0b1220; --text2:#3d475c; --muted:#6b7488;
+      --on-d:#f3f6fb; --on-d2:#b4bdd0; --on-d3:#7d879d;
+      --blue:#2f6bff; --blue-d:#1f55e0; --blue-l:#e8efff;
+      --green:#12b76a;
+      --pad:max(var(--sn-g), calc((100% - var(--sn-max)) / 2));
+      --r:14px;
     }
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; line-height: 1.6; overflow-x: hidden; }
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+    html{scroll-behavior:smooth;scroll-padding-top:84px}
+    body{font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    h1,h2,h3{font-family:'Inter Tight',Inter,sans-serif;letter-spacing:-.02em;line-height:1.08}
+    img{display:block;max-width:100%;height:auto}
+    .ico{width:18px;height:18px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .wrap{padding-left:var(--pad);padding-right:var(--pad)}
+    .btn-o{border-color:var(--line);color:var(--text);background:#fff}
+    .btn-o:hover{border-color:var(--text)}
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      height: 68px; display: flex; align-items: center; justify-content: space-between;
-      padding: 0 clamp(20px, 5vw, 72px);
-      background: rgba(8,12,26,.85); backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid rgba(99,102,241,.15);
-      transition: background .3s;
+    /* héros */
+    .hero{background:var(--ink);color:var(--on-d);position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;pointer-events:none;
+      background:radial-gradient(60% 70% at 78% 30%,rgba(47,107,255,.22),transparent 65%),radial-gradient(40% 50% at 10% 100%,rgba(47,107,255,.10),transparent 70%)}
+    .hero::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;
+      background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:64px 64px;
+      -webkit-mask-image:linear-gradient(to bottom,#000 30%,transparent);mask-image:linear-gradient(to bottom,#000 30%,transparent)}
+    .hero-in{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,.74fr) minmax(0,1.4fr);gap:clamp(40px,4.5vw,88px);align-items:center;
+      min-height:min(calc(100vh - 112px),880px);padding:clamp(56px,8vh,110px) 0 clamp(56px,8vh,110px) var(--pad)}
+    .chip{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#9db8ff;background:rgba(47,107,255,.12);border:1px solid rgba(47,107,255,.32);padding:6px 12px;border-radius:999px;margin-bottom:28px}
+    .chip i{width:6px;height:6px;border-radius:50%;background:#5b8cff;box-shadow:0 0 0 4px rgba(91,140,255,.18)}
+    .hero h1{font-size:clamp(38px,3.5vw,64px);font-weight:800;margin-bottom:26px}
+    .hero h1 span{color:#7fa3ff;white-space:nowrap}
+    .hero .lead{font-size:clamp(17px,1.25vw,20px);color:var(--on-d2);max-width:600px;margin-bottom:38px}
+    .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:40px}
+    .reassure{display:flex;gap:12px 28px;flex-wrap:wrap;color:var(--on-d2);font-size:14px}
+    .reassure span{display:flex;align-items:center;gap:8px}
+    .reassure .ico{width:16px;height:16px;color:var(--green)}
+    .hero-shot{position:relative}
+    .hero-shot .frame{border-radius:14px 0 0 14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-right:0;box-shadow:0 40px 120px rgba(0,0,0,.6)}
+    .float{position:absolute;background:rgba(12,19,36,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 18px;box-shadow:0 20px 50px rgba(0,0,0,.5);font-size:13px;color:var(--on-d2)}
+    .float b{display:block;font:700 26px/1.1 'Inter Tight',sans-serif;color:#fff;margin-bottom:2px}
+    .float.f1{left:-36px;bottom:12%}
+    .float.f2{left:18%;top:-26px;display:flex;gap:10px;align-items:center;font-weight:600;color:#fff;padding:12px 16px}
+    .f2 .ico{color:#7fa3ff}
+
+    /* bande de couverture */
+    .cover{background:var(--ink2);border-top:1px solid var(--line-d);border-bottom:1px solid var(--line-d)}
+    .cover-in{display:flex;align-items:center;gap:48px;padding-top:26px;padding-bottom:26px}
+    .cover-t{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--on-d3);font-weight:600;white-space:nowrap}
+    .cover-l{display:flex;justify-content:space-between;flex:1;gap:14px 24px;flex-wrap:wrap}
+    .cover-l span{font-weight:600;font-size:15px;display:flex;align-items:center;gap:9px;color:var(--on-d)}
+    .cover-l i{width:8px;height:8px;border-radius:2px;background:var(--c)}
+
+    /* sections */
+    section{padding-top:clamp(80px,10vw,140px);padding-bottom:clamp(80px,10vw,140px)}
+    .eyebrow{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--blue);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+    .dark .eyebrow{color:#7fa3ff}
+    .h2{font-size:clamp(32px,3.4vw,56px);font-weight:800;margin-bottom:18px}
+    .sub{font-size:clamp(16px,1.15vw,19px);color:var(--text2);max-width:720px}
+    .dark{background:var(--ink);color:var(--on-d)}
+    .dark .sub{color:var(--on-d2)}
+    .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 40px;margin-bottom:64px;flex-wrap:wrap}
+
+    /* chiffres et étapes */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .stat{padding:48px 40px 44px 0;border-right:1px solid var(--line)}
+    .stat+.stat{padding-left:40px}
+    .stat:last-child{border-right:0}
+    .stat b{display:block;font:800 clamp(44px,4.4vw,72px)/1 'Inter Tight',sans-serif;letter-spacing:-.03em;margin-bottom:14px}
+    .stat b small{font-size:.45em;font-weight:700;margin-left:4px;color:var(--muted)}
+    .stat p{color:var(--text2);font-size:16px;max-width:280px}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px;counter-reset:s}
+    .step{background:var(--paper2);border:1px solid var(--line);border-radius:var(--r);padding:36px 34px}
+    .step::before{counter-increment:s;content:'0' counter(s);font:700 14px 'Inter Tight',sans-serif;color:var(--blue);background:var(--blue-l);border-radius:8px;padding:6px 10px;display:inline-block;margin-bottom:26px}
+    .step h3{font-size:23px;margin-bottom:10px}
+    .step p{color:var(--text2)}
+    .step a{color:var(--blue);font-weight:600}
+
+    /* fonctionnalités : capture jusqu'au bord de l'écran */
+    .feat{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(40px,6vw,120px);align-items:center;padding-left:var(--pad)}
+    .feat+.feat{margin-top:clamp(80px,9vw,150px)}
+    .feat.flip{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);padding-left:0;padding-right:var(--pad)}
+    .feat.flip .feat-t{order:2}
+    .feat-t h3{font-size:clamp(28px,2.6vw,44px);font-weight:800;margin-bottom:18px}
+    .feat-t>p{font-size:clamp(16px,1.1vw,18px);color:var(--text2);margin-bottom:28px}
+    .new{font-size:11px;font-weight:700;letter-spacing:.06em;background:var(--green);color:#fff;border-radius:6px;padding:3px 7px}
+    .ticks{list-style:none;display:grid;gap:12px}
+    .ticks li{display:flex;gap:12px;align-items:flex-start;font-size:16px}
+    .ticks .ico{color:var(--green);margin-top:3px}
+    .feat-i{padding:clamp(20px,2.4vw,40px) 0 clamp(20px,2.4vw,40px) clamp(20px,2.4vw,40px);border-radius:var(--r) 0 0 var(--r)}
+    .feat.flip .feat-i{padding:clamp(20px,2.4vw,40px) clamp(20px,2.4vw,40px) clamp(20px,2.4vw,40px) 0;border-radius:0 var(--r) var(--r) 0}
+    .feat-i img{border-radius:10px 0 0 10px;box-shadow:0 30px 80px rgba(0,0,0,.45);cursor:zoom-in}
+    .feat.flip .feat-i img{border-radius:0 10px 10px 0}
+    .feat-i.blue{background:linear-gradient(135deg,#0f2a6b,#1f55e0)}
+    .feat-i.navy{background:linear-gradient(135deg,#0c1324,#1b2a4d)}
+    .feat-i.teal{background:linear-gradient(135deg,#053b3a,#0e7c72)}
+    .feat-i.plum{background:linear-gradient(135deg,#1f1446,#4b2fb0)}
+
+    /* mosaïque */
+    .bento{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .tile{background:var(--ink2);border:1px solid var(--line-d);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s,transform .2s;cursor:zoom-in;text-align:left;font:inherit;color:inherit;padding:0}
+    .tile:hover{border-color:rgba(127,163,255,.45);transform:translateY(-3px)}
+    .tile-t{padding:28px 28px 22px}
+    .tile-t h3{font-size:21px;margin-bottom:8px;color:#fff}
+    .tile-t p{color:var(--on-d2);font-size:15px}
+    .tile-i{margin:auto 0 0 28px;height:230px;overflow:hidden;border-radius:10px 0 0 0;border:1px solid var(--line-d);border-right:0;border-bottom:0}
+    .tile-i img{width:180%;max-width:none}
+
+    /* démo vidéo */
+    .demo{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.5fr);gap:24px;align-items:start}
+    .demo-video{border-radius:var(--r);overflow:hidden;border:1px solid var(--line-d);box-shadow:0 40px 100px rgba(0,0,0,.55);background:#000}
+    .demo-video video{display:block;width:100%;aspect-ratio:16/9;background:#000}
+    .demo-caption{margin-top:14px;color:var(--on-d3);font-size:14px}
+    .demo-side{background:var(--ink);border:1px solid var(--line-d);border-radius:var(--r);display:flex;flex-direction:column;max-height:var(--vh,640px)}
+    .demo-chapters-title{padding:18px 20px;font-weight:600;color:#fff;border-bottom:1px solid var(--line-d);font-size:15px}
+    .demo-chapters{overflow:auto;padding:8px}
+    .demo-chapters button{display:flex;width:100%;gap:14px;align-items:baseline;background:none;border:0;border-radius:8px;color:var(--on-d2);font:500 14px/1.35 Inter,sans-serif;text-align:left;padding:9px 12px;cursor:pointer}
+    .demo-chapters button span{color:#7fa3ff;font-variant-numeric:tabular-nums;min-width:40px;font-weight:600}
+    .demo-chapters button:hover{background:rgba(255,255,255,.05);color:#fff}
+    .demo-chapters button.on{background:rgba(47,107,255,.18);color:#fff}
+    .demo-chapters button:focus-visible{outline:2px solid #7fa3ff;outline-offset:-2px}
+
+    /* conformité */
+    .refs{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:56px}
+    .ref{border:1px solid var(--line);border-radius:var(--r);padding:26px 24px;background:#fff}
+    .ref b{font:800 22px 'Inter Tight',sans-serif;display:block;margin-bottom:6px}
+    .ref p{font-size:14px;color:var(--text2)}
+    .ref.main{background:var(--blue-l);border-color:#c9d8ff}
+
+    /* tarifs */
+    .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px}
+    .plan{border:1px solid var(--line);border-radius:18px;padding:40px 36px;display:flex;flex-direction:column;background:#fff;position:relative}
+    .plan.pop{background:var(--ink);color:var(--on-d);border-color:var(--ink);box-shadow:0 30px 80px rgba(7,11,22,.25)}
+    .plan .tag{position:absolute;top:-13px;left:36px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;border-radius:999px;padding:5px 12px}
+    .plan h3{font-size:22px;margin-bottom:6px}
+    .plan .who{color:var(--text2);font-size:15px;min-height:48px}
+    .plan.pop .who{color:var(--on-d2)}
+    .price{font:800 60px/1 'Inter Tight',sans-serif;letter-spacing:-.03em;margin:26px 0 6px}
+    .price small{font:500 16px Inter,sans-serif;color:var(--muted);letter-spacing:0;margin-left:6px}
+    .plan.pop .price small{color:var(--on-d3)}
+    .plan .ten{font-weight:600;margin-bottom:26px;color:var(--blue)}
+    .plan.pop .ten{color:#7fa3ff}
+    .plan ul{list-style:none;display:grid;gap:12px;margin-bottom:34px;flex:1;align-content:start}
+    .plan li{display:flex;gap:10px;font-size:15px}
+    .plan li .ico{color:var(--green);margin-top:3px;width:16px;height:16px}
+    .plans-note{margin-top:28px;color:var(--muted);font-size:14px;text-align:center}
+    .plans-note a{color:var(--blue);font-weight:600}
+
+    /* sécurité et téléchargement */
+    .trust{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(40px,6vw,120px);align-items:start}
+    .trust-g{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-d);border:1px solid var(--line-d);border-radius:var(--r);overflow:hidden}
+    .trust-c{background:var(--ink);padding:34px 32px}
+    .trust-c .ico{width:26px;height:26px;color:#7fa3ff;margin-bottom:18px}
+    .trust-c h3{font-size:19px;margin-bottom:8px}
+    .trust-c p{color:var(--on-d2);font-size:15px}
+    .dl-btn small{display:block;font-weight:400;font-size:12px;opacity:.85;margin-top:4px}
+    .dl-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+    .dl-meta span{font-size:13px;color:var(--on-d2);border:1px solid var(--line-d);border-radius:999px;padding:5px 12px}
+    .dl-meta span.ok{color:#5be0a4;border-color:rgba(18,183,106,.35);background:rgba(18,183,106,.08)}
+    .dl-req{color:var(--on-d3);font-size:14px;margin-top:16px}
+
+    /* FAQ */
+    .faq{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(40px,6vw,120px)}
+    details{border-bottom:1px solid var(--line);padding:24px 0}
+    details:first-child{border-top:1px solid var(--line)}
+    summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:20px;font:600 18px 'Inter Tight',sans-serif}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:'+';font:400 26px/1 Inter,sans-serif;color:var(--blue);transition:transform .2s}
+    details[open] summary::after{transform:rotate(45deg)}
+    details p{color:var(--text2);margin-top:12px;max-width:760px}
+    details a,.faq .sub a{color:var(--blue);font-weight:600}
+
+    /* essai */
+    .cta{background:var(--blue);color:#fff;position:relative;overflow:hidden}
+    .cta::before{content:'';position:absolute;inset:0;background:radial-gradient(50% 80% at 90% 10%,rgba(255,255,255,.18),transparent 60%);pointer-events:none}
+    .cta-in{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(40px,6vw,120px);align-items:center}
+    .cta h2{font-size:clamp(34px,3.6vw,58px);font-weight:800;margin-bottom:16px}
+    .cta-in>div>p{color:rgba(255,255,255,.88);font-size:18px}
+    .cta-mail{display:inline-flex;margin-top:26px;color:#fff;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.5)}
+    .trial-form{background:#fff;color:var(--text);border-radius:18px;padding:34px;display:grid;grid-template-columns:1fr 1fr;gap:12px;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+    .trial-form .full{grid-column:1/-1}
+    .trial-form input,.trial-form select{font:15px Inter,sans-serif;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--paper2);color:var(--text);width:100%}
+    .trial-form input:focus,.trial-form select:focus{outline:2px solid var(--blue);outline-offset:-1px;background:#fff}
+    .trial-form button{font-size:16px}
+    .trial-form button:disabled{opacity:.6;cursor:wait}
+    .trial-hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0}
+    #trial-msg{grid-column:1/-1;font-size:14px;text-align:center;min-height:0}
+    #trial-msg:empty{display:none}
+    .trial-note{grid-column:1/-1;color:var(--muted);font-size:13px;text-align:center}
+
+    /* agrandissement des captures */
+    .lb{position:fixed;inset:0;z-index:1000;background:rgba(5,8,16,.92);display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
+    .lb.open{display:flex}
+    .lb figure{max-width:1500px;width:100%}
+    .lb img{width:100%;border-radius:10px;box-shadow:0 30px 90px rgba(0,0,0,.6)}
+    .lb figcaption{color:var(--on-d2);text-align:center;margin-top:14px;font-size:15px}
+    .lb button{position:absolute;top:18px;right:22px;background:none;border:0;color:#fff;font-size:34px;line-height:1;cursor:pointer}
+
+    @media(max-width:1180px){
+      .hero-in{grid-template-columns:1fr;padding-right:var(--pad);min-height:0}
+      .hero-shot .frame{border-radius:14px;border-right:1px solid rgba(255,255,255,.12)}
+      .float.f1{left:16px}
+      .feat,.feat.flip{grid-template-columns:1fr;padding-left:var(--pad);padding-right:var(--pad)}
+      .feat.flip .feat-t{order:0}
+      .feat-i,.feat.flip .feat-i{padding:20px;border-radius:var(--r)}
+      .feat-i img,.feat.flip .feat-i img{border-radius:8px}
+      .bento{grid-template-columns:1fr 1fr}
+      .demo,.trust,.faq,.cta-in{grid-template-columns:1fr}
+      .demo-side{max-height:420px}
+      .refs{grid-template-columns:repeat(3,1fr)}
     }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
-    .nav-logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg,#6366f1,#8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 0 16px rgba(99,102,241,.4); }
-    .nav-logo-text { font-size: 17px; font-weight: 800; color: var(--text); letter-spacing: -.3px; }
-    .nav-links { display: flex; gap: 4px; }
-    .nav-link { color: var(--muted2); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 14px; border-radius: 8px; transition: all .2s; }
-    .nav-link:hover { color: var(--text); background: rgba(255,255,255,.06); }
-    .nav-right { display: flex; gap: 10px; align-items: center; }
-    .btn-ghost { color: var(--muted2); text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 16px; border-radius: 9px; border: 1px solid var(--border2); transition: all .2s; }
-    .btn-ghost:hover { color: var(--text); border-color: var(--accent); }
-    .btn-cta { background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; text-decoration: none; font-size: 14px; font-weight: 700; padding: 9px 22px; border-radius: 9px; box-shadow: 0 0 24px rgba(99,102,241,.4); transition: all .2s; white-space: nowrap; }
-    .btn-cta:hover { transform: translateY(-1px); box-shadow: 0 0 36px rgba(99,102,241,.6); }
-
-    /* Hamburger */
-    .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; border-radius: 8px; border: none; background: transparent; }
-    .nav-burger span { display: block; width: 22px; height: 2px; background: var(--text2); border-radius: 2px; transition: all .25s; }
-    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-burger.open span:nth-child(2) { opacity: 0; }
-    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* Mobile menu */
-    .nav-mobile-menu {
-      display: none; position: fixed; top: 68px; left: 0; right: 0; z-index: 199;
-      background: rgba(8,12,26,.98); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
-      padding: 20px clamp(20px,5vw,72px) 28px; flex-direction: column; gap: 6px;
-    }
-    .nav-mobile-menu.open { display: flex; }
-    .nav-mobile-link { color: var(--text2); text-decoration: none; font-size: 16px; font-weight: 500; padding: 12px 16px; border-radius: 10px; transition: all .2s; }
-    .nav-mobile-link:hover { color: var(--text); background: rgba(255,255,255,.05); }
-    .nav-mobile-cta { margin-top: 8px; display: block; text-align: center; padding: 14px; background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; border-radius: 12px; font-weight: 700; font-size: 15px; text-decoration: none; }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; text-align: center; padding: 140px clamp(20px,5vw,72px) 60px;
-      position: relative; overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,.2) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 50% at 85% 40%,  rgba(139,92,246,.12) 0%, transparent 50%),
-        radial-gradient(ellipse 40% 40% at 15% 70%,  rgba(59,130,246,.08) 0%, transparent 50%);
-    }
-    .hero-grid {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(99,102,241,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,.06) 1px, transparent 1px);
-      background-size: 52px 52px;
-      mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black, transparent 75%);
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(99,102,241,.12); border: 1px solid rgba(99,102,241,.3);
-      color: #a5b4fc; border-radius: 100px; padding: 6px 18px 6px 10px;
-      font-size: 13px; font-weight: 600; margin-bottom: 32px;
-      animation: fadeUp .6s ease both;
-    }
-    .hero-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #818cf8; box-shadow: 0 0 10px #6366f1; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
-    .hero h1 { font-size: clamp(34px,5vw,62px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; margin-bottom: 24px; animation: fadeUp .6s .1s ease both; max-width: 800px; }
-    .grad { background: linear-gradient(135deg, #818cf8 0%, #c084fc 40%, #f472b6 80%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .hero-sub { font-size: clamp(16px,2vw,19px); color: var(--muted2); max-width: 620px; margin: 0 auto 44px; line-height: 1.75; animation: fadeUp .6s .2s ease both; }
-    .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 64px; animation: fadeUp .6s .3s ease both; }
-    .btn-hero-p { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; padding:15px 34px; border-radius:12px; font-weight:700; font-size:16px; text-decoration:none; box-shadow:0 0 32px rgba(99,102,241,.4), 0 4px 20px rgba(0,0,0,.4); transition:all .25s; }
-    .btn-hero-p:hover { transform:translateY(-2px); box-shadow:0 0 50px rgba(99,102,241,.6), 0 8px 32px rgba(0,0,0,.4); }
-    .btn-hero-s { display:inline-flex; align-items:center; gap:8px; color:var(--text2); padding:15px 28px; border-radius:12px; font-weight:600; font-size:16px; text-decoration:none; border:1px solid var(--border2); background:rgba(255,255,255,.04); backdrop-filter:blur(10px); transition:all .25s; }
-    .btn-hero-s:hover { border-color:var(--accent); color:var(--text); transform:translateY(-2px); }
-    .btn-hero-dl { display:inline-flex; align-items:center; gap:10px; background:rgba(16,185,129,.12); color:#34d399; padding:15px 28px; border-radius:12px; font-weight:700; font-size:16px; text-decoration:none; border:1px solid rgba(16,185,129,.3); transition:all .25s; }
-    .btn-hero-dl:hover { background:rgba(16,185,129,.2); border-color:#10b981; transform:translateY(-2px); box-shadow:0 0 32px rgba(16,185,129,.25); }
-
-    /* ── DOWNLOAD SECTION ── */
-    .dl-banner { background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(99,102,241,.08)); border:1px solid rgba(16,185,129,.2); border-radius:20px; padding:40px 48px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap; margin-top:72px; }
-    .dl-info { display:flex; flex-direction:column; gap:8px; }
-    .dl-title { font-size:22px; font-weight:800; letter-spacing:-.5px; }
-    .dl-meta { display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
-    .dl-badge { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--muted2); background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:100px; padding:4px 12px; }
-    .dl-badge-green { color:#34d399; border-color:rgba(16,185,129,.3); background:rgba(16,185,129,.08); }
-    .dl-btn { display:inline-flex; align-items:center; gap:12px; background:linear-gradient(135deg,#10b981,#059669); color:#fff; padding:16px 36px; border-radius:14px; font-weight:700; font-size:16px; text-decoration:none; box-shadow:0 0 32px rgba(16,185,129,.3), 0 4px 20px rgba(0,0,0,.3); transition:all .25s; white-space:nowrap; flex-shrink:0; }
-    .dl-btn:hover { transform:translateY(-2px); box-shadow:0 0 50px rgba(16,185,129,.45), 0 8px 32px rgba(0,0,0,.3); }
-    .dl-btn-icon { font-size:22px; }
-    .dl-requirements { display:flex; align-items:center; gap:16px; margin-top:12px; flex-wrap:wrap; }
-    .dl-req { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted2); }
-    .dl-req-dot { width:5px; height:5px; border-radius:50%; background:var(--muted); }
-
-    .hero-screen { position:relative; max-width:1100px; width:100%; margin:0 auto; animation:fadeUp .8s .4s ease both; }
-    .screen-frame { background:var(--bg3); border:1px solid var(--border2); border-radius:16px; overflow:hidden; box-shadow:0 0 0 1px rgba(255,255,255,.04), 0 48px 100px rgba(0,0,0,.7), 0 0 80px rgba(99,102,241,.12); }
-    .screen-bar { background:var(--bg4); border-bottom:1px solid var(--border); padding:12px 18px; display:flex; align-items:center; gap:8px; }
-    .dot { width:12px; height:12px; border-radius:50%; }
-    .dot.r{background:#ff5f57}.dot.y{background:#febc2e}.dot.g{background:#28c840}
-    .screen-url { flex:1; background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:4px 14px; font-size:12px; color:var(--muted); text-align:center; max-width:320px; margin:0 auto; }
-    .screen-img { display:block; width:100%; height:auto; }
-    .screen-fade { position:absolute; bottom:0; left:0; right:0; height:160px; background:linear-gradient(to top,var(--bg),transparent); pointer-events:none; }
-
-    /* ── TRUST ── */
-    .trust { padding:32px clamp(20px,5vw,72px); background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); text-align:center; }
-    .trust p { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; font-weight:600; margin-bottom:22px; }
-    .trust-logos { display:flex; align-items:center; justify-content:center; gap:clamp(16px,3vw,44px); flex-wrap:wrap; }
-    .trust-item { display:flex; align-items:center; gap:8px; color:var(--muted2); font-size:14px; font-weight:600; opacity:.6; transition:opacity .2s; }
-    .trust-item:hover { opacity:1; }
-
-    /* ── SECTIONS ── */
-    section { padding: 96px clamp(20px,5vw,72px); }
-    .container { max-width: 1280px; margin: 0 auto; width: 100%; }
-    .eyebrow { display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700; color:#a5b4fc; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:14px; }
-    .eyebrow::before { content:''; width:18px; height:2px; background:linear-gradient(90deg,#6366f1,#8b5cf6); border-radius:1px; }
-    h2.st { font-size:clamp(28px,4vw,52px); font-weight:800; letter-spacing:-1.5px; line-height:1.1; margin-bottom:16px; }
-    .ss { font-size:17px; color:var(--muted2); max-width:520px; line-height:1.75; }
-
-    .fi { opacity:0; transform:translateY(28px); transition:opacity .65s ease,transform .65s ease; }
-    .fi.v { opacity:1; transform:translateY(0); }
-    .fi-d1{transition-delay:.1s} .fi-d2{transition-delay:.2s} .fi-d3{transition-delay:.25s}
-
-    /* ── FEATURE ROWS ── */
-    #features { background:var(--bg); }
-    .frow { display:grid; grid-template-columns:1fr 1fr; gap:clamp(40px,6vw,96px); align-items:center; margin-bottom:96px; }
-    .frow:last-child { margin-bottom:0; }
-    .frow.flip { direction:rtl; }
-    .frow.flip > * { direction:ltr; }
-
-    .ftxt h3 { font-size:clamp(22px,2.5vw,36px); font-weight:800; letter-spacing:-1px; margin-bottom:16px; line-height:1.15; }
-    .ftxt p  { font-size:16px; color:var(--muted2); line-height:1.8; margin-bottom:24px; }
-    .fbullets { display:flex; flex-direction:column; gap:10px; }
-    .fb { display:flex; align-items:flex-start; gap:10px; font-size:14px; color:var(--text2); }
-    .fb-icon { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; margin-top:2px; }
-    .fb-icon.g { background:rgba(16,185,129,.15); color:var(--green); }
-
-    .fshot { position:relative; }
-    .shot-wrap { border-radius:14px; overflow:hidden; border:1px solid var(--border2); box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.04); background:var(--bg3); transition:transform .3s, box-shadow .3s; }
-    .shot-wrap:hover { transform:translateY(-5px); }
-    .shot-bar { background:var(--bg4); border-bottom:1px solid var(--border); padding:10px 14px; display:flex; align-items:center; gap:6px; }
-    .sdot { width:10px; height:10px; border-radius:50%; }
-    .sdot.r{background:#ff5f57}.sdot.y{background:#febc2e}.sdot.g{background:#28c840}
-    .shot-img { display:block; width:100%; height:auto; }
-
-    /* Colored glow per feature */
-    .gl-indigo .shot-wrap { box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 40px rgba(99,102,241,.15); }
-    .gl-purple .shot-wrap { box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 40px rgba(139,92,246,.15); }
-    .gl-orange .shot-wrap { box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 40px rgba(245,158,11,.12); }
-    .gl-green  .shot-wrap { box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 40px rgba(16,185,129,.12); }
-    .gl-pink   .shot-wrap { box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 40px rgba(236,72,153,.12); }
-
-    /* ── METRICS ── */
-    #metrics { background:linear-gradient(135deg, var(--bg2), var(--bg3)); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-    .metrics-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border-radius:16px; overflow:hidden; border:1px solid var(--border); margin-top:48px; }
-    .metric-block { background:var(--bg3); padding:44px 32px; position:relative; overflow:hidden; }
-    .metric-block::before { content:''; position:absolute; top:-40px; right:-40px; width:120px; height:120px; border-radius:50%; opacity:.15; }
-    .mb-i::before{background:#6366f1} .mb-g::before{background:#10b981} .mb-p::before{background:#8b5cf6} .mb-o::before{background:#f59e0b}
-    .metric-num { font-size:clamp(38px,4vw,56px); font-weight:900; letter-spacing:-2px; line-height:1; margin-bottom:10px; }
-    .metric-lbl { font-size:14px; color:var(--muted2); font-weight:500; line-height:1.5; }
-
-    /* ── HOW ── */
-    #how { background:var(--bg); }
-    .steps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; background:var(--border); border-radius:16px; overflow:hidden; margin-top:52px; }
-    .step-block { background:var(--bg3); padding:44px 36px; position:relative; transition:background .2s; }
-    .step-block:hover { background:var(--bg4); }
-    .step-block::after { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,#6366f1,#8b5cf6,#ec4899); opacity:0; transition:opacity .3s; }
-    .step-block:hover::after { opacity:1; }
-    .step-num { font-size:68px; font-weight:900; background:linear-gradient(135deg,#1e2845,#2a3660); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; letter-spacing:-2px; margin-bottom:20px; }
-    .step-icon { font-size:36px; margin-bottom:16px; }
-    .step-block h3 { font-size:20px; font-weight:700; margin-bottom:10px; }
-    .step-block p  { font-size:14px; color:var(--muted2); line-height:1.75; }
-
-    /* ── GALLERY ── */
-    .demo-video { max-width:960px; margin:48px auto 0; border-radius:16px; overflow:hidden; border:1px solid var(--border2); box-shadow:0 24px 60px rgba(0,0,0,.5), 0 0 32px rgba(99,102,241,.15); background:#000; }
-    .demo-video video { display:block; width:100%; height:auto; aspect-ratio:16/9; }
-    .demo-caption { text-align:center; font-size:13px; color:var(--muted2); margin-top:12px; }
-    .demo-chapters-title { text-align:center; font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted2); margin-top:28px; }
-    .demo-chapters { max-width:960px; margin:12px auto 0; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
-    .demo-chapters button { font:inherit; font-size:12.5px; color:var(--muted2); background:rgba(255,255,255,.03); border:1px solid var(--border2); border-radius:999px; padding:6px 12px; cursor:pointer; transition:color .2s, background .2s, border-color .2s; }
-    .demo-chapters button span { color:#a5b4fc; font-variant-numeric:tabular-nums; margin-right:6px; }
-    .demo-chapters button:hover, .demo-chapters button:focus-visible, .demo-chapters button.on { color:#fff; border-color:rgba(99,102,241,.6); background:rgba(99,102,241,.15); outline:none; }
-    #gallery { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-    .gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:48px; }
-    .gallery-item { border-radius:12px; overflow:hidden; border:1px solid var(--border2); cursor:pointer; transition:all .25s; position:relative; }
-    .gallery-item:hover { transform:translateY(-4px); border-color:var(--accent); box-shadow:0 16px 40px rgba(0,0,0,.5), 0 0 24px rgba(99,102,241,.2); }
-    .gallery-item img { display:block; width:100%; height:auto; transition:transform .3s; }
-    .gallery-item:hover img { transform:scale(1.03); }
-    .gallery-overlay { position:absolute; inset:0; background:linear-gradient(to top,rgba(8,12,26,.95) 0%,rgba(8,12,26,.4) 50%,transparent 100%); display:flex; flex-direction:column; justify-content:flex-end; padding:16px; opacity:0; transition:opacity .25s; }
-    .gallery-item:hover .gallery-overlay { opacity:1; }
-    .gallery-label-top { font-size:11px; font-weight:700; color:#a5b4fc; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
-    .gallery-label-main { font-size:14px; font-weight:700; color:var(--text); }
-    .gallery-zoom { position:absolute; top:12px; right:12px; background:rgba(99,102,241,.9); color:#fff; border-radius:8px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-size:14px; opacity:0; transition:opacity .25s; }
-    .gallery-item:hover .gallery-zoom { opacity:1; }
-    .gallery-label-always { position:absolute; bottom:0; left:0; right:0; padding:8px 12px; background:linear-gradient(to top,rgba(8,12,26,.9),transparent); font-size:12px; font-weight:600; color:var(--muted2); }
-
-    /* ── LIGHTBOX ── */
-    .lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(4,6,15,.95); backdrop-filter:blur(12px); align-items:center; justify-content:center; padding:24px; }
-    .lightbox.open { display:flex; }
-    .lb-inner { position:relative; max-width:1200px; max-height:90vh; width:100%; }
-    .lb-img { display:block; width:100%; height:auto; max-height:88vh; object-fit:contain; border-radius:12px; border:1px solid var(--border2); box-shadow:0 48px 120px rgba(0,0,0,.8), 0 0 60px rgba(99,102,241,.15); }
-    .lb-close { position:absolute; top:-44px; right:0; background:rgba(99,102,241,.2); border:1px solid rgba(99,102,241,.4); color:#fff; border-radius:8px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:18px; transition:background .2s; }
-    .lb-close:hover { background:rgba(99,102,241,.4); }
-    .lb-label { text-align:center; margin-top:16px; font-size:14px; color:var(--muted2); font-weight:600; }
-    .lb-nav { position:absolute; top:50%; transform:translateY(-50%); background:rgba(99,102,241,.2); border:1px solid rgba(99,102,241,.3); color:#fff; border-radius:10px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; transition:background .2s; }
-    .lb-nav:hover { background:rgba(99,102,241,.4); }
-    .lb-prev { left:-56px; }
-    .lb-next { right:-56px; }
-
-    /* ── PRICING ── */
-    #pricing { background:var(--bg); }
-    .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:52px; }
-    .plan { background:var(--bg3); border:1px solid var(--border2); border-radius:20px; padding:36px; position:relative; transition:transform .2s, box-shadow .2s; }
-    .plan:hover { transform:translateY(-4px); }
-    .plan.pop { border-color:transparent; background:linear-gradient(var(--bg3),var(--bg3)) padding-box, linear-gradient(135deg,#6366f1,#8b5cf6) border-box; box-shadow:0 0 40px rgba(99,102,241,.2); }
-    .plan.pop::before { content:'⭐ Le plus populaire'; position:absolute; top:-14px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; font-size:12px; font-weight:700; padding:4px 20px; border-radius:100px; white-space:nowrap; }
-    .plan-name { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted2); margin-bottom:8px; }
-    .plan-price { font-size:54px; font-weight:900; letter-spacing:-2px; line-height:1; margin-bottom:4px; }
-    .plan-price sup { font-size:22px; font-weight:600; vertical-align:super; letter-spacing:0; }
-    .plan-price sub { font-size:15px; font-weight:400; color:var(--muted2); letter-spacing:0; }
-    .plan-desc { font-size:14px; color:var(--muted2); margin:16px 0 28px; padding-bottom:28px; border-bottom:1px solid var(--border); line-height:1.65; }
-    .plan-feats { display:flex; flex-direction:column; gap:12px; margin-bottom:36px; }
-    .pf { display:flex; gap:10px; font-size:14px; }
-    .pf-check { color:var(--green); flex-shrink:0; font-size:15px; }
-    .pf-text { color:var(--text2); }
-    .btn-pp { display:block; text-align:center; padding:14px; background:linear-gradient(135deg,#6366f1,#8b5cf6); color:#fff; border-radius:12px; font-weight:700; font-size:15px; text-decoration:none; transition:all .2s; box-shadow:0 0 24px rgba(99,102,241,.3); }
-    .btn-pp:hover { transform:translateY(-1px); box-shadow:0 0 36px rgba(99,102,241,.5); }
-    .btn-po { display:block; text-align:center; padding:14px; border:1px solid var(--border2); color:var(--text2); border-radius:12px; font-weight:600; font-size:15px; text-decoration:none; transition:all .2s; }
-    .btn-po:hover { border-color:var(--accent); color:#a5b4fc; }
-
-    /* ── FAQ ── */
-    #faq { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-    .faq-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:52px; }
-    .faq-item { background:var(--bg3); border:1px solid var(--border); border-radius:14px; padding:28px; transition:border-color .2s, transform .2s; cursor:pointer; }
-    .faq-item:hover { border-color:var(--accent); transform:translateY(-2px); }
-    .faq-q { font-size:15px; font-weight:700; margin-bottom:10px; }
-    .faq-a { font-size:14px; color:var(--muted2); line-height:1.75; }
-
-    /* ── CTA ── */
-    #contact { padding:120px clamp(20px,5vw,72px); }
-    .cta-box { max-width:820px; margin:0 auto; text-align:center; background:linear-gradient(135deg,rgba(99,102,241,.1),rgba(139,92,246,.07)); border:1px solid rgba(99,102,241,.25); border-radius:24px; padding:80px clamp(28px,6vw,80px); position:relative; overflow:hidden; }
-    .cta-box::before { content:''; position:absolute; top:-80px; left:50%; transform:translateX(-50%); width:280px; height:280px; background:radial-gradient(circle,rgba(99,102,241,.25),transparent 70%); pointer-events:none; }
-    .cta-box h2 { font-size:clamp(26px,4vw,48px); font-weight:900; letter-spacing:-1.5px; margin-bottom:16px; }
-    .cta-box p  { font-size:18px; color:var(--muted2); margin-bottom:44px; }
-    .cta-email { display:inline-flex; align-items:center; gap:10px; font-size:clamp(14px,2vw,17px); font-weight:700; color:#a5b4fc; text-decoration:none; padding:18px 36px; background:rgba(99,102,241,.12); border:1px solid rgba(99,102,241,.35); border-radius:14px; transition:all .2s; }
-    .trial-form { display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:560px; margin:0 auto 18px; text-align:left; }
-    .trial-form input, .trial-form select { width:100%; padding:14px 16px; border-radius:12px; border:1px solid var(--border2); background:var(--bg3); color:#e2e8f0; font:inherit; font-size:15px; }
-    .trial-form input:focus, .trial-form select:focus { outline:none; border-color:var(--accent); }
-    .trial-form .full { grid-column:1 / -1; }
-    .trial-form button { grid-column:1 / -1; padding:16px; border:0; border-radius:12px; font:inherit; font-weight:700; font-size:16px; color:#fff; cursor:pointer; background:linear-gradient(135deg,#6366f1,#8b5cf6); }
-    .trial-form button:disabled { opacity:.6; cursor:wait; }
-    .trial-hp { position:absolute; left:-9999px; }
-    #trial-msg { min-height:24px; font-size:15px; margin:0 0 28px; }
-    @media (max-width:640px) { .trial-form { grid-template-columns:1fr; } }
-    .cta-email:hover { background:rgba(99,102,241,.22); transform:translateY(-2px); box-shadow:0 0 30px rgba(99,102,241,.25); }
-    .cta-note { margin-top:18px; font-size:13px; color:var(--muted); }
-
-    /* ── FOOTER ── */
-    footer { background:var(--bg2); border-top:1px solid var(--border); padding:44px clamp(20px,5vw,72px); }
-    .footer-inner { max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
-    .footer-logo { display:flex; align-items:center; gap:8px; text-decoration:none; }
-    .footer-logo-icon { width:28px; height:28px; background:linear-gradient(135deg,#6366f1,#8b5cf6); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:14px; }
-    .footer-logo-text { font-size:15px; font-weight:800; color:var(--text); }
-    .footer-copy { font-size:13px; color:var(--muted); }
-    .footer-links { display:flex; gap:24px; flex-wrap:wrap; }
-    .footer-links a { font-size:13px; color:var(--muted); text-decoration:none; transition:color .2s; }
-    .footer-links a:hover { color:#a5b4fc; }
-
-    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-
-    /* ── RESPONSIVE — TABLET (≤1024px) ── */
-    @media(max-width:1024px){
-      .frow { gap: 40px; }
-      .metrics-grid { grid-template-columns: repeat(2,1fr); }
-    }
-
-    /* ── RESPONSIVE — TABLET (≤768px) download ── */
-    @media(max-width:768px){
-      .dl-banner { padding:28px 24px; flex-direction:column; align-items:flex-start; }
-      .dl-btn { width:100%; justify-content:center; }
-    }
-
-    /* ── RESPONSIVE — MOBILE (≤768px) ── */
-    @media(max-width:768px){
-      .nav-links { display:none; }
-      .nav-right  { display:none; }
-      .nav-burger { display:flex; }
-
-      .hero { padding: 110px 20px 48px; }
-      .hero h1 { letter-spacing: -1px; }
-      .hero-btns { gap: 10px; }
-      .btn-hero-p, .btn-hero-s { padding: 13px 24px; font-size: 15px; }
-
-      .frow { grid-template-columns: 1fr; gap: 32px; margin-bottom: 64px; }
-      .frow.flip { direction: ltr; }
-
-      .steps-grid { grid-template-columns: 1fr; }
-      .step-block { padding: 32px 28px; }
-
-      .gallery-grid { grid-template-columns: repeat(2,1fr); gap: 12px; }
-
-      .pricing-grid { grid-template-columns: 1fr; max-width: 440px; margin-left: auto; margin-right: auto; }
-
-      .faq-grid { grid-template-columns: 1fr; }
-
-      .lb-prev { left: -44px; }
-      .lb-next { right: -44px; }
-
-      .metrics-grid { grid-template-columns: repeat(2,1fr); }
-
-      section { padding: 72px 20px; }
-      #contact { padding: 72px 20px; }
-    }
-
-    /* ── RESPONSIVE — SMALL MOBILE (≤480px) ── */
-    @media(max-width:480px){
-      .gallery-grid { grid-template-columns: 1fr; }
-      .metrics-grid { grid-template-columns: 1fr 1fr; }
-      .metric-block { padding: 28px 20px; }
-      .metric-num { font-size: 38px; }
-
-      .lb-inner { padding: 0; }
-      .lb-prev { left: 4px; z-index: 10; }
-      .lb-next { right: 4px; z-index: 10; }
-      .lb-close { top: -40px; }
-
-      .trust-logos { gap: 12px; }
-      .trust-item { font-size: 12px; }
-
-      .cta-box { padding: 44px 24px; }
-      .cta-email { padding: 14px 22px; word-break: break-all; text-align: center; }
-      .btn-hero-p, .btn-hero-s { width: 100%; justify-content: center; }
-      .hero-btns { flex-direction: column; align-items: center; }
+    @media(max-width:760px){
+      .cover-in{flex-direction:column;align-items:flex-start;gap:16px}
+      .cover-l{justify-content:flex-start}
+      .stats{grid-template-columns:1fr 1fr}
+      .stat,.stat+.stat{padding:32px 16px 30px 0;border-right:0;border-bottom:1px solid var(--line)}
+      .steps,.plans,.bento,.trust-g{grid-template-columns:1fr}
+      .refs{grid-template-columns:1fr 1fr}
+      .trial-form{grid-template-columns:1fr;padding:24px}
+      .float,.float.f2{display:none}
+      .hero h1 span{white-space:normal}
     }
   </style>
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" type="image/png" href="/img/icon-192.png">
-  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 </head>
 <body>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-  <div class="lb-inner">
-    <div class="lb-close" onclick="closeLB()">✕</div>
-    <div class="lb-nav lb-prev" onclick="lbNav(-1)">‹</div>
-    <div class="lb-nav lb-next" onclick="lbNav(1)">›</div>
-    <img class="lb-img" id="lb-img" src="" alt="">
-    <div class="lb-label" id="lb-label"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-pc" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+  <symbol id="i-sync" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5M3 21v-5h5"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></symbol>
+</svg>
+
+<div class="sn-announce">Nouveau dans la version 1.7 : le guide d'hygiène de l'ANSSI et le RGPD, directement dans l'audit et le rapport Word.<a href="nouveautes.html">Voir les nouveautés →</a></div>
+<div class="sn-nav" role="navigation" aria-label="Navigation principale">
+  <div class="sn-nav-in sn-wrap">
+    <a class="sn-logo" href="#"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a>
+    <div class="sn-links">
+      <a href="#features">Fonctionnalités</a>
+      <a href="#conformite">Conformité</a>
+      <a href="controles.html">Contrôles</a>
+      <a href="#demo">Démo</a>
+      <a href="#pricing">Tarifs</a>
+      <a href="nouveautes.html">Nouveautés</a>
+    </div>
+    <div class="sn-right">
+      <a class="sn-lnk" href="#download"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Télécharger</a>
+      <a class="sn-btn sn-btn-p" href="#essai">Essai gratuit 24 h</a>
+      <button class="sn-burger" id="sn-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sn-menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="sn-menu" id="sn-menu">
+    <a href="#features">Fonctionnalités</a>
+    <a href="#conformite">Conformité</a>
+    <a href="controles.html">Contrôles</a>
+    <a href="#demo">Démo</a>
+    <a href="#pricing">Tarifs</a>
+    <a href="nouveautes.html">Nouveautés</a>
+    <a href="#faq">FAQ</a>
+    <a href="#download">Télécharger l'application</a>
+    <a class="sn-btn sn-btn-p" href="#essai">Essai gratuit 24 h</a>
   </div>
 </div>
 
-<!-- NAV -->
-<nav id="nav">
-  <a class="nav-logo" href="#">
-    <div class="nav-logo-icon">🛡️</div>
-    <span class="nav-logo-text">AuditM365</span>
-  </a>
-  <div class="nav-links">
-    <a class="nav-link" href="#features">Fonctionnalités</a>
-    <a class="nav-link" href="controles.html">Contrôles</a>
-    <a class="nav-link" href="#gallery">Aperçu</a>
-    <a class="nav-link" href="nouveautes.html">Nouveautés</a>
-    <a class="nav-link" href="#pricing">Tarifs</a>
-    <a class="nav-link" href="#faq">FAQ</a>
-    <a class="nav-link" href="#download" style="color:#34d399;">⬇ Télécharger</a>
-  </div>
-  <div class="nav-right">
-    <a class="btn-ghost" href="#contact">Contact</a>
-    <a class="btn-cta" href="#pricing">Obtenir une licence →</a>
-  </div>
-  <button class="nav-burger" id="nav-burger" onclick="toggleMobileMenu()" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
-
-<!-- MOBILE MENU -->
-<div class="nav-mobile-menu" id="nav-mobile-menu">
-  <a class="nav-mobile-link" href="#features"       onclick="closeMobileMenu()">Fonctionnalités</a>
-  <a class="nav-mobile-link" href="controles.html" onclick="closeMobileMenu()">Contrôles</a>
-  <a class="nav-mobile-link" href="#gallery"        onclick="closeMobileMenu()">Aperçu</a>
-  <a class="nav-mobile-link" href="nouveautes.html" onclick="closeMobileMenu()" style="color:#a5b4fc;">Nouveautés</a>
-  <a class="nav-mobile-link" href="#pricing"        onclick="closeMobileMenu()">Tarifs</a>
-  <a class="nav-mobile-link" href="#faq"            onclick="closeMobileMenu()">FAQ</a>
-  <a class="nav-mobile-link" href="#download"       onclick="closeMobileMenu()" style="color:#34d399;font-weight:700;">⬇ Télécharger l'application</a>
-  <a class="nav-mobile-cta"  href="#pricing"  onclick="closeMobileMenu()">🚀 Obtenir une licence</a>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-grid"></div>
-  <div class="hero-badge"><div class="hero-badge-dot"></div>Outil professionnel Microsoft 365 &amp; Intune</div>
-  <h1>Auditez votre M365<br><span class="grad">en quelques minutes</span></h1>
-  <p class="hero-sub">AuditM365 analyse votre tenant Microsoft 365 et Intune, identifie les risques de sécurité et génère des rapports professionnels prêts à présenter à vos clients.</p>
-  <div class="hero-btns">
-    <a href="#pricing" class="btn-hero-p">🚀 Obtenir une licence</a>
-    <a href="#download" class="btn-hero-dl">⬇ Télécharger l'application</a>
-    <a href="#demo" class="btn-hero-s">▶ Voir la démo (13 min)</a>
-  </div>
-  <div class="hero-screen">
-    <div class="screen-frame">
-      <div class="screen-bar">
-        <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
-        <div class="screen-url">AuditM365 — Vue d'ensemble</div>
+<header class="hero">
+  <div class="hero-in">
+    <div>
+      <div class="chip"><i></i>Audit de sécurité Microsoft 365 &amp; Intune</div>
+      <h1>L'audit de sécurité Microsoft 365,<br><span>prêt à présenter.</span></h1>
+      <p class="lead">86 contrôles sur Entra ID, Exchange, SharePoint, Teams, Intune et Defender. Chaque écart est classé par priorité, avec son guide de correction et sa correspondance ANSSI, RGPD, NIS2, ISO 27001 et CIS.</p>
+      <div class="hero-cta">
+        <a class="sn-btn sn-btn-p" href="#essai">Essai gratuit 24 h <svg class="ico"><use href="#i-arrow"/></svg></a>
+        <a class="sn-btn sn-btn-g" href="#demo"><svg class="ico" style="fill:currentColor;stroke:none"><use href="#i-play"/></svg>Voir la démo · 13 min</a>
       </div>
-      <img class="screen-img" src="img/dashboard.png" alt="AuditM365 Dashboard">
+      <div class="reassure">
+        <span><svg class="ico"><use href="#i-check"/></svg>Lecture seule sur votre tenant</span>
+        <span><svg class="ico"><use href="#i-check"/></svg>100 % local</span>
+        <span><svg class="ico"><use href="#i-check"/></svg>Sans carte bancaire</span>
+      </div>
     </div>
-    <div class="screen-fade"></div>
+    <div class="hero-shot">
+      <div class="frame"><img src="img/dashboard.png" width="1920" height="1080" alt="Vue d'ensemble d'AuditM365 sur un tenant de démonstration" fetchpriority="high"></div>
+      <div class="float f2"><svg class="ico"><use href="#i-doc"/></svg>Rapport PDF, Word et PowerPoint</div>
+      <div class="float f1"><b>86</b>contrôles, chacun avec<br>son guide de correction</div>
+    </div>
   </div>
-</section>
+</header>
 
-<!-- TRUST -->
-<div class="trust">
-  <p>Compatible avec</p>
-  <div class="trust-logos">
-    <div class="trust-item">🏢 Microsoft 365</div>
-    <div class="trust-item">📱 Microsoft Intune</div>
-    <div class="trust-item">🔷 Entra ID</div>
-    <div class="trust-item">📧 Exchange Online</div>
-    <div class="trust-item">💬 Teams &amp; SharePoint</div>
-    <div class="trust-item">🛡️ Defender / MDE</div>
+<div class="cover">
+  <div class="cover-in wrap">
+    <div class="cover-t">Tout Microsoft 365</div>
+    <div class="cover-l">
+      <span><i style="--c:#2f6bff"></i>Entra ID</span>
+      <span><i style="--c:#0f9bd7"></i>Exchange Online</span>
+      <span><i style="--c:#0e7c72"></i>SharePoint</span>
+      <span><i style="--c:#6264a7"></i>Teams</span>
+      <span><i style="--c:#12b76a"></i>Intune</span>
+      <span><i style="--c:#f04438"></i>Defender</span>
+      <span><i style="--c:#7a5af8"></i>Purview</span>
+      <span><i style="--c:#f79009"></i>Power Platform</span>
+    </div>
   </div>
 </div>
 
-<!-- FEATURES -->
-<section id="features">
-  <div class="container">
-
-    <div class="frow fi">
-      <div class="ftxt">
-        <div class="eyebrow">Tableau de bord</div>
-        <h3>Une vue complète de votre environnement M365</h3>
-        <p>En un seul écran, visualisez l'état de santé de votre tenant Microsoft 365 : utilisateurs, sécurité, messagerie, collaboration et conformité — avec les alertes prioritaires.</p>
-        <div class="fbullets">
-          <div class="fb"><div class="fb-icon g">✓</div>Vue d'ensemble en temps réel de votre tenant</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Score de conformité global et tendance historique</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Alertes et points critiques mis en évidence</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Export du rapport complet en PDF</div>
-        </div>
-      </div>
-      <div class="fshot gl-indigo">
-        <div class="shot-wrap">
-          <div class="shot-bar"><div class="sdot r"></div><div class="sdot y"></div><div class="sdot g"></div></div>
-          <img class="shot-img" src="img/dashboard.png" alt="Vue d'ensemble">
-        </div>
-      </div>
-    </div>
-
-    <div class="frow flip fi fi-d1">
-      <div class="ftxt">
-        <div class="eyebrow">Messagerie</div>
-        <h3>Maîtrisez votre messagerie Exchange Online</h3>
-        <p>Identifiez les boîtes aux lettres inactives, les transferts non autorisés vers l'extérieur, et vérifiez la protection anti-spoofing de tous vos domaines email.</p>
-        <div class="fbullets">
-          <div class="fb"><div class="fb-icon g">✓</div>Détection des boîtes inactives ou jamais utilisées</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Vérification de la protection de vos domaines (SPF, DKIM, DMARC)</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Alerte sur les transferts d'emails vers l'extérieur</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Export des données en un clic</div>
-        </div>
-      </div>
-      <div class="fshot gl-indigo">
-        <div class="shot-wrap">
-          <div class="shot-bar"><div class="sdot r"></div><div class="sdot y"></div><div class="sdot g"></div></div>
-          <img class="shot-img" src="img/exchange.png" alt="Exchange">
-        </div>
-      </div>
-    </div>
-
-    <div class="frow fi fi-d1">
-      <div class="ftxt">
-        <div class="eyebrow">Recommandations</div>
-        <h3>Des actions concrètes pour sécuriser votre tenant</h3>
-        <p>Chaque problème détecté est accompagné d'une recommandation claire et d'un niveau de priorité, pour que vous sachiez exactement quoi corriger en premier.</p>
-        <div class="fbullets">
-          <div class="fb"><div class="fb-icon g">✓</div>Classement par niveau de priorité (Critique, Élevé, Moyen)</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Description claire de l'impact pour votre organisation</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Délai de remédiation conseillé pour chaque point</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Filtrage par domaine et niveau de criticité</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Correspondance avec le guide d'hygiène de l'ANSSI, le RGPD, NIS2, ISO 27001 et CIS</div>
-        </div>
-      </div>
-      <div class="fshot gl-orange">
-        <div class="shot-wrap">
-          <div class="shot-bar"><div class="sdot r"></div><div class="sdot y"></div><div class="sdot g"></div></div>
-          <img class="shot-img" src="img/findings.png" alt="Constats">
-        </div>
-      </div>
-    </div>
-
-    <div class="frow flip fi fi-d1">
-      <div class="ftxt">
-        <div class="eyebrow">Appareils gérés</div>
-        <h3>Conformité et sécurité de vos appareils Intune</h3>
-        <p>Visualisez l'état de conformité de chaque appareil Windows et mobile géré par votre organisation, avec les alertes sur les appareils non conformes.</p>
-        <div class="fbullets">
-          <div class="fb"><div class="fb-icon g">✓</div>État de conformité de chaque appareil</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Vérification du chiffrement des disques</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Suivi des politiques de sécurité appliquées</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Alertes sur les appareils non protégés</div>
-        </div>
-      </div>
-      <div class="fshot gl-green">
-        <div class="shot-wrap">
-          <div class="shot-bar"><div class="sdot r"></div><div class="sdot y"></div><div class="sdot g"></div></div>
-          <img class="shot-img" src="img/intune.png" alt="Intune">
-        </div>
-      </div>
-    </div>
-
-    <div class="frow fi fi-d1">
-      <div class="ftxt">
-        <div class="eyebrow">Accès &amp; Identités</div>
-        <h3>Identifiez les comptes à haut risque dans votre tenant</h3>
-        <p>Repérez les administrateurs dont les accès sont trop larges, les comptes sans protection renforcée et les rôles critiques mal configurés.</p>
-        <div class="fbullets">
-          <div class="fb"><div class="fb-icon g">✓</div>Inventaire des administrateurs et leurs accès</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Détection des comptes sans protection renforcée</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Analyse des accès privilégiés et rôles permanents</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Alertes sur les configurations à risque</div>
-        </div>
-      </div>
-      <div class="fshot gl-purple">
-        <div class="shot-wrap">
-          <div class="shot-bar"><div class="sdot r"></div><div class="sdot y"></div><div class="sdot g"></div></div>
-          <img class="shot-img" src="img/pim.png" alt="Accès privilégiés">
-        </div>
-      </div>
-    </div>
-
-    <div class="frow flip fi fi-d1">
-      <div class="ftxt">
-        <div class="eyebrow">Multi-tenant &amp; Alertes</div>
-        <h3>Gérez tous vos clients depuis une seule application</h3>
-        <p>Ajoutez vos tenants clients (jusqu’à 5 avec Pro, sans limite avec MSP), suivez-les tous sur la vue Portefeuille et recevez des notifications automatiques par email ou Microsoft Teams après chaque audit.</p>
-        <div class="fbullets">
-          <div class="fb"><div class="fb-icon g">✓</div>Gestion de plusieurs clients en parallèle</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Vue Portefeuille : score, évolution et constats communs de tous vos clients</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Notifications automatiques par email et Teams</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Alerte immédiate si un risque critique est détecté</div>
-          <div class="fb"><div class="fb-icon g">✓</div>Planification des audits automatiques</div>
-        </div>
-      </div>
-      <div class="fshot gl-pink">
-        <div class="shot-wrap">
-          <div class="shot-bar"><div class="sdot r"></div><div class="sdot y"></div><div class="sdot g"></div></div>
-          <img class="shot-img" src="img/alerting.png" alt="Alerting">
-        </div>
-      </div>
-    </div>
-
+<section class="wrap" id="how">
+  <div class="stats">
+    <div class="stat"><b>86</b><p>contrôles de sécurité, du MFA des administrateurs à la sauvegarde des données</p></div>
+    <div class="stat"><b>&lt;5<small>min</small></b><p>pour auditer un tenant complet, sans rien installer côté serveur</p></div>
+    <div class="stat"><b>5</b><p>référentiels : guide d'hygiène de l'ANSSI, RGPD, NIS2, ISO 27001 et CIS</p></div>
+    <div class="stat"><b>0</b><p>donnée de votre tenant envoyée à un serveur externe</p></div>
+  </div>
+  <div class="steps">
+    <div class="step"><h3>Obtenez votre licence</h3><p>Abonnez-vous en ligne et recevez votre clé par email en quelques minutes. Ou <a href="#essai">essayez gratuitement 24 h</a>.</p></div>
+    <div class="step"><h3>Connectez votre tenant</h3><p>Installez l'application Windows et connectez-vous avec un compte administrateur Microsoft 365. Les accès nécessaires sont créés en lecture seule.</p></div>
+    <div class="step"><h3>Présentez le rapport</h3><p>L'audit tourne en quelques minutes. Vous repartez avec un rapport PDF, Word ou PowerPoint et un plan d'action priorisé.</p></div>
   </div>
 </section>
 
-<!-- DOWNLOAD -->
-<section id="download" style="background:var(--bg); padding-top:0; padding-bottom:96px;">
-  <div class="container">
-    <div class="dl-banner fi">
-      <div class="dl-info">
-        <div class="dl-title">⬇ Télécharger AuditM365</div>
-        <div class="dl-meta">
-          <span class="dl-badge dl-badge-green" id="dl-version">✓ Dernière version — v1.7.0</span>
-          <span class="dl-badge">🪟 Windows 10 / 11</span>
-          <span class="dl-badge" id="dl-size">📦 38,5 Mo</span>
-          <span class="dl-badge">🔄 Mises à jour automatiques</span>
-          <span class="dl-badge">🔒 100% local — aucune installation de serveur</span>
-        </div>
-        <div class="dl-requirements">
-          <div class="dl-req"><div class="dl-req-dot"></div>Nécessite une licence active pour fonctionner</div>
-          <div class="dl-req"><div class="dl-req-dot"></div>Compatible Windows 10 64-bit et Windows 11</div>
-          <div class="dl-req"><div class="dl-req-dot"></div>Installation en un clic, sans droits administrateur</div>
-        </div>
-      </div>
-      <a href="https://github.com/LSOTA/AuditM365-Site/releases/latest/download/AuditM365-Setup.exe" class="dl-btn">
-        <span class="dl-btn-icon">⬇</span>
-        <span>Télécharger l'installateur<br><small id="dl-btn-meta" style="font-weight:400;font-size:12px;opacity:.8">v1.7.0 — 38,5 Mo</small></span>
-      </a>
+<section id="features" style="padding-top:0">
+  <div class="wrap head-row">
+    <div><div class="eyebrow">Le produit</div><h2 class="h2">Du constat à la correction,<br>sans tableur.</h2></div>
+    <p class="sub">AuditM365 ne se contente pas de lister les problèmes : il dit quoi corriger en premier, comment le faire et combien de temps cela prend.</p>
+  </div>
+
+  <div class="feat">
+    <div class="feat-t">
+      <div class="eyebrow">Vue d'ensemble</div>
+      <h3>L'état de votre tenant en un écran</h3>
+      <p>Score global, évolution depuis le dernier audit, qualité de la collecte et les trois corrections à faire cette semaine, classées par gravité et par effort.</p>
+      <ul class="ticks">
+        <li><svg class="ico"><use href="#i-check"/></svg>Score et historique, tenant par tenant</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Alerte quand un contrôle se dégrade</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Synthèse par domaine : Entra, Sécurité, Exchange, Teams, SharePoint</li>
+      </ul>
     </div>
+    <div class="feat-i blue"><img src="img/dashboard.png" width="1920" height="1080" loading="lazy" data-zoom="Vue d'ensemble" alt="Vue d'ensemble"></div>
+  </div>
+
+  <div class="feat flip">
+    <div class="feat-t">
+      <div class="eyebrow">Constats et corrections</div>
+      <h3>Un guide de correction pour chaque écart</h3>
+      <p>Chaque contrôle non conforme arrive avec son impact, sa priorité, le temps estimé et un guide pas à pas : où cliquer dans la console, le script si besoin, et comment vérifier.</p>
+      <ul class="ticks">
+        <li><svg class="ico"><use href="#i-check"/></svg>Priorités Critique, Élevé, Moyen</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>86 guides de correction avec temps estimé</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Filtres par domaine, gravité et statut, export CSV</li>
+      </ul>
+    </div>
+    <div class="feat-i navy"><img src="img/findings.png" width="1920" height="1080" loading="lazy" data-zoom="Résultats de l'audit" alt="Constats de l'audit"></div>
+  </div>
+
+  <div class="feat">
+    <div class="feat-t">
+      <div class="eyebrow">ANSSI et RGPD <span class="new">NOUVEAU</span></div>
+      <h3>Vos résultats rangés selon l'ANSSI et le RGPD</h3>
+      <p>Les 42 mesures du guide d'hygiène informatique de l'ANSSI et l'article 32 du RGPD, avec les contrôles rattachés à chacune. Une mesure n'est conforme que si tous ses contrôles le sont.</p>
+      <ul class="ticks">
+        <li><svg class="ico"><use href="#i-check"/></svg>Mesures organisationnelles signalées « hors relevé technique »</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Sauvegarde par un outil tiers déclarée tenant par tenant</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Repris en annexe du rapport Word, pour votre DPO ou votre auditeur</li>
+      </ul>
+    </div>
+    <div class="feat-i teal"><img src="img/referentiels.png" width="1920" height="1080" loading="lazy" data-zoom="ANSSI / RGPD" alt="Écran ANSSI / RGPD"></div>
+  </div>
+
+  <div class="feat flip">
+    <div class="feat-t">
+      <div class="eyebrow">Prestataires et MSP</div>
+      <h3>Tous vos clients sur un seul écran</h3>
+      <p>La vue Portefeuille classe vos tenants du plus exposé au moins exposé : score, évolution, constats critiques ouverts, audits à relancer, et les corrections communes à appliquer chez plusieurs clients.</p>
+      <ul class="ticks">
+        <li><svg class="ico"><use href="#i-check"/></svg>Jusqu'à 5 tenants en Pro, sans limite en MSP</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Audits planifiés et alertes par email ou Teams</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Un clic pour basculer sur un client</li>
+      </ul>
+    </div>
+    <div class="feat-i plum"><img src="img/portefeuille.png" width="1920" height="1080" loading="lazy" data-zoom="Portefeuille" alt="Vue Portefeuille"></div>
   </div>
 </section>
 
-<!-- METRICS -->
-<section id="metrics">
-  <div class="container">
-    <div class="fi">
-      <div class="eyebrow">En chiffres</div>
-      <h2 class="st">Puissant, rapide, 100% local</h2>
-      <p class="ss">Vos données restent sur votre machine. Aucun tiers n'y a accès.</p>
-    </div>
-    <div class="metrics-grid fi fi-d1">
-      <div class="metric-block mb-i">
-        <div class="metric-num" style="color:#818cf8">14+</div>
-        <div class="metric-lbl">Modules d'audit couverts<br>Entra, Exchange, Teams, SharePoint…</div>
-      </div>
-      <div class="metric-block mb-g">
-        <div class="metric-num" style="color:#34d399">&lt;5<span style="font-size:22px">min</span></div>
-        <div class="metric-lbl">Pour un audit complet<br>de votre environnement M365</div>
-      </div>
-      <div class="metric-block mb-p">
-        <div class="metric-num" style="color:#c084fc">∞</div>
-        <div class="metric-lbl">Tenants clients gérés<br>en parallèle (licence MSP)</div>
-      </div>
-      <div class="metric-block mb-o">
-        <div class="metric-num" style="color:#fbbf24">0</div>
-        <div class="metric-lbl">Donnée envoyée<br>à un serveur externe</div>
-      </div>
-    </div>
+<section class="dark wrap" id="gallery">
+  <div class="head-row">
+    <div><div class="eyebrow">Et aussi</div><h2 class="h2">Chaque service Microsoft 365<br>passé au crible.</h2></div>
+    <a class="sn-btn sn-btn-g" href="controles.html">Voir les 86 contrôles <svg class="ico"><use href="#i-arrow"/></svg></a>
+  </div>
+  <div class="bento">
+    <button class="tile" type="button" data-src="img/exchange.png" data-label="Exchange Online"><div class="tile-t"><h3>Exchange Online</h3><p>Boîtes inactives, transferts vers l'extérieur, SPF, DKIM et DMARC de chaque domaine.</p></div><div class="tile-i"><img src="img/exchange.png" loading="lazy" alt=""></div></button>
+    <button class="tile" type="button" data-src="img/intune.png" data-label="Intune : appareils gérés"><div class="tile-t"><h3>Intune</h3><p>Conformité de chaque appareil, chiffrement, lignes de base de sécurité et mises à jour.</p></div><div class="tile-i"><img src="img/intune.png" loading="lazy" alt=""></div></button>
+    <button class="tile" type="button" data-src="img/pim.png" data-label="Accès privilégiés"><div class="tile-t"><h3>Accès privilégiés</h3><p>Administrateurs permanents, rôles trop larges, comptes d'urgence et activations PIM.</p></div><div class="tile-i"><img src="img/pim.png" loading="lazy" alt=""></div></button>
+    <button class="tile" type="button" data-src="img/sharepoint.png" data-label="SharePoint : sites et partage"><div class="tile-t"><h3>SharePoint et OneDrive</h3><p>Partage externe, liens anonymes, sites inactifs et paramètres du tenant.</p></div><div class="tile-i"><img src="img/sharepoint.png" loading="lazy" alt=""></div></button>
+    <button class="tile" type="button" data-src="img/planning.png" data-label="Planification des audits"><div class="tile-t"><h3>Audits planifiés</h3><p>Un audit chaque semaine ou chaque mois, sans y penser, pour chacun de vos tenants.</p></div><div class="tile-i"><img src="img/planning.png" loading="lazy" alt=""></div></button>
+    <button class="tile" type="button" data-src="img/alerting.png" data-label="Alertes email et Teams"><div class="tile-t"><h3>Alertes email et Teams</h3><p>Un message après chaque audit, et tout de suite si un risque critique apparaît.</p></div><div class="tile-i"><img src="img/alerting.png" loading="lazy" alt=""></div></button>
   </div>
 </section>
 
-<!-- HOW -->
-<section id="how">
-  <div class="container">
-    <div class="fi">
-      <div class="eyebrow">Démarrage rapide</div>
-      <h2 class="st">Opérationnel en 3 étapes</h2>
-      <p class="ss">Pas de serveur, pas de configuration complexe. Juste une application Windows et votre licence.</p>
-    </div>
-    <div class="steps-grid fi fi-d1">
-      <div class="step-block">
-        <div class="step-num">01</div>
-        <div class="step-icon">🔑</div>
-        <h3>Obtenez votre licence</h3>
-        <p>Abonnez-vous en ligne et recevez votre clé de licence par email en quelques minutes. Ou <a href="#essai" style="color:#a5b4fc">essayez gratuitement 24 h</a>.</p>
-      </div>
-      <div class="step-block">
-        <div class="step-num">02</div>
-        <div class="step-icon">⚡</div>
-        <h3>Connectez votre tenant</h3>
-        <p>Lancez l'application Windows, entrez votre email d'administrateur et connectez votre tenant Microsoft 365 en un clic.</p>
-      </div>
-      <div class="step-block">
-        <div class="step-num">03</div>
-        <div class="step-icon">📋</div>
-        <h3>Rapport en main</h3>
-        <p>Lancez l'audit et obtenez en moins de 5 minutes un rapport complet de votre environnement, exportable en PDF, Word ou PowerPoint.</p>
-      </div>
-    </div>
+<section id="demo" class="dark wrap" style="background:var(--ink2);border-top:1px solid var(--line-d)">
+  <div class="head-row">
+    <div><div class="eyebrow">Démonstration</div><h2 class="h2">13 minutes pour faire le tour.</h2></div>
+    <p class="sub">Chaque écran expliqué sur un tenant fictif, avec voix off et sous-titres. Cliquez sur un chapitre pour y aller directement.</p>
   </div>
-</section>
-
-<!-- GALLERY -->
-<section id="gallery">
-  <div class="container">
-    <div class="fi">
-      <div class="eyebrow">Aperçu de l'application</div>
-      <h2 class="st">Découvrez l'interface</h2>
-      <p class="ss">Un outil complet, intuitif et 100% en français. Regardez la démo complète (13 min, chaque onglet expliqué) ou allez directement au chapitre qui vous intéresse, puis cliquez sur une capture pour l'agrandir.</p>
+  <div class="demo">
+    <div>
+      <div class="demo-video">
+        <video id="demo-player" controls preload="none" playsinline poster="video/demo/affiche.jpg" aria-label="Démonstration complète d'AuditM365 (13 minutes)">
+          Votre navigateur ne lit pas cette vidéo.
+        </video>
+      </div>
+      <p class="demo-caption" id="demo-caption">Démonstration sur un tenant fictif, avec voix off et sous-titres. Qualité jusqu'à 1080p, adaptée à votre connexion.</p>
     </div>
-    <div class="demo-video fi" id="demo">
-      <video id="demo-player" controls preload="none" playsinline poster="video/demo/affiche.jpg" aria-label="Démonstration complète d'AuditM365 (13 minutes)">
-        Votre navigateur ne lit pas cette vidéo.
-      </video>
-    </div>
-    <p class="demo-caption" id="demo-caption">Démonstration sur un tenant fictif, avec voix off et sous-titres. Qualité jusqu'à 1080p, adaptée à votre connexion.</p>
-    <div class="demo-chapters-title">Chapitres</div>
-    <div class="demo-chapters" id="demo-chapters">
+    <div class="demo-side">
+      <div class="demo-chapters-title">Chapitres</div>
+      <div class="demo-chapters" id="demo-chapters">
       <button type="button" data-t="0"><span>0:00</span>Présentation</button>
       <button type="button" data-t="18"><span>0:18</span>Connexion du tenant</button>
       <button type="button" data-t="69"><span>1:09</span>Vue d'ensemble</button>
@@ -723,7 +465,9 @@
       <button type="button" data-t="680"><span>11:20</span>Portefeuille</button>
       <button type="button" data-t="726"><span>12:06</span>Rapports</button>
       <button type="button" data-t="738"><span>12:18</span>En résumé</button>
+      </div>
     </div>
+  </div>
     <script>
     // Vidéo de démonstration en streaming (HLS) : 1080p ou 720p selon la connexion, morceaux de moins de 25 Mo
     // (limite Cloudflare). Le lecteur se charge à l'approche de la section, la vidéo seulement à la lecture.
@@ -776,7 +520,7 @@
       const chapters = [...document.querySelectorAll('#demo-chapters button')];
       chapters.forEach(b => b.addEventListener('click', () => {
         playAt(+b.dataset.t);
-        document.getElementById('demo').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('demo-player').scrollIntoView({ behavior: 'smooth', block: 'center' });
       }));
       v.addEventListener('timeupdate', () => {
         let cur = null;
@@ -789,180 +533,126 @@
       } else ensure();
     })();
     </script>
-    <div class="gallery-grid fi fi-d1">
-      <div class="gallery-item" onclick="openLB(0)">
-        <img src="img/sharepoint.png" alt="SharePoint">
-        <div class="gallery-overlay">
-          <div class="gallery-label-top">SharePoint</div>
-          <div class="gallery-label-main">Sites &amp; Paramètres de partage</div>
-        </div>
-        <div class="gallery-zoom">⤢</div>
-        <div class="gallery-label-always">SharePoint — Sites &amp; Partage</div>
+</section>
+
+<section id="conformite" class="wrap" style="background:var(--paper2)">
+  <div class="head-row" style="margin-bottom:0">
+    <div><div class="eyebrow">Conformité</div><h2 class="h2">Parlez le langage<br>de vos auditeurs.</h2></div>
+    <p class="sub">Chaque contrôle est rattaché aux référentiels que vos clients, leur DPO ou leur assureur vous demandent. L'audit ne remplace pas un examen des mesures organisationnelles : il le dit clairement.</p>
+  </div>
+  <div class="refs">
+    <div class="ref main"><b>ANSSI</b><p>Les 42 mesures du guide d'hygiène informatique</p></div>
+    <div class="ref main"><b>RGPD</b><p>Article 32 et exigences liées : chiffrement, disponibilité, violations</p></div>
+    <div class="ref"><b>NIS2</b><p>Mesures de gestion des risques de cybersécurité</p></div>
+    <div class="ref"><b>ISO 27001</b><p>Contrôles de l'annexe A, version 2022</p></div>
+    <div class="ref"><b>CIS</b><p>Benchmark Microsoft 365</p></div>
+  </div>
+</section>
+
+<section id="pricing" class="wrap">
+  <div style="text-align:center;max-width:820px;margin:0 auto">
+    <div class="eyebrow" style="justify-content:center">Tarifs</div>
+    <h2 class="h2">Un prix clair, sans engagement.</h2>
+    <p class="sub" style="margin:0 auto">Tous les contrôles et tous les rapports dans chaque offre. Seul le nombre de tenants change.</p>
+  </div>
+  <div class="plans">
+    <div class="plan">
+      <h3>Standard</h3><p class="who">Pour l'administrateur qui gère le Microsoft 365 de son entreprise.</p>
+      <div class="price">29 €<small>HT / mois</small></div><div class="ten">1 tenant</div>
+      <ul>
+        <li><svg class="ico"><use href="#i-check"/></svg>Les 86 contrôles et leurs guides</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Rapports PDF, Word et PowerPoint</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Vue ANSSI / RGPD</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Alertes email et Teams</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Mises à jour et support par email</li>
+      </ul>
+      <a class="sn-btn btn-o" href="https://buy.stripe.com/bJe00i2Eu1uf6yTe2s6wE00" target="_blank" rel="noopener">S'abonner</a>
+    </div>
+    <div class="plan pop">
+      <span class="tag">Le plus choisi</span>
+      <h3>Pro</h3><p class="who">Pour les consultants et les équipes IT qui suivent plusieurs tenants.</p>
+      <div class="price">79 €<small>HT / mois</small></div><div class="ten">Jusqu'à 5 tenants</div>
+      <ul>
+        <li><svg class="ico"><use href="#i-check"/></svg>Tout ce qui est dans Standard</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Vue Portefeuille</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Constats communs à vos tenants</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Support prioritaire</li>
+      </ul>
+      <a class="sn-btn sn-btn-p" href="https://buy.stripe.com/dRmeVc6UKc8T2iD3nO6wE01" target="_blank" rel="noopener">S'abonner</a>
+    </div>
+    <div class="plan">
+      <h3>MSP</h3><p class="who">Pour les prestataires qui gèrent le Microsoft 365 de leurs clients.</p>
+      <div class="price">149 €<small>HT / mois</small></div><div class="ten">Tenants illimités</div>
+      <ul>
+        <li><svg class="ico"><use href="#i-check"/></svg>Tout ce qui est dans Pro</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Nombre de clients sans limite</li>
+        <li><svg class="ico"><use href="#i-check"/></svg>Support dédié</li>
+      </ul>
+      <a class="sn-btn btn-o" href="https://buy.stripe.com/cNi3cu1Aq5Kv3mH1fG6wE02" target="_blank" rel="noopener">S'abonner</a>
+    </div>
+  </div>
+  <p class="plans-note">Prix hors taxes, TVA 20 % en sus. Paiement sécurisé par Stripe, clé de licence envoyée par email dès le paiement. Résiliable à tout moment. <a href="#essai">Essai gratuit 24 h</a>, sans carte bancaire.</p>
+</section>
+
+<section class="dark wrap" id="download">
+  <div class="trust">
+    <div>
+      <div class="eyebrow">Télécharger</div>
+      <h2 class="h2">Vos données restent sur votre poste.</h2>
+      <p class="sub" style="margin-bottom:34px">AuditM365 est une application Windows. L'audit lit la configuration de votre tenant et l'analyse sur votre machine : rien ne transite par nos serveurs.</p>
+      <a class="sn-btn sn-btn-p dl-btn" href="https://github.com/LSOTA/AuditM365-Site/releases/latest/download/AuditM365-Setup.exe"><svg class="ico"><use href="#i-down"/></svg><span>Télécharger l'installateur<small id="dl-btn-meta">v1.7.1 · 38,5 Mo</small></span></a>
+      <div class="dl-meta">
+        <span class="ok" id="dl-version">Dernière version : v1.7.1</span>
+        <span>Windows 10 / 11</span>
+        <span id="dl-size">38,5 Mo</span>
+        <span>Mises à jour automatiques</span>
       </div>
-      <div class="gallery-item" onclick="openLB(1)">
-        <img src="img/pim.png" alt="PIM">
-        <div class="gallery-overlay">
-          <div class="gallery-label-top">Sécurité</div>
-          <div class="gallery-label-main">Accès privilégiés &amp; Rôles</div>
-        </div>
-        <div class="gallery-zoom">⤢</div>
-        <div class="gallery-label-always">Accès privilégiés — PIM</div>
-      </div>
-      <div class="gallery-item" onclick="openLB(2)">
-        <img src="img/multitenant.png" alt="Multi-tenant">
-        <div class="gallery-overlay">
-          <div class="gallery-label-top">Multi-tenant</div>
-          <div class="gallery-label-main">Gestion de plusieurs clients</div>
-        </div>
-        <div class="gallery-zoom">⤢</div>
-        <div class="gallery-label-always">Gestion multi-tenant</div>
-      </div>
-      <div class="gallery-item" onclick="openLB(3)">
-        <img src="img/alerting.png" alt="Alerting">
-        <div class="gallery-overlay">
-          <div class="gallery-label-top">Notifications</div>
-          <div class="gallery-label-main">Alertes email &amp; Teams</div>
-        </div>
-        <div class="gallery-zoom">⤢</div>
-        <div class="gallery-label-always">Alerting email &amp; Teams</div>
-      </div>
-      <div class="gallery-item" onclick="openLB(4)">
-        <img src="img/planning.png" alt="Planification">
-        <div class="gallery-overlay">
-          <div class="gallery-label-top">Automatisation</div>
-          <div class="gallery-label-main">Planification des audits</div>
-        </div>
-        <div class="gallery-zoom">⤢</div>
-        <div class="gallery-label-always">Planification des audits</div>
-      </div>
-      <div class="gallery-item" onclick="openLB(5)">
-        <img src="img/intune.png" alt="Intune">
-        <div class="gallery-overlay">
-          <div class="gallery-label-top">Intune</div>
-          <div class="gallery-label-main">Appareils &amp; Conformité</div>
-        </div>
-        <div class="gallery-zoom">⤢</div>
-        <div class="gallery-label-always">Intune — Appareils gérés</div>
-      </div>
+      <p class="dl-req">Windows 10 64 bits ou Windows 11 · installation en un clic, sans droits administrateur · une licence active est nécessaire</p>
+    </div>
+    <div class="trust-g">
+      <div class="trust-c"><svg class="ico"><use href="#i-eye"/></svg><h3>Lecture seule</h3><p>L'audit ne modifie jamais votre tenant : il lit la configuration, rien d'autre.</p></div>
+      <div class="trust-c"><svg class="ico"><use href="#i-pc"/></svg><h3>100 % local</h3><p>Les résultats et les rapports sont enregistrés sur votre machine.</p></div>
+      <div class="trust-c"><svg class="ico"><use href="#i-lock"/></svg><h3>Licence par poste</h3><p>Chaque licence est liée à une machine. Changement de PC : transfert gratuit.</p></div>
+      <div class="trust-c"><svg class="ico"><use href="#i-sync"/></svg><h3>Toujours à jour</h3><p>Les mises à jour s'installent automatiquement, nouveaux contrôles compris.</p></div>
     </div>
   </div>
 </section>
 
-<!-- PRICING -->
-<section id="pricing">
-  <div class="container">
-    <div class="fi">
-      <div class="eyebrow">Tarifs</div>
-      <h2 class="st">Des licences adaptées à chaque besoin</h2>
-      <p class="ss">Abonnement mensuel sans engagement, résiliable à tout moment. Prix hors taxes, TVA 20 % en sus. Paiement sécurisé par Stripe, clé de licence envoyée par e-mail dès le paiement. <a href="#essai" style="color:#a5b4fc">Essai gratuit 24 h</a>, sans carte bancaire.</p>
-    </div>
-    <div class="pricing-grid fi fi-d1">
-      <div class="plan">
-        <div class="plan-name">Standard</div>
-        <div class="plan-price"><sup>€</sup>29<sub>/mois HT</sub></div>
-        <div class="plan-desc">Pour les administrateurs IT qui gèrent leur tenant Microsoft 365.</div>
-        <div class="plan-feats">
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text"><strong>1 tenant</strong></span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Tous les modules d'audit inclus</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Rapports PDF, Word &amp; PowerPoint</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Alertes email &amp; Teams</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Mises à jour incluses</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Support par email</span></div>
-        </div>
-        <a href="https://buy.stripe.com/bJe00i2Eu1uf6yTe2s6wE00" class="btn-po" target="_blank" rel="noopener">S'abonner</a>
-      </div>
-      <div class="plan pop">
-        <div class="plan-name">Pro</div>
-        <div class="plan-price"><sup>€</sup>79<sub>/mois HT</sub></div>
-        <div class="plan-desc">Pour les consultants et équipes IT gérant jusqu'à 5 tenants.</div>
-        <div class="plan-feats">
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Jusqu'à <strong>5 tenants</strong></span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Vue Portefeuille de vos tenants</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Tous les modules d'audit inclus</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Rapports PDF, Word &amp; PowerPoint</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Alertes email &amp; Teams</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Mises à jour incluses</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Support prioritaire</span></div>
-        </div>
-        <a href="https://buy.stripe.com/dRmeVc6UKc8T2iD3nO6wE01" class="btn-pp" target="_blank" rel="noopener">S'abonner</a>
-      </div>
-      <div class="plan">
-        <div class="plan-name">MSP</div>
-        <div class="plan-price"><sup>€</sup>149<sub>/mois HT</sub></div>
-        <div class="plan-desc">Pour les MSP gérant un nombre illimité de tenants clients.</div>
-        <div class="plan-feats">
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text"><strong>Tenants illimités</strong></span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Vue Portefeuille de tous vos clients</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Tous les modules d'audit inclus</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Rapports PDF, Word &amp; PowerPoint</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Alertes email &amp; Teams</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Mises à jour incluses</span></div>
-          <div class="pf"><span class="pf-check">✓</span><span class="pf-text">Support dédié</span></div>
-        </div>
-        <a href="https://buy.stripe.com/cNi3cu1Aq5Kv3mH1fG6wE02" class="btn-po" target="_blank" rel="noopener">S'abonner</a>
-      </div>
+<section id="faq" class="wrap">
+  <div class="faq">
+    <div><div class="eyebrow">FAQ</div><h2 class="h2">Questions fréquentes</h2><p class="sub">Une autre question ? <a href="mailto:bonjour@m365intune.com">bonjour@m365intune.com</a></p></div>
+    <div>
+      <details open><summary>Mes données Microsoft 365 sont-elles partagées ?</summary><p>Non. AuditM365 est une application Windows locale : toutes vos données restent sur votre machine, aucune information n'est envoyée à un serveur externe.</p></details>
+      <details><summary>De quels accès Microsoft 365 ai-je besoin ?</summary><p>Un compte administrateur Microsoft 365 suffit pour la connexion initiale. L'application configure ensuite automatiquement les accès nécessaires, en lecture seule.</p></details>
+      <details><summary>Puis-je tester l'outil avant d'acheter ?</summary><p>Oui : remplissez le <a href="#essai">formulaire d'essai</a>, vous recevez une licence de test de 24 h par email en quelques minutes, gratuitement et sans carte bancaire.</p></details>
+      <details><summary>Dans quels formats puis-je exporter mes rapports ?</summary><p>PDF, Word (.docx) et PowerPoint (.pptx), prêts à partager avec vos clients ou votre direction, et l'export CSV de chaque tableau pour Excel. Le rapport Word inclut la correspondance avec le guide d'hygiène de l'ANSSI et le RGPD.</p></details>
+      <details><summary>La licence est-elle liée à un seul ordinateur ?</summary><p>Oui, chaque licence est associée à une machine pour des raisons de sécurité. Si vous changez de PC, contactez-nous pour un transfert gratuit de votre licence.</p></details>
+      <details><summary>Les mises à jour sont-elles incluses dans la licence ?</summary><p>Oui, toutes les mises à jour sont incluses pendant la durée de votre licence : nouvelles fonctionnalités et correctifs, sans frais supplémentaires.</p></details>
     </div>
   </div>
 </section>
 
-<!-- FAQ -->
-<section id="faq">
-  <div class="container">
-    <div class="fi">
-      <div class="eyebrow">FAQ</div>
-      <h2 class="st">Questions fréquentes</h2>
+<section class="cta wrap" id="contact">
+  <div class="cta-in" id="essai">
+    <div>
+      <h2>Essayez AuditM365 gratuitement pendant 24 h.</h2>
+      <p>Votre clé d'essai arrive par email en quelques minutes. Sans carte bancaire, sans engagement.</p>
+      <a class="cta-mail" href="mailto:bonjour@m365intune.com">Une question ? bonjour@m365intune.com</a>
     </div>
-    <div class="faq-grid fi fi-d1">
-      <div class="faq-item">
-        <div class="faq-q">🔒 Mes données Microsoft 365 sont-elles partagées ?</div>
-        <div class="faq-a">Non. AuditM365 est une application Windows locale. Toutes vos données restent sur votre machine. Aucune information n'est envoyée à un serveur externe.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">💻 La licence est-elle liée à un seul ordinateur ?</div>
-        <div class="faq-a">Oui, chaque licence est associée à une machine pour des raisons de sécurité. Si vous changez de PC, contactez-nous pour un transfert gratuit de votre licence.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">🧪 Puis-je tester l'outil avant d'acheter ?</div>
-        <div class="faq-a">Oui : remplissez le <a href="#essai" style="color:#a5b4fc">formulaire d'essai</a>, vous recevez une licence de test de 24 h par email en quelques minutes, gratuitement et sans carte bancaire.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">🔑 De quels accès Microsoft 365 ai-je besoin ?</div>
-        <div class="faq-a">Un compte administrateur Microsoft 365 suffit pour la connexion initiale. L'application configure automatiquement les accès nécessaires en lecture seule.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">🔄 Les mises à jour sont-elles incluses dans la licence ?</div>
-        <div class="faq-a">Oui, toutes les mises à jour sont incluses pendant la durée de votre licence. Nouvelles fonctionnalités et correctifs sont disponibles sans frais supplémentaires.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q">📊 Dans quels formats puis-je exporter mes rapports ?</div>
-        <div class="faq-a">AuditM365 génère des rapports en PDF, Word (.docx) et PowerPoint (.pptx), prêts à partager avec vos clients ou votre direction, et exporte chaque tableau en CSV pour Excel. Le rapport Word inclut la correspondance avec le guide d'hygiène de l'ANSSI et le RGPD.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section id="contact">
-  <div class="container">
-    <div class="cta-box fi" id="essai">
-      <h2>Essayez AuditM365 gratuitement 24 h</h2>
-      <p>Votre clé d'essai arrive par email en quelques minutes.<br>Sans carte bancaire, sans engagement.</p>
-      <form class="trial-form" id="trial-form" novalidate>
-        <input class="full" type="email" name="email" placeholder="Email professionnel *" required autocomplete="email">
-        <input type="text" name="name" placeholder="Prénom et nom" autocomplete="name">
-        <input type="text" name="company" placeholder="Entreprise" autocomplete="organization">
-        <select class="full" name="tenants">
-          <option value="">Nombre de tenants Microsoft 365 à auditer</option>
-          <option value="1">1</option><option value="2-5">2 à 5</option>
-          <option value="6+">Plus de 5</option>
-        </select>
-        <input class="trial-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button type="submit">Recevoir ma licence d'essai</button>
-      </form>
+    <form class="trial-form" id="trial-form" novalidate>
+      <input class="full" type="email" name="email" placeholder="Email professionnel *" required autocomplete="email" aria-label="Email professionnel">
+      <input type="text" name="name" placeholder="Prénom et nom" autocomplete="name" aria-label="Prénom et nom">
+      <input type="text" name="company" placeholder="Entreprise" autocomplete="organization" aria-label="Entreprise">
+      <select class="full" name="tenants" aria-label="Nombre de tenants">
+        <option value="">Nombre de tenants Microsoft 365 à auditer</option>
+        <option value="1">1</option><option value="2-5">2 à 5</option>
+        <option value="6+">Plus de 5</option>
+      </select>
+      <input class="trial-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="sn-btn sn-btn-p full" type="submit">Recevoir ma licence d'essai</button>
       <p id="trial-msg" role="status"></p>
-      <a href="mailto:bonjour@m365intune.com" class="cta-email">✉️ Une question ? bonjour@m365intune.com</a>
-      <p class="cta-note">Essai 24 h gratuit &nbsp;•&nbsp; Abonnement sans engagement</p>
-    </div>
+      <p class="trial-note">Essai 24 h gratuit · abonnement sans engagement</p>
+    </form>
   </div>
 </section>
 <script>
@@ -984,97 +674,43 @@ document.getElementById('trial-form').addEventListener('submit', async (e) => {
 });
 </script>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-      <a class="footer-logo" href="#">
-        <div class="footer-logo-icon">🛡️</div>
-        <span class="footer-logo-text">AuditM365</span>
-      </a>
-      <span class="footer-copy">© 2026 AuditM365. Tous droits réservés.</span>
-    </div>
-    <div class="footer-links">
-      <a href="#features">Fonctionnalités</a>
-      <a href="controles.html">Contrôles</a>
-      <a href="#pricing">Tarifs</a>
-      <a href="#faq">FAQ</a>
-      <a href="mailto:bonjour@m365intune.com">Contact</a>
-      <a href="https://billing.stripe.com/p/login/bJe00i2Eu1uf6yTe2s6wE00">Gérer mon abonnement</a>
-    </div>
+<div class="sn-foot sn-wrap" role="contentinfo">
+  <div class="sn-foot-g">
+    <div><a class="sn-logo" href="#"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a><p>L'audit de sécurité Microsoft 365 et Intune pour les équipes IT, les consultants et les MSP.</p></div>
+    <div><h4>Produit</h4><ul><li><a href="#features">Fonctionnalités</a></li><li><a href="controles.html">Les 86 contrôles</a></li><li><a href="#conformite">Conformité</a></li><li><a href="#pricing">Tarifs</a></li></ul></div>
+    <div><h4>Ressources</h4><ul><li><a href="#demo">Démo vidéo</a></li><li><a href="nouveautes.html">Nouveautés</a></li><li><a href="#faq">FAQ</a></li><li><a href="#download">Télécharger</a></li></ul></div>
+    <div><h4>Compte</h4><ul><li><a href="#essai">Essai gratuit</a></li><li><a href="https://billing.stripe.com/p/login/bJe00i2Eu1uf6yTe2s6wE00">Gérer mon abonnement</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="mailto:bonjour@m365intune.com">bonjour@m365intune.com</a></li></ul></div>
   </div>
-</footer>
+  <div class="sn-legal"><span>© 2026 AuditM365. Tous droits réservés.</span><span>Microsoft 365, Entra ID et Intune sont des marques de Microsoft Corporation.</span></div>
+</div>
 
+<div class="lb" id="lightbox" role="dialog" aria-modal="true" aria-label="Capture agrandie">
+  <button type="button" aria-label="Fermer">×</button>
+  <figure><img id="lb-img" src="" alt=""><figcaption id="lb-label"></figcaption></figure>
+</div>
 <script>
-  // Fade in observer
-  const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('v'); }), {threshold:.1});
-  document.querySelectorAll('.fi').forEach(el => io.observe(el));
-
-  // Nav scroll
-  window.addEventListener('scroll', () => {
-    document.getElementById('nav').style.background = window.scrollY > 40 ? 'rgba(8,12,26,.97)' : 'rgba(8,12,26,.85)';
-  });
-
-  // Mobile menu
-  function toggleMobileMenu() {
-    const menu   = document.getElementById('nav-mobile-menu');
-    const burger = document.getElementById('nav-burger');
-    menu.classList.toggle('open');
-    burger.classList.toggle('open');
-  }
-  function closeMobileMenu() {
-    document.getElementById('nav-mobile-menu').classList.remove('open');
-    document.getElementById('nav-burger').classList.remove('open');
-  }
-  // Close mobile menu on outside click
-  document.addEventListener('click', e => {
-    const menu   = document.getElementById('nav-mobile-menu');
-    const burger = document.getElementById('nav-burger');
-    if(menu.classList.contains('open') && !menu.contains(e.target) && !burger.contains(e.target)) {
-      closeMobileMenu();
-    }
-  });
-
-  // Lightbox
-  const lbImgs = [
-    {src:'img/sharepoint.png', label:'SharePoint — Sites & Paramètres de partage'},
-    {src:'img/pim.png',        label:'Accès privilégiés — PIM'},
-    {src:'img/multitenant.png',label:'Gestion multi-tenant'},
-    {src:'img/alerting.png',   label:'Alerting email & Teams'},
-    {src:'img/planning.png',   label:'Planification des audits'},
-    {src:'img/intune.png',     label:'Intune — Appareils gérés'},
-  ];
-  let lbIdx = 0;
-
-  function openLB(idx) {
-    lbIdx = idx;
-    document.getElementById('lb-img').src   = lbImgs[idx].src;
-    document.getElementById('lb-label').textContent = lbImgs[idx].label;
-    document.getElementById('lightbox').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeLB() {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  function closeLightbox(e) { if(e.target === document.getElementById('lightbox')) closeLB(); }
-  function lbNav(dir) {
-    lbIdx = (lbIdx + dir + lbImgs.length) % lbImgs.length;
-    document.getElementById('lb-img').src = lbImgs[lbIdx].src;
-    document.getElementById('lb-label').textContent = lbImgs[lbIdx].label;
-  }
-  document.addEventListener('keydown', e => {
-    if(!document.getElementById('lightbox').classList.contains('open')) return;
-    if(e.key === 'Escape') closeLB();
-    if(e.key === 'ArrowLeft')  lbNav(-1);
-    if(e.key === 'ArrowRight') lbNav(1);
-  });
+  // Agrandissement des captures (fonctionnalités et mosaïque) ; Échap ou clic pour fermer.
+  (function () {
+    var lb = document.getElementById('lightbox'), img = document.getElementById('lb-img'), lab = document.getElementById('lb-label');
+    function open(src, label) { img.src = src; img.alt = label; lab.textContent = label; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function close() { lb.classList.remove('open'); document.body.style.overflow = ''; }
+    document.querySelectorAll('[data-zoom]').forEach(function (el) { el.addEventListener('click', function () { open(el.getAttribute('src'), el.dataset.zoom); }); });
+    document.querySelectorAll('.tile[data-src]').forEach(function (el) { el.addEventListener('click', function () { open(el.dataset.src, el.dataset.label); }); });
+    lb.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && lb.classList.contains('open')) close(); });
+  })();
+  // Liste des chapitres à la hauteur du lecteur vidéo.
+  (function () {
+    var v = document.querySelector('.demo-video'), s = document.querySelector('.demo-side');
+    function fit() { if (v && s) s.style.setProperty('--vh', v.offsetHeight + 'px'); }
+    window.addEventListener('resize', fit); fit();
+  })();
 </script>
 <script>
   // Version et taille de l'installateur lues sur la dernière publication GitHub ;
   // le texte écrit dans la page reste affiché si l'API ne répond pas.
-  // Mémoire de l'onglet limitée à 10 min, et jamais une version plus ancienne que celle écrite dans la page
-  // (avant : un onglet ouvert à l'époque de la v1.5.1 l'affichait encore après la sortie de la v1.5.3).
+  // Mémoire de l'onglet limitée à 10 min, et jamais une version plus ancienne que celle écrite dans la page.
   (function () {
     var KEY = 'auditm365-latest', TTL = 10 * 60 * 1000, d = null;
     function num(v) { var m = /^v?(\d+)\.(\d+)\.(\d+)/.exec(v || ''); return m ? +m[1] * 1e6 + +m[2] * 1e3 + +m[3] : 0; }
@@ -1083,9 +719,9 @@ document.getElementById('trial-form').addEventListener('submit', async (e) => {
     function show(x) {
       if (!x || !/^v\d+\.\d+\.\d+$/.test(x.v) || num(x.v) < page) return;
       var size = x.s > 0 ? (x.s / 1048576).toLocaleString('fr-FR', { maximumFractionDigits: 1 }) + ' Mo' : null;
-      var b = document.getElementById('dl-version'); if (b) b.textContent = '✓ Dernière version — ' + x.v;
-      var z = document.getElementById('dl-size'); if (z && size) z.textContent = '📦 ' + size;
-      var m = document.getElementById('dl-btn-meta'); if (m) m.textContent = x.v + (size ? ' — ' + size : '');
+      var b = document.getElementById('dl-version'); if (b) b.textContent = 'Dernière version : ' + x.v;
+      var z = document.getElementById('dl-size'); if (z && size) z.textContent = size;
+      var m = document.getElementById('dl-btn-meta'); if (m) m.textContent = x.v + (size ? ' · ' + size : '');
     }
     try { d = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) {}
     if (d && d.t && Date.now() - d.t < TTL && num(d.v) >= page) { show(d); return; }
@@ -1101,6 +737,7 @@ document.getElementById('trial-form').addEventListener('submit', async (e) => {
       .catch(function () {});
   })();
 </script>
+<script src="site.js" defer></script>
 <script src="/chat/chat.js" defer></script>
 </body>
 </html>
