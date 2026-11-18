@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Microsoft Sentinel : connecteurs, règles analytiques, playbooks</title>
+  <meta name="description" content="Espace de travail Sentinel, connecteurs de données actifs, règles analytiques activées, playbooks et règles d&#x27;automatisation : 4 contrôles Microsoft Sentinel.">
+  <link rel="canonical" href="https://audit.m365intune.com/controles/microsoft-sentinel">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AuditM365">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Audit Microsoft Sentinel : connecteurs, règles analytiques, playbooks">
+  <meta property="og:description" content="Espace de travail Sentinel, connecteurs de données actifs, règles analytiques activées, playbooks et règles d&#x27;automatisation : 4 contrôles Microsoft Sentinel.">
+  <meta property="og:url" content="https://audit.m365intune.com/controles/microsoft-sentinel">
+  <meta property="og:image" content="https://audit.m365intune.com/img/dashboard.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/img/icon-192.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--sn-ink);color:var(--sn-on-d);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fam-hero{padding-top:48px;padding-bottom:40px;background:radial-gradient(ellipse 70% 70% at 25% -20%,rgba(47,107,255,.17),transparent 62%)}
+.crumbs{font-size:14px;color:var(--sn-on-d3);margin-bottom:30px}
+.crumbs a{color:var(--sn-on-d2);text-decoration:none}.crumbs a:hover{color:#fff}
+.crumbs span{margin:0 8px;color:var(--sn-on-d3)}
+.eyebrow{color:#9db8ff;font-weight:600;font-size:14px;margin-bottom:12px}
+.fam-hero h1{font:800 clamp(30px,4vw,50px)/1.1 'Inter Tight',Inter,sans-serif;letter-spacing:-.02em;max-width:980px}
+.lead{font-size:18px;color:var(--sn-on-d2);max-width:780px;margin:18px 0 24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.chips span{border:1px solid var(--sn-line-d);background:rgba(255,255,255,.03);border-radius:20px;padding:5px 12px;font-size:13px;color:var(--sn-on-d2)}
+.chips b{color:#fff}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.fam-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:56px;padding-top:28px;padding-bottom:64px;align-items:start}
+.toc{position:sticky;top:96px;font-size:14px;max-height:calc(100vh - 120px);overflow:auto}
+.toc p{font-weight:700;margin-bottom:10px}
+.toc ol{list-style:none;border-left:1px solid var(--sn-line-d)}
+.toc a{display:block;padding:6px 0 6px 14px;color:var(--sn-on-d3);text-decoration:none;line-height:1.35}
+.toc a:hover{color:#fff}
+.toc i{display:block;font:600 11px ui-monospace,Consolas,monospace;color:#7fa3ff;font-style:normal}
+.ctls{max-width:900px;min-width:0}
+.ctl{background:var(--sn-ink2);border:1px solid var(--sn-line-d);border-radius:16px;padding:28px 30px;margin-bottom:22px;scroll-margin-top:96px}
+.ctl header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:18px}
+.ctl h2{font:700 21px/1.3 'Inter Tight',Inter,sans-serif;flex:1 1 280px}
+.cid{font:600 12px ui-monospace,Consolas,monospace;color:#9db8ff;background:rgba(47,107,255,.14);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.sev{font-size:12px;font-weight:700;border-radius:6px;padding:3px 9px;white-space:nowrap}
+.sev.crit{background:rgba(239,68,68,.15);color:#f87171}.sev.high{background:rgba(245,158,11,.15);color:#fbbf24}
+.sev.med{background:rgba(59,130,246,.15);color:#93c5fd}.sev.low{background:rgba(16,185,129,.15);color:#6ee7b7}
+.facts{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-bottom:16px}
+.facts div{background:rgba(255,255,255,.025);border:1px solid var(--sn-line-d);border-radius:12px;padding:14px 16px}
+.facts dt{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--sn-on-d3);margin-bottom:6px}
+.facts dd{color:var(--sn-on-d2);font-size:15px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--sn-on-d3);margin-bottom:6px}
+.meta b{color:var(--sn-on-d2);font-weight:600;margin-right:6px}
+.fw{border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:1px 7px;font-size:12px;color:var(--sn-on-d2)}
+.caution{border-left:3px solid #f59e0b;background:rgba(245,158,11,.08);padding:12px 16px;border-radius:0 10px 10px 0;color:#f1e4c8;font-size:15px;margin-top:16px}
+.ctl h3{font:700 15px/1.3 Inter,sans-serif;margin:22px 0 10px}
+.steps{counter-reset:s;list-style:none}
+.steps li{counter-increment:s;position:relative;padding-left:38px;margin-bottom:10px;color:var(--sn-on-d2);font-size:15px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:rgba(47,107,255,.16);color:#9db8ff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.verify{list-style:none}
+.verify li{position:relative;padding-left:28px;margin-bottom:8px;color:var(--sn-on-d2);font-size:15px}
+.verify li::before{content:'';position:absolute;left:4px;top:7px;width:12px;height:7px;border-left:2px solid #10b981;border-bottom:2px solid #10b981;transform:rotate(-45deg)}
+.ctl a{color:#9db8ff;overflow-wrap:anywhere}
+.ctl li,.ctl dd,.caution,.ctl h2{overflow-wrap:anywhere}
+.portal{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:14px;font-weight:600;text-decoration:none}
+.portal:hover{text-decoration:underline}
+.refs{margin-top:16px;font-size:13px;color:var(--sn-on-d3)}
+.fam-cta{background:linear-gradient(135deg,rgba(47,107,255,.2),rgba(31,85,224,.06));border:1px solid rgba(47,107,255,.35);border-radius:18px;padding:32px;margin-top:34px}
+.fam-cta h2{font:700 26px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:10px}
+.fam-cta p{color:var(--sn-on-d2);margin-bottom:20px;max-width:680px}
+.fam-others{padding-bottom:96px}
+.fam-others h2{font:700 24px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:18px}
+.fam-others ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.fam-others a{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 16px;border:1px solid var(--sn-line-d);border-radius:12px;background:var(--sn-ink2);color:var(--sn-on-d);text-decoration:none;font-size:15px;font-weight:500;transition:border-color .2s}
+.fam-others a:hover{border-color:rgba(47,107,255,.6)}
+.fam-others em{font-style:normal;font-size:12px;color:#9db8ff;background:rgba(47,107,255,.12);border-radius:10px;padding:1px 9px;white-space:nowrap}
+@media(max-width:1000px){.fam-body{grid-template-columns:1fr;gap:0}.toc{display:none}}
+@media(max-width:640px){.facts{grid-template-columns:1fr}.ctl{padding:22px 18px}.fam-cta{padding:24px 20px}.lead{font-size:16px}}
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://audit.m365intune.com/"}, {"@type": "ListItem", "position": 2, "name": "Contrôles", "item": "https://audit.m365intune.com/controles"}, {"@type": "ListItem", "position": 3, "name": "Microsoft Sentinel", "item": "https://audit.m365intune.com/controles/microsoft-sentinel"}]}, {"@type": "TechArticle", "headline": "Audit de Microsoft Sentinel", "description": "Espace de travail Sentinel, connecteurs de données actifs, règles analytiques activées, playbooks et règles d'automatisation : 4 contrôles Microsoft Sentinel.", "inLanguage": "fr-FR", "url": "https://audit.m365intune.com/controles/microsoft-sentinel", "dateModified": "2026-11-18", "image": "https://audit.m365intune.com/img/dashboard.png", "author": {"@id": "https://audit.m365intune.com/#org"}, "publisher": {"@id": "https://audit.m365intune.com/#org"}, "isPartOf": {"@type": "WebSite", "name": "AuditM365", "url": "https://audit.m365intune.com/"}}]}</script>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="sn-nav" role="navigation" aria-label="Navigation principale">
+  <div class="sn-nav-in sn-wrap">
+    <a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a>
+    <div class="sn-links">
+      <a href="/#features">Fonctionnalités</a>
+      <a href="/#conformite">Conformité</a>
+      <a href="/controles" class="on" aria-current="page">Contrôles</a>
+      <a href="/#demo">Démo</a>
+      <a href="/#pricing">Tarifs</a>
+      <a href="/nouveautes">Nouveautés</a>
+    </div>
+    <div class="sn-right">
+      <a class="sn-lnk" href="/#download"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Télécharger</a>
+      <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+      <button class="sn-burger" id="sn-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sn-menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="sn-menu" id="sn-menu">
+    <a href="/#features">Fonctionnalités</a>
+    <a href="/#conformite">Conformité</a>
+    <a href="/controles">Contrôles</a>
+    <a href="/#demo">Démo</a>
+    <a href="/#pricing">Tarifs</a>
+    <a href="/nouveautes">Nouveautés</a>
+    <a href="/#faq">FAQ</a>
+    <a href="/#download">Télécharger l'application</a>
+    <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+  </div>
+</div>
+
+<main>
+<div class="fam-hero sn-wrap">
+  <nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span>›</span><a href="/controles">Contrôles</a><span>›</span>Microsoft Sentinel</nav>
+  <p class="eyebrow">Guide de correction · 4 contrôles</p>
+  <h1>Audit de Microsoft Sentinel</h1>
+  <p class="lead">Microsoft Sentinel centralise les journaux et transforme les signaux en incidents. Un espace de travail sans connecteurs, sans règles analytiques ou sans automatisation ne détecte rien. Ces 4 contrôles vérifient la présence de Sentinel, le nombre de connecteurs de données actifs, les règles analytiques activées et les playbooks de réponse.</p>
+  <div class="chips"><span><b>4</b> contrôles</span><span><b>2</b> élevées</span><span><b>1</b> moyenne</span><span><b>1</b> faible</span><span>Mis à jour le 18 novembre 2026</span></div>
+  <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Auditer mon tenant : essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/controles">Les 86 contrôles</a></div>
+</div>
+
+<div class="fam-body sn-wrap">
+  <aside class="toc" aria-label="Contrôles de cette page"><p>Dans cette page</p><ol><li><a href="#sen-001"><i>SEN-001</i>Microsoft Sentinel configuré</a></li><li><a href="#sen-002"><i>SEN-002</i>Connecteurs de données Sentinel actifs</a></li><li><a href="#sen-003"><i>SEN-003</i>Règles analytiques Sentinel actives</a></li><li><a href="#sen-004"><i>SEN-004</i>Automatisation Sentinel (playbooks)</a></li></ol></aside>
+  <div class="ctls">
+<article class="ctl" id="sen-001">
+<header><span class="cid">SEN-001</span><h2>Microsoft Sentinel configuré</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Un espace de travail Log Analytics doit exister avec Microsoft Sentinel activé, pour centraliser la collecte et l&#x27;analyse des événements de sécurité.</dd></div><div><dt>Valeur attendue</dt><dd>Au moins un espace de travail Sentinel.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h</p>
+<p class="meta"><b>Référentiels</b><span class="fw">ANSSI Hygiène mesure 36</span><span class="fw">RGPD Art.33</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Sentinel est facturé au volume de données ingérées : commencez par les sources gratuites ou peu volumineuses (activité Azure, alertes Defender, journaux Microsoft 365) et fixez un plafond quotidien. Si AuditM365 indique « aucun abonnement Azure visible », Sentinel existe peut-être déjà : attribuez d&#x27;abord le rôle Lecteur à l&#x27;application d&#x27;audit (dernière étape).</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Azure &gt; Espaces de travail Log Analytics &gt; Créer : abonnement, groupe de ressources, région « France Central ».</li><li>Portail Azure &gt; Microsoft Sentinel &gt; Créer &gt; choisissez l&#x27;espace de travail &gt; Ajouter. (Sentinel s&#x27;utilise aussi depuis le portail Defender.)</li><li>Espace de travail &gt; Utilisation et coûts estimés &gt; Limite quotidienne : fixez un plafond.</li><li>Pour qu&#x27;AuditM365 évalue Sentinel : Abonnements &gt; l&#x27;abonnement &gt; Contrôle d&#x27;accès (IAM) &gt; Ajouter une attribution de rôle &gt; « Lecteur » &gt; l&#x27;application d&#x27;audit AuditM365.</li></ol>
+<a class="portal" href="https://portal.azure.com/#browse/microsoft.securityinsightsarg%2Fsentinel" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche au moins un espace avec Sentinel = True.</li><li>Relancez un audit : SEN-001 passe à Conforme (après l&#x27;attribution du rôle Lecteur à l&#x27;application d&#x27;audit).</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/azure/sentinel/quickstart-onboard" rel="noopener" target="_blank">learn.microsoft.com/en-us/azure/sentinel/quickstart-onboard</a></p>
+</article>
+<article class="ctl" id="sen-002">
+<header><span class="cid">SEN-002</span><h2>Connecteurs de données Sentinel actifs</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Au moins 5 connecteurs de données doivent être actifs dans Microsoft Sentinel pour couvrir les principales sources de journaux.</dd></div><div><dt>Valeur attendue</dt><dd>5 connecteurs de données actifs au moins.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 à 2 h</p>
+<p class="meta"><b>Référentiels</b><span class="fw">ANSSI Hygiène mesure 36</span><span class="fw">RGPD Art.33</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Chaque connecteur ajoute des données facturées : vérifiez le volume estimé de chacun (page du connecteur) et la limite quotidienne de l&#x27;espace. Les connecteurs Microsoft 365 et Defender XDR apportent l&#x27;essentiel pour un tenant Microsoft 365.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Microsoft Sentinel &gt; Gestion du contenu &gt; Hub de contenu : installez les solutions « Microsoft Entra ID », « Microsoft 365 », « Microsoft Defender XDR », « Azure Activity ».</li><li>Configuration &gt; Connecteurs de données : ouvrez chaque connecteur &gt; « Ouvrir la page du connecteur » &gt; connectez (journaux de connexion et d&#x27;audit Entra, Exchange / SharePoint / Teams, incidents Defender XDR).</li><li>Visez au moins 5 connecteurs à l&#x27;état « Connecté ».</li></ol>
+<a class="portal" href="https://portal.azure.com/#browse/microsoft.securityinsightsarg%2Fsentinel" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche au moins 5 connecteurs.</li><li>Relancez un audit : SEN-002 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/azure/sentinel/connect-data-sources" rel="noopener" target="_blank">learn.microsoft.com/en-us/azure/sentinel/connect-data-sources</a></p>
+</article>
+<article class="ctl" id="sen-003">
+<header><span class="cid">SEN-003</span><h2>Règles analytiques Sentinel actives</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Au moins 10 règles analytiques doivent être activées dans Microsoft Sentinel pour détecter les menaces et créer des incidents.</dd></div><div><dt>Valeur attendue</dt><dd>10 règles analytiques actives au moins.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 à 2 h</p>
+<p class="meta"><b>Référentiels</b><span class="fw">ANSSI Hygiène mesure 36</span><span class="fw">ANSSI Hygiène mesure 40</span><span class="fw">RGPD Art.33</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Activez les règles par lots et surveillez le volume d&#x27;incidents la première semaine : mieux vaut dix règles dont les incidents sont lus que cent règles que personne ne suit. Les règles des solutions du Hub de contenu (Microsoft Entra ID, Microsoft 365) sont prêtes à l&#x27;emploi et cartographiées MITRE ATT&amp;CK.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Microsoft Sentinel &gt; Configuration &gt; Analyse &gt; Modèles de règle : filtrez par sources de données connectées et par gravité Élevée et Moyenne.</li><li>Pour chaque modèle utile : « Créer une règle » en gardant la requête et la fréquence proposées. Activez d&#x27;abord : connexions depuis des pays inhabituels, pulvérisation de mots de passe, ajout à un rôle privilégié, création de règle de transfert de boîte, consentement à une application à risque.</li><li>Vérifiez qu&#x27;au moins 10 règles sont « Activées ».</li></ol>
+<a class="portal" href="https://portal.azure.com/#browse/microsoft.securityinsightsarg%2Fsentinel" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche au moins 10 règles activées.</li><li>Relancez un audit : SEN-003 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/azure/sentinel/detect-threats-built-in" rel="noopener" target="_blank">learn.microsoft.com/en-us/azure/sentinel/detect-threats-built-in</a></p>
+</article>
+<article class="ctl" id="sen-004">
+<header><span class="cid">SEN-004</span><h2>Automatisation Sentinel (playbooks)</h2><span class="sev low">Sévérité faible</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Au moins une règle d&#x27;automatisation ou un playbook doit être configuré dans Microsoft Sentinel pour automatiser la réponse aux incidents.</dd></div><div><dt>Valeur attendue</dt><dd>Au moins un playbook ou une règle d&#x27;automatisation.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h</p>
+<p class="meta"><b>Référentiels</b><span class="fw">ANSSI Hygiène mesure 40</span><span class="fw">RGPD Art.33</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Commencez par des automatisations sans risque (attribuer l&#x27;incident, ajouter une étiquette, prévenir par e-mail ou Teams) avant des actions de réponse (désactiver un compte), qui doivent être testées sur un compte de test.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Microsoft Sentinel &gt; Configuration &gt; Automatisation &gt; Créer &gt; Règle d&#x27;automatisation : déclencheur « Quand l&#x27;incident est créé », condition gravité Élevée, action « Affecter le propriétaire » et « Ajouter une étiquette ».</li><li>Pour une notification : Hub de contenu &gt; solution « SOAR Essentials » &gt; playbook de notification Teams ou e-mail, puis action « Exécuter le playbook » dans la règle.</li></ol>
+<a class="portal" href="https://portal.azure.com/#browse/microsoft.securityinsightsarg%2Fsentinel" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche au moins une règle d&#x27;automatisation.</li><li>Relancez un audit : SEN-004 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/azure/sentinel/automate-incident-handling-with-automation-rules" rel="noopener" target="_blank">learn.microsoft.com/en-us/azure/sentinel/automate-incident-handling-with-automation-rules</a></p>
+</article>
+    <section class="fam-cta">
+      <h2>Ces 4 contrôles, sur votre tenant</h2>
+      <p>AuditM365 les évalue en lecture seule, depuis votre poste, et ajoute à chaque écart les chiffres de votre tenant (comptes, stratégies ou appareils concernés) et un script PowerShell à relire avant de l'exécuter.</p>
+      <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/#demo">Voir la démo</a></div>
+    </section>
+  </div>
+</div>
+
+<section class="fam-others sn-wrap" aria-label="Autres familles de contrôles">
+  <h2>Les autres familles de contrôles</h2>
+  <ul><li><a href="/controles/identites-acces-conditionnel">Identités et accès conditionnel<em>9</em></a></li><li><a href="/controles/protection-avancee-identites">Protection avancée des identités<em>5</em></a></li><li><a href="/controles/applications-entra-id">Applications Entra ID<em>5</em></a></li><li><a href="/controles/exchange-online">Messagerie Exchange Online<em>7</em></a></li><li><a href="/controles/defender-office-365">Defender for Office 365<em>5</em></a></li><li><a href="/controles/partage-sharepoint-onedrive-teams">Partage et collaboration<em>9</em></a></li><li><a href="/controles/prevention-pertes-donnees-dlp">Prévention des pertes de données (DLP)<em>5</em></a></li><li><a href="/controles/appareils-intune">Appareils Intune<em>10</em></a></li><li><a href="/controles/defender-endpoint">Defender for Endpoint<em>5</em></a></li><li><a href="/controles/defender-cloud-apps">Defender for Cloud Apps<em>4</em></a></li><li><a href="/controles/purview-audit-secure-score">Purview, audit et Secure Score<em>7</em></a></li><li><a href="/controles/journaux-connexion-audit">Journaux de connexion et d&#x27;audit<em>4</em></a></li><li><a href="/controles/power-platform">Power Platform<em>2</em></a></li><li><a href="/controles/licences-microsoft-365">Licences et économies<em>5</em></a></li></ul>
+</section>
+</main>
+
+<div class="sn-foot sn-wrap" role="contentinfo">
+  <div class="sn-foot-g">
+    <div><a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a><p>L'audit de sécurité Microsoft 365 et Intune pour les équipes IT, les consultants et les MSP.</p></div>
+    <div><h4>Produit</h4><ul><li><a href="/#features">Fonctionnalités</a></li><li><a href="/controles">Les 86 contrôles</a></li><li><a href="/#conformite">Conformité</a></li><li><a href="/#pricing">Tarifs</a></li></ul></div>
+    <div><h4>Ressources</h4><ul><li><a href="/#demo">Démo vidéo</a></li><li><a href="/nouveautes">Nouveautés</a></li><li><a href="/#faq">FAQ</a></li><li><a href="/#download">Télécharger</a></li><li><a href="https://secuopstech.com/">Supervision continue : SecureOps 365</a></li></ul></div>
+    <div><h4>Compte</h4><ul><li><a href="/#essai">Essai gratuit</a></li><li><a href="https://billing.stripe.com/p/login/bJe00i2Eu1uf6yTe2s6wE00">Gérer mon abonnement</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="mailto:bonjour@m365intune.com">bonjour@m365intune.com</a></li></ul></div>
+  </div>
+  <div class="sn-legal"><span>© 2026 AuditM365. Tous droits réservés.</span><span>Microsoft 365, Entra ID et Intune sont des marques de Microsoft Corporation.</span></div>
+</div>
+
+<script src="/site.js" defer></script>
+<script src="/chat/chat.js" defer></script>
+</body>
+</html>

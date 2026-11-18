@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Entra ID et accès conditionnel : 9 contrôles et leur correction</title>
+  <meta name="description" content="Administrateurs généraux, MFA des administrateurs, authentification héritée, comptes d&#x27;urgence, invités inactifs : les 9 contrôles Entra ID d&#x27;AuditM365, avec la correction pas à pas.">
+  <link rel="canonical" href="https://audit.m365intune.com/controles/identites-acces-conditionnel">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AuditM365">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Audit Entra ID et accès conditionnel : 9 contrôles et leur correction">
+  <meta property="og:description" content="Administrateurs généraux, MFA des administrateurs, authentification héritée, comptes d&#x27;urgence, invités inactifs : les 9 contrôles Entra ID d&#x27;AuditM365, avec la correction pas à pas.">
+  <meta property="og:url" content="https://audit.m365intune.com/controles/identites-acces-conditionnel">
+  <meta property="og:image" content="https://audit.m365intune.com/img/dashboard.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/img/icon-192.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--sn-ink);color:var(--sn-on-d);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fam-hero{padding-top:48px;padding-bottom:40px;background:radial-gradient(ellipse 70% 70% at 25% -20%,rgba(47,107,255,.17),transparent 62%)}
+.crumbs{font-size:14px;color:var(--sn-on-d3);margin-bottom:30px}
+.crumbs a{color:var(--sn-on-d2);text-decoration:none}.crumbs a:hover{color:#fff}
+.crumbs span{margin:0 8px;color:var(--sn-on-d3)}
+.eyebrow{color:#9db8ff;font-weight:600;font-size:14px;margin-bottom:12px}
+.fam-hero h1{font:800 clamp(30px,4vw,50px)/1.1 'Inter Tight',Inter,sans-serif;letter-spacing:-.02em;max-width:980px}
+.lead{font-size:18px;color:var(--sn-on-d2);max-width:780px;margin:18px 0 24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.chips span{border:1px solid var(--sn-line-d);background:rgba(255,255,255,.03);border-radius:20px;padding:5px 12px;font-size:13px;color:var(--sn-on-d2)}
+.chips b{color:#fff}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.fam-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:56px;padding-top:28px;padding-bottom:64px;align-items:start}
+.toc{position:sticky;top:96px;font-size:14px;max-height:calc(100vh - 120px);overflow:auto}
+.toc p{font-weight:700;margin-bottom:10px}
+.toc ol{list-style:none;border-left:1px solid var(--sn-line-d)}
+.toc a{display:block;padding:6px 0 6px 14px;color:var(--sn-on-d3);text-decoration:none;line-height:1.35}
+.toc a:hover{color:#fff}
+.toc i{display:block;font:600 11px ui-monospace,Consolas,monospace;color:#7fa3ff;font-style:normal}
+.ctls{max-width:900px;min-width:0}
+.ctl{background:var(--sn-ink2);border:1px solid var(--sn-line-d);border-radius:16px;padding:28px 30px;margin-bottom:22px;scroll-margin-top:96px}
+.ctl header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:18px}
+.ctl h2{font:700 21px/1.3 'Inter Tight',Inter,sans-serif;flex:1 1 280px}
+.cid{font:600 12px ui-monospace,Consolas,monospace;color:#9db8ff;background:rgba(47,107,255,.14);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.sev{font-size:12px;font-weight:700;border-radius:6px;padding:3px 9px;white-space:nowrap}
+.sev.crit{background:rgba(239,68,68,.15);color:#f87171}.sev.high{background:rgba(245,158,11,.15);color:#fbbf24}
+.sev.med{background:rgba(59,130,246,.15);color:#93c5fd}.sev.low{background:rgba(16,185,129,.15);color:#6ee7b7}
+.facts{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-bottom:16px}
+.facts div{background:rgba(255,255,255,.025);border:1px solid var(--sn-line-d);border-radius:12px;padding:14px 16px}
+.facts dt{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--sn-on-d3);margin-bottom:6px}
+.facts dd{color:var(--sn-on-d2);font-size:15px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--sn-on-d3);margin-bottom:6px}
+.meta b{color:var(--sn-on-d2);font-weight:600;margin-right:6px}
+.fw{border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:1px 7px;font-size:12px;color:var(--sn-on-d2)}
+.caution{border-left:3px solid #f59e0b;background:rgba(245,158,11,.08);padding:12px 16px;border-radius:0 10px 10px 0;color:#f1e4c8;font-size:15px;margin-top:16px}
+.ctl h3{font:700 15px/1.3 Inter,sans-serif;margin:22px 0 10px}
+.steps{counter-reset:s;list-style:none}
+.steps li{counter-increment:s;position:relative;padding-left:38px;margin-bottom:10px;color:var(--sn-on-d2);font-size:15px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:rgba(47,107,255,.16);color:#9db8ff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.verify{list-style:none}
+.verify li{position:relative;padding-left:28px;margin-bottom:8px;color:var(--sn-on-d2);font-size:15px}
+.verify li::before{content:'';position:absolute;left:4px;top:7px;width:12px;height:7px;border-left:2px solid #10b981;border-bottom:2px solid #10b981;transform:rotate(-45deg)}
+.ctl a{color:#9db8ff;overflow-wrap:anywhere}
+.ctl li,.ctl dd,.caution,.ctl h2{overflow-wrap:anywhere}
+.portal{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:14px;font-weight:600;text-decoration:none}
+.portal:hover{text-decoration:underline}
+.refs{margin-top:16px;font-size:13px;color:var(--sn-on-d3)}
+.fam-cta{background:linear-gradient(135deg,rgba(47,107,255,.2),rgba(31,85,224,.06));border:1px solid rgba(47,107,255,.35);border-radius:18px;padding:32px;margin-top:34px}
+.fam-cta h2{font:700 26px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:10px}
+.fam-cta p{color:var(--sn-on-d2);margin-bottom:20px;max-width:680px}
+.fam-others{padding-bottom:96px}
+.fam-others h2{font:700 24px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:18px}
+.fam-others ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.fam-others a{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 16px;border:1px solid var(--sn-line-d);border-radius:12px;background:var(--sn-ink2);color:var(--sn-on-d);text-decoration:none;font-size:15px;font-weight:500;transition:border-color .2s}
+.fam-others a:hover{border-color:rgba(47,107,255,.6)}
+.fam-others em{font-style:normal;font-size:12px;color:#9db8ff;background:rgba(47,107,255,.12);border-radius:10px;padding:1px 9px;white-space:nowrap}
+@media(max-width:1000px){.fam-body{grid-template-columns:1fr;gap:0}.toc{display:none}}
+@media(max-width:640px){.facts{grid-template-columns:1fr}.ctl{padding:22px 18px}.fam-cta{padding:24px 20px}.lead{font-size:16px}}
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://audit.m365intune.com/"}, {"@type": "ListItem", "position": 2, "name": "Contrôles", "item": "https://audit.m365intune.com/controles"}, {"@type": "ListItem", "position": 3, "name": "Identités et accès conditionnel", "item": "https://audit.m365intune.com/controles/identites-acces-conditionnel"}]}, {"@type": "TechArticle", "headline": "Audit des identités Entra ID et de l'accès conditionnel", "description": "Administrateurs généraux, MFA des administrateurs, authentification héritée, comptes d'urgence, invités inactifs : les 9 contrôles Entra ID d'AuditM365, avec la correction pas à pas.", "inLanguage": "fr-FR", "url": "https://audit.m365intune.com/controles/identites-acces-conditionnel", "dateModified": "2026-11-18", "image": "https://audit.m365intune.com/img/dashboard.png", "author": {"@id": "https://audit.m365intune.com/#org"}, "publisher": {"@id": "https://audit.m365intune.com/#org"}, "isPartOf": {"@type": "WebSite", "name": "AuditM365", "url": "https://audit.m365intune.com/"}}]}</script>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="sn-nav" role="navigation" aria-label="Navigation principale">
+  <div class="sn-nav-in sn-wrap">
+    <a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a>
+    <div class="sn-links">
+      <a href="/#features">Fonctionnalités</a>
+      <a href="/#conformite">Conformité</a>
+      <a href="/controles" class="on" aria-current="page">Contrôles</a>
+      <a href="/#demo">Démo</a>
+      <a href="/#pricing">Tarifs</a>
+      <a href="/nouveautes">Nouveautés</a>
+    </div>
+    <div class="sn-right">
+      <a class="sn-lnk" href="/#download"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Télécharger</a>
+      <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+      <button class="sn-burger" id="sn-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sn-menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="sn-menu" id="sn-menu">
+    <a href="/#features">Fonctionnalités</a>
+    <a href="/#conformite">Conformité</a>
+    <a href="/controles">Contrôles</a>
+    <a href="/#demo">Démo</a>
+    <a href="/#pricing">Tarifs</a>
+    <a href="/nouveautes">Nouveautés</a>
+    <a href="/#faq">FAQ</a>
+    <a href="/#download">Télécharger l'application</a>
+    <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+  </div>
+</div>
+
+<main>
+<div class="fam-hero sn-wrap">
+  <nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span>›</span><a href="/controles">Contrôles</a><span>›</span>Identités et accès conditionnel</nav>
+  <p class="eyebrow">Guide de correction · 9 contrôles</p>
+  <h1>Audit des identités Entra ID et de l&#x27;accès conditionnel</h1>
+  <p class="lead">Les comptes sont la première cible d&#x27;une attaque sur Microsoft 365 : un administrateur sans MFA, un protocole hérité encore ouvert ou un compte oublié suffisent souvent à prendre pied dans le tenant. Ces 9 contrôles vérifient l&#x27;hygiène des comptes Entra ID et les stratégies d&#x27;accès conditionnel qui les protègent.</p>
+  <div class="chips"><span><b>9</b> contrôles</span><span><b>3</b> critiques</span><span><b>4</b> élevées</span><span><b>2</b> moyennes</span><span>Mis à jour le 18 novembre 2026</span></div>
+  <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Auditer mon tenant : essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/controles">Les 86 contrôles</a></div>
+</div>
+
+<div class="fam-body sn-wrap">
+  <aside class="toc" aria-label="Contrôles de cette page"><p>Dans cette page</p><ol><li><a href="#iam-001"><i>IAM-001</i>Nombre d&#x27;administrateurs globaux</a></li><li><a href="#iam-002"><i>IAM-002</i>Protection MFA des comptes administrateurs</a></li><li><a href="#iam-003"><i>IAM-003</i>Comptes invités sans activité récente</a></li><li><a href="#iam-004"><i>IAM-004</i>Comptes administrateurs avec une boîte mail</a></li><li><a href="#iam-005"><i>IAM-005</i>Comptes actifs sans connexion depuis plus de 90 jours</a></li><li><a href="#iam-006"><i>IAM-006</i>Comptes d&#x27;accès d&#x27;urgence (break-glass) configurés</a></li><li><a href="#ca-001"><i>CA-001</i>Blocage de l&#x27;authentification héritée (legacy auth)</a></li><li><a href="#ca-002"><i>CA-002</i>MFA obligatoire pour tous les administrateurs</a></li><li><a href="#ca-003"><i>CA-003</i>Exclusions trop larges dans les politiques d&#x27;accès conditionnel</a></li></ol></aside>
+  <div class="ctls">
+<article class="ctl" id="iam-001">
+<header><span class="cid">IAM-001</span><h2>Nombre d&#x27;administrateurs globaux</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Compte les titulaires du rôle Administrateur général. Plus ils sont nombreux, plus la prise de contrôle totale du tenant est facile.</dd></div><div><dt>Valeur attendue</dt><dd>4 administrateurs généraux au plus.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min à 1 h</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 1</span><span class="fw">ISO 27001 A.5.15</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 5</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Gardez au moins 2 administrateurs généraux, dont un compte d&#x27;accès d&#x27;urgence (voir IAM-006). Prévenez les personnes concernées avant de leur retirer le rôle.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft Entra &gt; Identité &gt; Rôles et administrateurs &gt; Rôles et administrateurs.</li><li>Ouvrez « Administrateur général » &gt; Attributions : notez qui l&#x27;a et pour quel besoin réel.</li><li>Pour chaque personne, attribuez le rôle qui suffit à son travail (Administrateur Exchange, SharePoint, des utilisateurs, du support technique…), puis retirez-lui « Administrateur général ».</li><li>Avec Entra ID P2 : passez les administrateurs restants en « Éligible » dans Privileged Identity Management (activation à la demande, limitée dans le temps).</li></ol>
+<a class="portal" href="https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AllRolesBlade" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Rôles et administrateurs &gt; Administrateur général : 4 comptes ou moins (comptes d&#x27;urgence compris).</li><li>Les personnes qui ont perdu le rôle peuvent toujours faire leur travail avec leur nouveau rôle.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/best-practices" rel="noopener" target="_blank">learn.microsoft.com/en-us/entra/identity/role-based-access-control/best-practices</a></p>
+</article>
+<article class="ctl" id="iam-002">
+<header><span class="cid">IAM-002</span><h2>Protection MFA des comptes administrateurs</h2><span class="sev crit">Sévérité critique</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Vérifie que tous les comptes titulaires d&#x27;un rôle d&#x27;administration sont protégés par l&#x27;authentification multifacteur (MFA).</dd></div><div><dt>Valeur attendue</dt><dd>100 % des comptes administrateurs couverts.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>15 min par compte</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 1</span><span class="fw">ISO 27001 A.8.5</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 13</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Un compte d&#x27;accès d&#x27;urgence doit lui aussi avoir une méthode forte : de préférence une clé de sécurité FIDO2 rangée au coffre.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft Entra &gt; Protection &gt; Méthodes d&#x27;authentification &gt; Détails de l&#x27;inscription de l&#x27;utilisateur.</li><li>Filtrez sur « Administrateur » = Oui et « Inscrit à l&#x27;authentification multifacteur » = Non : ce sont les comptes à traiter.</li><li>Demandez à chaque titulaire d&#x27;inscrire Microsoft Authenticator ou une clé FIDO2 sur <a href="https://aka.ms/mysecurityinfo" rel="noopener" target="_blank">aka.ms/mysecurityinfo</a> (de préférence une clé FIDO2 ou Windows Hello pour les administrateurs).</li><li>Pour imposer la MFA à chaque connexion d&#x27;un administrateur, créez la stratégie d&#x27;accès conditionnel de CA-002.</li></ol>
+<a class="portal" href="https://entra.microsoft.com/#view/Microsoft_AAD_IAM/AuthenticationMethodsMenuBlade/~/UserRegistrationDetails" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script ne renvoie plus aucun compte.</li><li>Détails de l&#x27;inscription de l&#x27;utilisateur : tous les administrateurs sont « Inscrit à l&#x27;authentification multifacteur » = Oui.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/entra/identity/authentication/concept-mfa-howitworks" rel="noopener" target="_blank">learn.microsoft.com/en-us/entra/identity/authentication/concept-mfa-howitworks</a></p>
+</article>
+<article class="ctl" id="iam-003">
+<header><span class="cid">IAM-003</span><h2>Comptes invités sans activité récente</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Repère les comptes invités (B2B) qui ne se sont pas connectés depuis plus de 90 jours.</dd></div><div><dt>Valeur attendue</dt><dd>Aucun invité inactif depuis plus de 90 jours.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min, puis revue trimestrielle</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 1</span><span class="fw">ISO 27001 A.5.15</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 6</span><span class="fw">RGPD Art.32.1.b</span><span class="fw">RGPD Art.5.1.e</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Bloquez d&#x27;abord les invités (réversible) ; ne les supprimez qu&#x27;après un délai de 30 jours sans réclamation.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft Entra &gt; Identité &gt; Utilisateurs &gt; Tous les utilisateurs.</li><li>Filtre « Type d&#x27;utilisateur » = Invité, et ajoutez la colonne « Dernière date de connexion » ; triez par cette colonne.</li><li>Pour chaque invité sans connexion depuis plus de 90 jours : ouvrez-le &gt; Modifier les propriétés &gt; Paramètres &gt; décochez « Compte activé ».</li><li>Avec Entra ID P2 : Gouvernance des identités &gt; Révisions d&#x27;accès &gt; Nouvelle révision d&#x27;accès, portée « Utilisateurs invités uniquement », tous les 3 mois, refus automatique sans réponse.</li></ol>
+<a class="portal" href="https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/AllUsers" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script ne renvoie plus aucun invité actif sans connexion depuis 90 jours.</li><li>Une révision d&#x27;accès récurrente est planifiée pour les invités (si Entra ID P2).</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/entra/id-governance/access-reviews-overview" rel="noopener" target="_blank">learn.microsoft.com/en-us/entra/id-governance/access-reviews-overview</a></p>
+</article>
+<article class="ctl" id="iam-004">
+<header><span class="cid">IAM-004</span><h2>Comptes administrateurs avec une boîte mail</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Les comptes d&#x27;administration privilégiés ne devraient pas avoir de boîte aux lettres : un e-mail d&#x27;hameçonnage ouvert avec un compte administrateur donne directement les droits les plus élevés.</dd></div><div><dt>Valeur attendue</dt><dd>Aucun compte administrateur avec une boîte aux lettres.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h par administrateur</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 1</span><span class="fw">ISO 27001 A.5.15</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 8</span><span class="fw">ANSSI Hygiène mesure 27</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Ne retirez pas la licence Exchange du compte de tous les jours d&#x27;une personne : sa boîte serait supprimée après 30 jours. Le bon geste est de lui créer un compte d&#x27;administration séparé.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft 365 &gt; Utilisateurs &gt; Utilisateurs actifs &gt; Ajouter un utilisateur : créez un compte dédié (ex. adm-prenom.nom@&lt;domaine&gt;.onmicrosoft.com), sans licence.</li><li>Centre d&#x27;administration Microsoft Entra &gt; Rôles et administrateurs : attribuez à ce nouveau compte les rôles de la personne (de préférence en « Éligible » avec PIM).</li><li>Testez la connexion du nouveau compte, puis retirez les rôles d&#x27;administration du compte de tous les jours (qui garde sa boîte mail).</li><li>Le compte d&#x27;administration ne sert qu&#x27;aux portails d&#x27;administration, jamais à lire ses mails ou naviguer.</li></ol>
+<a class="portal" href="https://admin.microsoft.com/#/users" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Rôles et administrateurs : les rôles sont portés par les comptes adm-…, plus par les comptes de tous les jours.</li><li>Utilisateurs actifs : les comptes adm-… n&#x27;ont aucune licence (donc aucune boîte mail).</li></ul>
+</article>
+<article class="ctl" id="iam-005">
+<header><span class="cid">IAM-005</span><h2>Comptes actifs sans connexion depuis plus de 90 jours</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Les comptes actifs (non bloqués) sans connexion depuis 90 jours augmentent inutilement la surface d&#x27;attaque : personne ne remarquera qu&#x27;un attaquant les utilise.</dd></div><div><dt>Valeur attendue</dt><dd>Aucun compte actif sans connexion depuis plus de 90 jours.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min, puis chaque mois</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 1</span><span class="fw">ISO 27001 A.5.15</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 6</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Vérifiez avec les RH ou les responsables avant de bloquer : comptes de service, salles, absences longues. Bloquer est réversible ; la suppression ne l&#x27;est que pendant 30 jours.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft Entra &gt; Identité &gt; Utilisateurs &gt; Tous les utilisateurs.</li><li>Filtres « Type d&#x27;utilisateur » = Membre et « Compte activé » = Oui ; ajoutez la colonne « Dernière date de connexion » et triez.</li><li>Pour chaque compte sans connexion depuis plus de 90 jours et sans besoin confirmé : Modifier les propriétés &gt; Paramètres &gt; décochez « Compte activé », puis retirez ses licences (voir aussi LIC-005).</li><li>Mettez en place une procédure de départ : blocage du compte le dernier jour, suppression après 30 jours.</li></ol>
+<a class="portal" href="https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/AllUsers" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script ne renvoie plus que les comptes de la liste à garder.</li><li>Les licences des comptes bloqués sont libérées (Licences &gt; réattribution possible).</li></ul>
+</article>
+<article class="ctl" id="iam-006">
+<header><span class="cid">IAM-006</span><h2>Comptes d&#x27;accès d&#x27;urgence (break-glass) configurés</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Au moins un compte d&#x27;accès d&#x27;urgence (break-glass) doit être exclu de toutes les stratégies d&#x27;accès conditionnel, pour garder l&#x27;accès au tenant si une stratégie bloque tout le monde par erreur.</dd></div><div><dt>Valeur attendue</dt><dd>1 ou 2 comptes d&#x27;urgence exclus de toutes les stratégies d&#x27;accès conditionnel.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 1</span><span class="fw">ISO 27001 A.5.15</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 5</span><span class="fw">RGPD Art.32.1.c</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Le compte d&#x27;urgence doit être un administrateur général permanent (pas seulement éligible), exclu de TOUTES les stratégies d&#x27;accès conditionnel actives — c&#x27;est ce que vérifie le contrôle.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Entra &gt; Utilisateurs &gt; Nouvel utilisateur : créez 1 ou 2 comptes sur le domaine …onmicrosoft.com (ex. urgence01@&lt;tenant&gt;.onmicrosoft.com), sans licence, avec un mot de passe long (25 caractères ou plus) rangé au coffre, hors ligne.</li><li>Rôles et administrateurs &gt; Administrateur général &gt; Ajouter des attributions : attribution « Active » et « Permanente ».</li><li>Groupes &gt; Nouveau groupe de sécurité « CA - Exclusion comptes d&#x27;urgence » avec ces comptes ; dans chaque stratégie d&#x27;accès conditionnel active : Utilisateurs &gt; Exclure &gt; ce groupe.</li><li>Enregistrez de préférence une clé FIDO2 sur chaque compte, et créez une alerte sur toute connexion de ces comptes (Microsoft Sentinel ou règle d&#x27;alerte Log Analytics sur les journaux de connexion).</li><li>Testez la connexion une fois par trimestre et notez-le.</li></ol>
+<a class="portal" href="https://entra.microsoft.com/#view/Microsoft_AAD_UsersAndTenants/UserManagementMenuBlade/~/AllUsers" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Chaque stratégie d&#x27;accès conditionnel active : Utilisateurs &gt; Exclure contient le groupe des comptes d&#x27;urgence.</li><li>Une connexion de test avec le compte d&#x27;urgence réussit et déclenche l&#x27;alerte.</li></ul>
+</article>
+<article class="ctl" id="ca-001">
+<header><span class="cid">CA-001</span><h2>Blocage de l&#x27;authentification héritée (legacy auth)</h2><span class="sev crit">Sévérité critique</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Vérifie qu&#x27;une stratégie d&#x27;accès conditionnel bloque l&#x27;authentification héritée (SMTP, IMAP, POP3, ActiveSync de base), qui ne sait pas faire de MFA et sert aux attaques par pulvérisation de mots de passe.</dd></div><div><dt>Valeur attendue</dt><dd>Authentification héritée bloquée par au moins une stratégie active.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min + 7 jours d&#x27;observation</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 2</span><span class="fw">ISO 27001 A.8.2</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 13</span><span class="fw">ANSSI Hygiène mesure 21</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Avant d&#x27;activer, regardez dans les journaux de connexion (filtre « Application cliente » = autres clients / Exchange ActiveSync) qui utilise encore l&#x27;authentification héritée : imprimantes ou scanners en SMTP, vieux clients mail.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft Entra &gt; Protection &gt; Accès conditionnel &gt; Stratégies &gt; Nouvelle stratégie (ou modèle « Bloquer l&#x27;authentification héritée »).</li><li>Utilisateurs : Inclure « Tous les utilisateurs » ; Exclure le groupe des comptes d&#x27;urgence (IAM-006).</li><li>Ressources cibles : « Toutes les ressources » (toutes les applications cloud).</li><li>Conditions &gt; Applications clientes : cochez seulement « Clients Exchange ActiveSync » et « Autres clients ».</li><li>Accorder : « Bloquer l&#x27;accès ». Activer la stratégie : « Rapport seul » pendant 7 jours, puis « Activé ».</li></ol>
+<a class="portal" href="https://entra.microsoft.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Policies" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Accès conditionnel &gt; Stratégies : la stratégie est « Activé », vise tous les utilisateurs et toutes les ressources, avec au plus 2 comptes exclus.</li><li>Journaux de connexion, filtre « Application cliente » = autres clients : les tentatives sont en échec « Accès conditionnel ».</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/entra/identity/conditional-access/block-legacy-authentication" rel="noopener" target="_blank">learn.microsoft.com/en-us/entra/identity/conditional-access/block-legacy-authentication</a></p>
+</article>
+<article class="ctl" id="ca-002">
+<header><span class="cid">CA-002</span><h2>MFA obligatoire pour tous les administrateurs</h2><span class="sev crit">Sévérité critique</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Vérifie qu&#x27;une stratégie d&#x27;accès conditionnel impose la MFA à tous les comptes qui ont un rôle d&#x27;administration.</dd></div><div><dt>Valeur attendue</dt><dd>Au moins une stratégie impose la MFA aux administrateurs.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min + 3 jours d&#x27;observation</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 2</span><span class="fw">ISO 27001 A.8.5</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 13</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Vérifiez d&#x27;abord que chaque administrateur a inscrit une méthode MFA (IAM-002), sinon il sera bloqué à sa prochaine connexion.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Accès conditionnel &gt; Stratégies &gt; Nouvelle stratégie (ou modèle « Exiger l&#x27;authentification multifacteur pour les administrateurs »).</li><li>Utilisateurs : Inclure &gt; Rôles d&#x27;annuaire : au minimum Administrateur général, de rôle privilégié, de la sécurité, Exchange, SharePoint, des utilisateurs, du support technique, de l&#x27;accès conditionnel, d&#x27;applications, d&#x27;applications cloud, d&#x27;authentification, d&#x27;authentification privilégié, de facturation, des mots de passe.</li><li>Exclure : le groupe des comptes d&#x27;urgence uniquement.</li><li>Ressources cibles : « Toutes les ressources ». Accorder : « Exiger l&#x27;authentification multifacteur » (ou mieux, « Exiger la force d&#x27;authentification » &gt; MFA résistante au hameçonnage).</li><li>Activer : « Rapport seul » quelques jours, puis « Activé ».</li></ol>
+<a class="portal" href="https://entra.microsoft.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Policies" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>La stratégie est « Activé » et seuls les comptes d&#x27;urgence en sont exclus.</li><li>Journaux de connexion d&#x27;un administrateur : « Exigence d&#x27;authentification » = authentification multifacteur.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/entra/identity/conditional-access/howto-conditional-access-policy-admin-mfa" rel="noopener" target="_blank">learn.microsoft.com/en-us/entra/identity/conditional-access/howto-conditional-access-policy-admin-mfa</a></p>
+</article>
+<article class="ctl" id="ca-003">
+<header><span class="cid">CA-003</span><h2>Exclusions trop larges dans les politiques d&#x27;accès conditionnel</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Repère les stratégies d&#x27;accès conditionnel qui excluent des groupes ou des utilisateurs sans justification : chaque exclusion est une porte ouverte.</dd></div><div><dt>Valeur attendue</dt><dd>Aucune exclusion non documentée.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h, puis revue trimestrielle</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 2</span><span class="fw">ISO 27001 A.5.15</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">ANSSI Hygiène mesure 13</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Ne retirez pas une exclusion sans savoir pourquoi elle a été posée : demandez au propriétaire de la stratégie, et testez avec l&#x27;outil « What If ».</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Accès conditionnel &gt; Stratégies : ouvrez chaque stratégie citée ci-dessus &gt; Utilisateurs &gt; Exclure.</li><li>Pour chaque compte ou groupe exclu, notez la raison. Les comptes d&#x27;urgence (IAM-006) sont la seule exclusion permanente normale.</li><li>Retirez les exclusions sans justification. Pour un besoin temporaire, utilisez un groupe dédié (ex. « CA - Exclusion temporaire ») avec une date de fin, revu chaque trimestre.</li><li>Vérifiez l&#x27;effet avec Accès conditionnel &gt; What If, sur un compte qui était exclu.</li></ol>
+<a class="portal" href="https://entra.microsoft.com/#view/Microsoft_AAD_ConditionalAccess/ConditionalAccessBlade/~/Policies" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Aucune stratégie active n&#x27;exclut plus de 2 comptes, groupes compris (en dehors des comptes d&#x27;urgence).</li><li>Chaque exclusion restante a une raison écrite et une date de revue.</li></ul>
+</article>
+    <section class="fam-cta">
+      <h2>Ces 9 contrôles, sur votre tenant</h2>
+      <p>AuditM365 les évalue en lecture seule, depuis votre poste, et ajoute à chaque écart les chiffres de votre tenant (comptes, stratégies ou appareils concernés) et un script PowerShell à relire avant de l'exécuter.</p>
+      <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/#demo">Voir la démo</a></div>
+    </section>
+  </div>
+</div>
+
+<section class="fam-others sn-wrap" aria-label="Autres familles de contrôles">
+  <h2>Les autres familles de contrôles</h2>
+  <ul><li><a href="/controles/protection-avancee-identites">Protection avancée des identités<em>5</em></a></li><li><a href="/controles/applications-entra-id">Applications Entra ID<em>5</em></a></li><li><a href="/controles/exchange-online">Messagerie Exchange Online<em>7</em></a></li><li><a href="/controles/defender-office-365">Defender for Office 365<em>5</em></a></li><li><a href="/controles/partage-sharepoint-onedrive-teams">Partage et collaboration<em>9</em></a></li><li><a href="/controles/prevention-pertes-donnees-dlp">Prévention des pertes de données (DLP)<em>5</em></a></li><li><a href="/controles/appareils-intune">Appareils Intune<em>10</em></a></li><li><a href="/controles/defender-endpoint">Defender for Endpoint<em>5</em></a></li><li><a href="/controles/defender-cloud-apps">Defender for Cloud Apps<em>4</em></a></li><li><a href="/controles/purview-audit-secure-score">Purview, audit et Secure Score<em>7</em></a></li><li><a href="/controles/journaux-connexion-audit">Journaux de connexion et d&#x27;audit<em>4</em></a></li><li><a href="/controles/microsoft-sentinel">Microsoft Sentinel<em>4</em></a></li><li><a href="/controles/power-platform">Power Platform<em>2</em></a></li><li><a href="/controles/licences-microsoft-365">Licences et économies<em>5</em></a></li></ul>
+</section>
+</main>
+
+<div class="sn-foot sn-wrap" role="contentinfo">
+  <div class="sn-foot-g">
+    <div><a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a><p>L'audit de sécurité Microsoft 365 et Intune pour les équipes IT, les consultants et les MSP.</p></div>
+    <div><h4>Produit</h4><ul><li><a href="/#features">Fonctionnalités</a></li><li><a href="/controles">Les 86 contrôles</a></li><li><a href="/#conformite">Conformité</a></li><li><a href="/#pricing">Tarifs</a></li></ul></div>
+    <div><h4>Ressources</h4><ul><li><a href="/#demo">Démo vidéo</a></li><li><a href="/nouveautes">Nouveautés</a></li><li><a href="/#faq">FAQ</a></li><li><a href="/#download">Télécharger</a></li><li><a href="https://secuopstech.com/">Supervision continue : SecureOps 365</a></li></ul></div>
+    <div><h4>Compte</h4><ul><li><a href="/#essai">Essai gratuit</a></li><li><a href="https://billing.stripe.com/p/login/bJe00i2Eu1uf6yTe2s6wE00">Gérer mon abonnement</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="mailto:bonjour@m365intune.com">bonjour@m365intune.com</a></li></ul></div>
+  </div>
+  <div class="sn-legal"><span>© 2026 AuditM365. Tous droits réservés.</span><span>Microsoft 365, Entra ID et Intune sont des marques de Microsoft Corporation.</span></div>
+</div>
+
+<script src="/site.js" defer></script>
+<script src="/chat/chat.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Defender for Endpoint : intégration, alertes, score d&#x27;exposition</title>
+  <meta name="description" content="Taux d&#x27;intégration des appareils, alertes élevées en attente, score d&#x27;exposition, score de sécurité des appareils, base de sécurité Windows : 5 contrôles Defender for Endpoint.">
+  <link rel="canonical" href="https://audit.m365intune.com/controles/defender-endpoint">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AuditM365">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Audit Defender for Endpoint : intégration, alertes, score d&#x27;exposition">
+  <meta property="og:description" content="Taux d&#x27;intégration des appareils, alertes élevées en attente, score d&#x27;exposition, score de sécurité des appareils, base de sécurité Windows : 5 contrôles Defender for Endpoint.">
+  <meta property="og:url" content="https://audit.m365intune.com/controles/defender-endpoint">
+  <meta property="og:image" content="https://audit.m365intune.com/img/dashboard.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/img/icon-192.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--sn-ink);color:var(--sn-on-d);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fam-hero{padding-top:48px;padding-bottom:40px;background:radial-gradient(ellipse 70% 70% at 25% -20%,rgba(47,107,255,.17),transparent 62%)}
+.crumbs{font-size:14px;color:var(--sn-on-d3);margin-bottom:30px}
+.crumbs a{color:var(--sn-on-d2);text-decoration:none}.crumbs a:hover{color:#fff}
+.crumbs span{margin:0 8px;color:var(--sn-on-d3)}
+.eyebrow{color:#9db8ff;font-weight:600;font-size:14px;margin-bottom:12px}
+.fam-hero h1{font:800 clamp(30px,4vw,50px)/1.1 'Inter Tight',Inter,sans-serif;letter-spacing:-.02em;max-width:980px}
+.lead{font-size:18px;color:var(--sn-on-d2);max-width:780px;margin:18px 0 24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.chips span{border:1px solid var(--sn-line-d);background:rgba(255,255,255,.03);border-radius:20px;padding:5px 12px;font-size:13px;color:var(--sn-on-d2)}
+.chips b{color:#fff}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.fam-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:56px;padding-top:28px;padding-bottom:64px;align-items:start}
+.toc{position:sticky;top:96px;font-size:14px;max-height:calc(100vh - 120px);overflow:auto}
+.toc p{font-weight:700;margin-bottom:10px}
+.toc ol{list-style:none;border-left:1px solid var(--sn-line-d)}
+.toc a{display:block;padding:6px 0 6px 14px;color:var(--sn-on-d3);text-decoration:none;line-height:1.35}
+.toc a:hover{color:#fff}
+.toc i{display:block;font:600 11px ui-monospace,Consolas,monospace;color:#7fa3ff;font-style:normal}
+.ctls{max-width:900px;min-width:0}
+.ctl{background:var(--sn-ink2);border:1px solid var(--sn-line-d);border-radius:16px;padding:28px 30px;margin-bottom:22px;scroll-margin-top:96px}
+.ctl header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:18px}
+.ctl h2{font:700 21px/1.3 'Inter Tight',Inter,sans-serif;flex:1 1 280px}
+.cid{font:600 12px ui-monospace,Consolas,monospace;color:#9db8ff;background:rgba(47,107,255,.14);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.sev{font-size:12px;font-weight:700;border-radius:6px;padding:3px 9px;white-space:nowrap}
+.sev.crit{background:rgba(239,68,68,.15);color:#f87171}.sev.high{background:rgba(245,158,11,.15);color:#fbbf24}
+.sev.med{background:rgba(59,130,246,.15);color:#93c5fd}.sev.low{background:rgba(16,185,129,.15);color:#6ee7b7}
+.facts{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-bottom:16px}
+.facts div{background:rgba(255,255,255,.025);border:1px solid var(--sn-line-d);border-radius:12px;padding:14px 16px}
+.facts dt{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--sn-on-d3);margin-bottom:6px}
+.facts dd{color:var(--sn-on-d2);font-size:15px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--sn-on-d3);margin-bottom:6px}
+.meta b{color:var(--sn-on-d2);font-weight:600;margin-right:6px}
+.fw{border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:1px 7px;font-size:12px;color:var(--sn-on-d2)}
+.caution{border-left:3px solid #f59e0b;background:rgba(245,158,11,.08);padding:12px 16px;border-radius:0 10px 10px 0;color:#f1e4c8;font-size:15px;margin-top:16px}
+.ctl h3{font:700 15px/1.3 Inter,sans-serif;margin:22px 0 10px}
+.steps{counter-reset:s;list-style:none}
+.steps li{counter-increment:s;position:relative;padding-left:38px;margin-bottom:10px;color:var(--sn-on-d2);font-size:15px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:rgba(47,107,255,.16);color:#9db8ff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.verify{list-style:none}
+.verify li{position:relative;padding-left:28px;margin-bottom:8px;color:var(--sn-on-d2);font-size:15px}
+.verify li::before{content:'';position:absolute;left:4px;top:7px;width:12px;height:7px;border-left:2px solid #10b981;border-bottom:2px solid #10b981;transform:rotate(-45deg)}
+.ctl a{color:#9db8ff;overflow-wrap:anywhere}
+.ctl li,.ctl dd,.caution,.ctl h2{overflow-wrap:anywhere}
+.portal{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:14px;font-weight:600;text-decoration:none}
+.portal:hover{text-decoration:underline}
+.refs{margin-top:16px;font-size:13px;color:var(--sn-on-d3)}
+.fam-cta{background:linear-gradient(135deg,rgba(47,107,255,.2),rgba(31,85,224,.06));border:1px solid rgba(47,107,255,.35);border-radius:18px;padding:32px;margin-top:34px}
+.fam-cta h2{font:700 26px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:10px}
+.fam-cta p{color:var(--sn-on-d2);margin-bottom:20px;max-width:680px}
+.fam-others{padding-bottom:96px}
+.fam-others h2{font:700 24px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:18px}
+.fam-others ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.fam-others a{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 16px;border:1px solid var(--sn-line-d);border-radius:12px;background:var(--sn-ink2);color:var(--sn-on-d);text-decoration:none;font-size:15px;font-weight:500;transition:border-color .2s}
+.fam-others a:hover{border-color:rgba(47,107,255,.6)}
+.fam-others em{font-style:normal;font-size:12px;color:#9db8ff;background:rgba(47,107,255,.12);border-radius:10px;padding:1px 9px;white-space:nowrap}
+@media(max-width:1000px){.fam-body{grid-template-columns:1fr;gap:0}.toc{display:none}}
+@media(max-width:640px){.facts{grid-template-columns:1fr}.ctl{padding:22px 18px}.fam-cta{padding:24px 20px}.lead{font-size:16px}}
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://audit.m365intune.com/"}, {"@type": "ListItem", "position": 2, "name": "Contrôles", "item": "https://audit.m365intune.com/controles"}, {"@type": "ListItem", "position": 3, "name": "Defender for Endpoint", "item": "https://audit.m365intune.com/controles/defender-endpoint"}]}, {"@type": "TechArticle", "headline": "Audit de Defender for Endpoint", "description": "Taux d'intégration des appareils, alertes élevées en attente, score d'exposition, score de sécurité des appareils, base de sécurité Windows : 5 contrôles Defender for Endpoint.", "inLanguage": "fr-FR", "url": "https://audit.m365intune.com/controles/defender-endpoint", "dateModified": "2026-11-18", "image": "https://audit.m365intune.com/img/dashboard.png", "author": {"@id": "https://audit.m365intune.com/#org"}, "publisher": {"@id": "https://audit.m365intune.com/#org"}, "isPartOf": {"@type": "WebSite", "name": "AuditM365", "url": "https://audit.m365intune.com/"}}]}</script>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="sn-nav" role="navigation" aria-label="Navigation principale">
+  <div class="sn-nav-in sn-wrap">
+    <a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a>
+    <div class="sn-links">
+      <a href="/#features">Fonctionnalités</a>
+      <a href="/#conformite">Conformité</a>
+      <a href="/controles" class="on" aria-current="page">Contrôles</a>
+      <a href="/#demo">Démo</a>
+      <a href="/#pricing">Tarifs</a>
+      <a href="/nouveautes">Nouveautés</a>
+    </div>
+    <div class="sn-right">
+      <a class="sn-lnk" href="/#download"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Télécharger</a>
+      <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+      <button class="sn-burger" id="sn-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sn-menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="sn-menu" id="sn-menu">
+    <a href="/#features">Fonctionnalités</a>
+    <a href="/#conformite">Conformité</a>
+    <a href="/controles">Contrôles</a>
+    <a href="/#demo">Démo</a>
+    <a href="/#pricing">Tarifs</a>
+    <a href="/nouveautes">Nouveautés</a>
+    <a href="/#faq">FAQ</a>
+    <a href="/#download">Télécharger l'application</a>
+    <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+  </div>
+</div>
+
+<main>
+<div class="fam-hero sn-wrap">
+  <nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span>›</span><a href="/controles">Contrôles</a><span>›</span>Defender for Endpoint</nav>
+  <p class="eyebrow">Guide de correction · 5 contrôles</p>
+  <h1>Audit de Defender for Endpoint</h1>
+  <p class="lead">Microsoft Defender for Endpoint détecte et bloque les attaques sur les postes et les serveurs, à condition que les appareils y soient intégrés et que ses alertes soient traitées. Ces 5 contrôles mesurent le taux d&#x27;intégration, les alertes élevées en attente, le score d&#x27;exposition, le score de sécurité des appareils et le déploiement d&#x27;une base de sécurité Windows.</p>
+  <div class="chips"><span><b>5</b> contrôles</span><span><b>2</b> élevées</span><span><b>3</b> moyennes</span><span>Mis à jour le 18 novembre 2026</span></div>
+  <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Auditer mon tenant : essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/controles">Les 86 contrôles</a></div>
+</div>
+
+<div class="fam-body sn-wrap">
+  <aside class="toc" aria-label="Contrôles de cette page"><p>Dans cette page</p><ol><li><a href="#mde-001"><i>MDE-001</i>Taux d&#x27;intégration des appareils dans Defender for Endpoint</a></li><li><a href="#mde-002"><i>MDE-002</i>Alertes Defender for Endpoint élevées ou critiques</a></li><li><a href="#mde-003"><i>MDE-003</i>Score d&#x27;exposition Defender for Endpoint</a></li><li><a href="#mde-004"><i>MDE-004</i>Score de sécurité des appareils</a></li><li><a href="#mde-005"><i>MDE-005</i>Base de sécurité Windows déployée</a></li></ol></aside>
+  <div class="ctls">
+<article class="ctl" id="mde-001">
+<header><span class="cid">MDE-001</span><h2>Taux d&#x27;intégration des appareils dans Defender for Endpoint</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Au moins 90 % des appareils gérés doivent être intégrés à Microsoft Defender for Endpoint pour bénéficier de la détection et de la réponse (EDR).</dd></div><div><dt>Valeur attendue</dt><dd>90 % des appareils gérés intégrés au moins.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 à 2 h, puis le temps du déploiement sur le parc</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 9</span><span class="fw">ISO 27001 A.8.7</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 14</span><span class="fw">ANSSI Hygiène mesure 16</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> L&#x27;intégration demande une licence Defender for Endpoint (Plan 1, Plan 2, Business, ou incluse dans Microsoft 365 E5 / Business Premium). Déployez d&#x27;abord sur un groupe pilote : sur un poste avec un autre antivirus, Defender passe en mode passif, vérifiez la compatibilité avec l&#x27;éditeur.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Microsoft Defender &gt; Paramètres &gt; Points de terminaison &gt; Fonctionnalités avancées : activez « Connexion à Microsoft Intune ».</li><li>Centre d&#x27;administration Microsoft Intune &gt; Administration du locataire &gt; Connecteurs et jetons &gt; Microsoft Defender for Endpoint : activez la connexion des appareils Windows (et macOS, iOS, Android si utilisés).</li><li>Intune &gt; Sécurité du point de terminaison &gt; Détection et réponse de point de terminaison &gt; Créer une stratégie : Windows, profil « Détection et réponse de point de terminaison », type de package « Automatique à partir du connecteur », affectée au groupe pilote puis à tous les appareils.</li><li>Portail Defender &gt; Appareils (Inventaire) : les appareils apparaissent sous quelques heures avec l&#x27;état « Intégré ».</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_Workflows/SecurityManagementMenu/~/edr" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche au moins 90 % des appareils Windows intégrés.</li><li>Relancez un audit : MDE-001 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/onboarding" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/onboarding</a> · <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-mdm" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-mdm</a></p>
+</article>
+<article class="ctl" id="mde-002">
+<header><span class="cid">MDE-002</span><h2>Alertes Defender for Endpoint élevées ou critiques</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Aucune alerte active de gravité élevée ou critique ne doit rester sans traitement dans Microsoft Defender for Endpoint.</dd></div><div><dt>Valeur attendue</dt><dd>Aucune alerte élevée ou critique en attente.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>15 à 60 min par alerte</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 9</span><span class="fw">ISO 27001 A.8.16</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 40</span><span class="fw">RGPD Art.33</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Une alerte élevée ou critique se traite comme un incident possible : ne la fermez pas sans avoir regardé l&#x27;arbre du processus, l&#x27;appareil et l&#x27;utilisateur. En cas de doute (rançongiciel, vol d&#x27;identifiants), isolez l&#x27;appareil depuis sa page avant d&#x27;enquêter. Fermer une alerte sans enquête efface le signal, pas la menace.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Microsoft Defender &gt; Incidents et alertes &gt; Alertes : filtrez sur « Source : EDR / Defender pour point de terminaison », « Gravité : Élevée, Haute » et « État : Nouveau, En cours ».</li><li>Ouvrez chaque alerte : chronologie, arbre du processus, fichiers et appareils touchés. Attribuez-la à une personne.</li><li>Menace réelle : actions de réponse (isoler l&#x27;appareil, arrêter et mettre en quarantaine le fichier, analyse antivirus), puis changez le mot de passe de l&#x27;utilisateur.</li><li>Fausse alerte confirmée : classez-la « Faux positif » avec une note ; si elle revient, créez une règle de suppression ciblée (jamais globale).</li></ol>
+<a class="portal" href="https://security.microsoft.com/alerts" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script n&#x27;affiche plus aucune alerte (toutes résolues, après enquête).</li><li>Relancez un audit : MDE-002 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/manage-alerts" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/manage-alerts</a> · <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/investigate-alerts" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/investigate-alerts</a></p>
+</article>
+<article class="ctl" id="mde-003">
+<header><span class="cid">MDE-003</span><h2>Score d&#x27;exposition Defender for Endpoint</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Le score d&#x27;exposition de Defender for Endpoint mesure la vulnérabilité de l&#x27;organisation aux menaces : plus il est élevé, plus la surface d&#x27;attaque est grande.</dd></div><div><dt>Valeur attendue</dt><dd>Score d&#x27;exposition de 30 au plus.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>Variable : chantier continu de mises à jour</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 9</span><span class="fw">ISO 27001 A.8.7</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 34</span><span class="fw">ANSSI Hygiène mesure 38</span><span class="fw">RGPD Art.32.1.d</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Le score d&#x27;exposition baisse surtout en mettant à jour les logiciels vulnérables (navigateurs, Java, Adobe, Office) et en retirant ceux qui ne servent plus. Testez les mises à jour de logiciels métier sur quelques postes avant de les déployer partout.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Microsoft Defender &gt; Gestion des vulnérabilités &gt; Recommandations : triez par « Impact sur l&#x27;exposition ».</li><li>Ouvrez les premières recommandations : logiciel, versions vulnérables, appareils exposés. Déployez la mise à jour avec Intune (Applications ou Windows Update pour les entreprises) ou retirez le logiciel.</li><li>Pour une recommandation qu&#x27;on ne peut pas suivre tout de suite : « Demander une correction » (tâche suivie) ou « Exception » datée, avec une justification.</li></ol>
+<a class="portal" href="https://security.microsoft.com/security-recommendations" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Portail Defender &gt; Gestion des vulnérabilités &gt; Tableau de bord : le score d&#x27;exposition est à 30 ou moins.</li><li>Relancez un audit : MDE-003 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/tvm-exposure-score" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/tvm-exposure-score</a> · <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/threat-and-vuln-mgt-overview" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/threat-and-vuln-mgt-overview</a></p>
+</article>
+<article class="ctl" id="mde-004">
+<header><span class="cid">MDE-004</span><h2>Score de sécurité des appareils</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Le score de sécurité des appareils mesure l&#x27;état des appareils gérés par rapport aux réglages de sécurité recommandés par Microsoft.</dd></div><div><dt>Valeur attendue</dt><dd>Score de sécurité des appareils de 70 % au moins.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>2 à 4 h</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 9</span><span class="fw">ISO 27001 A.8.9</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 14</span><span class="fw">ANSSI Hygiène mesure 38</span><span class="fw">RGPD Art.32.1.d</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Les actions « Appareils » du Secure Score se règlent pour la plupart par des stratégies Intune (antivirus, pare-feu, BitLocker, réduction de la surface d&#x27;attaque). Appliquez-les d&#x27;abord à un groupe pilote : les règles de réduction de la surface d&#x27;attaque se mettent en mode Audit avant le mode Bloquer.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Microsoft Defender &gt; Exposition &gt; Secure Score &gt; Actions recommandées : filtrez sur « Catégorie : Appareil » et « État : À traiter ».</li><li>Pour chaque action : la fiche cite le réglage (par exemple « Activer la protection fournie par le cloud ») ; créez-le dans Intune &gt; Sécurité du point de terminaison (Antivirus, Pare-feu, Chiffrement de disque, Réduction de la surface d&#x27;attaque).</li><li>Une base de sécurité Windows (MDE-005) règle d&#x27;un coup une grande partie de ces actions.</li></ol>
+<a class="portal" href="https://security.microsoft.com/securescore?viewid=actions" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche un score des appareils d&#x27;au moins 70 %, sur plusieurs contrôles notés.</li><li>MDE-004 reste « non évaluable » tant que moins de quelques contrôles appareils sont notés (appareils non intégrés : voir MDE-001).</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/tvm-microsoft-secure-score-devices" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/tvm-microsoft-secure-score-devices</a> · <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-machines-security-baseline" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-machines-security-baseline</a></p>
+</article>
+<article class="ctl" id="mde-005">
+<header><span class="cid">MDE-005</span><h2>Base de sécurité Windows déployée</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Une base de sécurité Windows doit être configurée et déployée sur les postes Windows, par Intune ou Defender for Endpoint, pour garantir une configuration minimale sécurisée.</dd></div><div><dt>Valeur attendue</dt><dd>Base de sécurité configurée pour les appareils Windows.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>2 h pour le pilote, puis 2 à 4 semaines avant la généralisation</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 9</span><span class="fw">ISO 27001 A.8.9</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 14</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Une base de sécurité applique des centaines de réglages d&#x27;un coup (NTLM, SMB, macros, comptes locaux...) : elle peut bloquer une application métier ancienne, une imprimante ou un partage réseau. Affectez-la d&#x27;abord à un groupe pilote de quelques postes, vérifiez les applications métier, et ne modifiez que les réglages qui posent un problème réel, en le documentant.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft Intune &gt; Sécurité du point de terminaison &gt; Bases de référence de sécurité &gt; « Base de référence de sécurité pour Windows 10 et versions ultérieures » &gt; Créer un profil.</li><li>Gardez les valeurs recommandées ; affectez le profil à un groupe pilote d&#x27;appareils.</li><li>Après 2 à 4 semaines sans incident (ou après avoir ajusté les réglages bloquants), affectez-le à tous les appareils Windows.</li><li>Ajoutez aussi la base « Microsoft Defender for Endpoint » si la licence le permet.</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_Workflows/SecurityManagementMenu/~/securityBaselines" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche un profil « Base de référence de sécurité pour Windows » affecté (pilote, puis tous les appareils).</li><li>Intune &gt; le profil &gt; État de l&#x27;appareil : les appareils sont « Conforme » aux réglages ; relancez un audit, MDE-005 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/protect/security-baselines" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/protect/security-baselines</a> · <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-machines-security-baseline" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-machines-security-baseline</a> · <a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-security-configuration-framework/windows-security-baselines" rel="noopener" target="_blank">learn.microsoft.com/en-us/windows/security/threat-protection/windows-security-configuration-framework/windows-security-baselines</a></p>
+</article>
+    <section class="fam-cta">
+      <h2>Ces 5 contrôles, sur votre tenant</h2>
+      <p>AuditM365 les évalue en lecture seule, depuis votre poste, et ajoute à chaque écart les chiffres de votre tenant (comptes, stratégies ou appareils concernés) et un script PowerShell à relire avant de l'exécuter.</p>
+      <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/#demo">Voir la démo</a></div>
+    </section>
+  </div>
+</div>
+
+<section class="fam-others sn-wrap" aria-label="Autres familles de contrôles">
+  <h2>Les autres familles de contrôles</h2>
+  <ul><li><a href="/controles/identites-acces-conditionnel">Identités et accès conditionnel<em>9</em></a></li><li><a href="/controles/protection-avancee-identites">Protection avancée des identités<em>5</em></a></li><li><a href="/controles/applications-entra-id">Applications Entra ID<em>5</em></a></li><li><a href="/controles/exchange-online">Messagerie Exchange Online<em>7</em></a></li><li><a href="/controles/defender-office-365">Defender for Office 365<em>5</em></a></li><li><a href="/controles/partage-sharepoint-onedrive-teams">Partage et collaboration<em>9</em></a></li><li><a href="/controles/prevention-pertes-donnees-dlp">Prévention des pertes de données (DLP)<em>5</em></a></li><li><a href="/controles/appareils-intune">Appareils Intune<em>10</em></a></li><li><a href="/controles/defender-cloud-apps">Defender for Cloud Apps<em>4</em></a></li><li><a href="/controles/purview-audit-secure-score">Purview, audit et Secure Score<em>7</em></a></li><li><a href="/controles/journaux-connexion-audit">Journaux de connexion et d&#x27;audit<em>4</em></a></li><li><a href="/controles/microsoft-sentinel">Microsoft Sentinel<em>4</em></a></li><li><a href="/controles/power-platform">Power Platform<em>2</em></a></li><li><a href="/controles/licences-microsoft-365">Licences et économies<em>5</em></a></li></ul>
+</section>
+</main>
+
+<div class="sn-foot sn-wrap" role="contentinfo">
+  <div class="sn-foot-g">
+    <div><a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a><p>L'audit de sécurité Microsoft 365 et Intune pour les équipes IT, les consultants et les MSP.</p></div>
+    <div><h4>Produit</h4><ul><li><a href="/#features">Fonctionnalités</a></li><li><a href="/controles">Les 86 contrôles</a></li><li><a href="/#conformite">Conformité</a></li><li><a href="/#pricing">Tarifs</a></li></ul></div>
+    <div><h4>Ressources</h4><ul><li><a href="/#demo">Démo vidéo</a></li><li><a href="/nouveautes">Nouveautés</a></li><li><a href="/#faq">FAQ</a></li><li><a href="/#download">Télécharger</a></li><li><a href="https://secuopstech.com/">Supervision continue : SecureOps 365</a></li></ul></div>
+    <div><h4>Compte</h4><ul><li><a href="/#essai">Essai gratuit</a></li><li><a href="https://billing.stripe.com/p/login/bJe00i2Eu1uf6yTe2s6wE00">Gérer mon abonnement</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="mailto:bonjour@m365intune.com">bonjour@m365intune.com</a></li></ul></div>
+  </div>
+  <div class="sn-legal"><span>© 2026 AuditM365. Tous droits réservés.</span><span>Microsoft 365, Entra ID et Intune sont des marques de Microsoft Corporation.</span></div>
+</div>
+
+<script src="/site.js" defer></script>
+<script src="/chat/chat.js" defer></script>
+</body>
+</html>

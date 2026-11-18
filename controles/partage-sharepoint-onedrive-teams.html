@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit SharePoint, OneDrive et Teams : partage externe et gouvernance</title>
+  <meta name="description" content="Liens anonymes, lien par défaut, domaines autorisés, équipes sans propriétaire ou publiques, synchronisation OneDrive, expiration des groupes : 9 contrôles de partage.">
+  <link rel="canonical" href="https://audit.m365intune.com/controles/partage-sharepoint-onedrive-teams">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AuditM365">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Audit SharePoint, OneDrive et Teams : partage externe et gouvernance">
+  <meta property="og:description" content="Liens anonymes, lien par défaut, domaines autorisés, équipes sans propriétaire ou publiques, synchronisation OneDrive, expiration des groupes : 9 contrôles de partage.">
+  <meta property="og:url" content="https://audit.m365intune.com/controles/partage-sharepoint-onedrive-teams">
+  <meta property="og:image" content="https://audit.m365intune.com/img/dashboard.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/img/icon-192.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--sn-ink);color:var(--sn-on-d);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fam-hero{padding-top:48px;padding-bottom:40px;background:radial-gradient(ellipse 70% 70% at 25% -20%,rgba(47,107,255,.17),transparent 62%)}
+.crumbs{font-size:14px;color:var(--sn-on-d3);margin-bottom:30px}
+.crumbs a{color:var(--sn-on-d2);text-decoration:none}.crumbs a:hover{color:#fff}
+.crumbs span{margin:0 8px;color:var(--sn-on-d3)}
+.eyebrow{color:#9db8ff;font-weight:600;font-size:14px;margin-bottom:12px}
+.fam-hero h1{font:800 clamp(30px,4vw,50px)/1.1 'Inter Tight',Inter,sans-serif;letter-spacing:-.02em;max-width:980px}
+.lead{font-size:18px;color:var(--sn-on-d2);max-width:780px;margin:18px 0 24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.chips span{border:1px solid var(--sn-line-d);background:rgba(255,255,255,.03);border-radius:20px;padding:5px 12px;font-size:13px;color:var(--sn-on-d2)}
+.chips b{color:#fff}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.fam-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:56px;padding-top:28px;padding-bottom:64px;align-items:start}
+.toc{position:sticky;top:96px;font-size:14px;max-height:calc(100vh - 120px);overflow:auto}
+.toc p{font-weight:700;margin-bottom:10px}
+.toc ol{list-style:none;border-left:1px solid var(--sn-line-d)}
+.toc a{display:block;padding:6px 0 6px 14px;color:var(--sn-on-d3);text-decoration:none;line-height:1.35}
+.toc a:hover{color:#fff}
+.toc i{display:block;font:600 11px ui-monospace,Consolas,monospace;color:#7fa3ff;font-style:normal}
+.ctls{max-width:900px;min-width:0}
+.ctl{background:var(--sn-ink2);border:1px solid var(--sn-line-d);border-radius:16px;padding:28px 30px;margin-bottom:22px;scroll-margin-top:96px}
+.ctl header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:18px}
+.ctl h2{font:700 21px/1.3 'Inter Tight',Inter,sans-serif;flex:1 1 280px}
+.cid{font:600 12px ui-monospace,Consolas,monospace;color:#9db8ff;background:rgba(47,107,255,.14);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.sev{font-size:12px;font-weight:700;border-radius:6px;padding:3px 9px;white-space:nowrap}
+.sev.crit{background:rgba(239,68,68,.15);color:#f87171}.sev.high{background:rgba(245,158,11,.15);color:#fbbf24}
+.sev.med{background:rgba(59,130,246,.15);color:#93c5fd}.sev.low{background:rgba(16,185,129,.15);color:#6ee7b7}
+.facts{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-bottom:16px}
+.facts div{background:rgba(255,255,255,.025);border:1px solid var(--sn-line-d);border-radius:12px;padding:14px 16px}
+.facts dt{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--sn-on-d3);margin-bottom:6px}
+.facts dd{color:var(--sn-on-d2);font-size:15px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--sn-on-d3);margin-bottom:6px}
+.meta b{color:var(--sn-on-d2);font-weight:600;margin-right:6px}
+.fw{border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:1px 7px;font-size:12px;color:var(--sn-on-d2)}
+.caution{border-left:3px solid #f59e0b;background:rgba(245,158,11,.08);padding:12px 16px;border-radius:0 10px 10px 0;color:#f1e4c8;font-size:15px;margin-top:16px}
+.ctl h3{font:700 15px/1.3 Inter,sans-serif;margin:22px 0 10px}
+.steps{counter-reset:s;list-style:none}
+.steps li{counter-increment:s;position:relative;padding-left:38px;margin-bottom:10px;color:var(--sn-on-d2);font-size:15px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:rgba(47,107,255,.16);color:#9db8ff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.verify{list-style:none}
+.verify li{position:relative;padding-left:28px;margin-bottom:8px;color:var(--sn-on-d2);font-size:15px}
+.verify li::before{content:'';position:absolute;left:4px;top:7px;width:12px;height:7px;border-left:2px solid #10b981;border-bottom:2px solid #10b981;transform:rotate(-45deg)}
+.ctl a{color:#9db8ff;overflow-wrap:anywhere}
+.ctl li,.ctl dd,.caution,.ctl h2{overflow-wrap:anywhere}
+.portal{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:14px;font-weight:600;text-decoration:none}
+.portal:hover{text-decoration:underline}
+.refs{margin-top:16px;font-size:13px;color:var(--sn-on-d3)}
+.fam-cta{background:linear-gradient(135deg,rgba(47,107,255,.2),rgba(31,85,224,.06));border:1px solid rgba(47,107,255,.35);border-radius:18px;padding:32px;margin-top:34px}
+.fam-cta h2{font:700 26px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:10px}
+.fam-cta p{color:var(--sn-on-d2);margin-bottom:20px;max-width:680px}
+.fam-others{padding-bottom:96px}
+.fam-others h2{font:700 24px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:18px}
+.fam-others ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.fam-others a{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 16px;border:1px solid var(--sn-line-d);border-radius:12px;background:var(--sn-ink2);color:var(--sn-on-d);text-decoration:none;font-size:15px;font-weight:500;transition:border-color .2s}
+.fam-others a:hover{border-color:rgba(47,107,255,.6)}
+.fam-others em{font-style:normal;font-size:12px;color:#9db8ff;background:rgba(47,107,255,.12);border-radius:10px;padding:1px 9px;white-space:nowrap}
+@media(max-width:1000px){.fam-body{grid-template-columns:1fr;gap:0}.toc{display:none}}
+@media(max-width:640px){.facts{grid-template-columns:1fr}.ctl{padding:22px 18px}.fam-cta{padding:24px 20px}.lead{font-size:16px}}
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://audit.m365intune.com/"}, {"@type": "ListItem", "position": 2, "name": "Contrôles", "item": "https://audit.m365intune.com/controles"}, {"@type": "ListItem", "position": 3, "name": "Partage et collaboration", "item": "https://audit.m365intune.com/controles/partage-sharepoint-onedrive-teams"}]}, {"@type": "TechArticle", "headline": "Audit du partage SharePoint, OneDrive et Teams", "description": "Liens anonymes, lien par défaut, domaines autorisés, équipes sans propriétaire ou publiques, synchronisation OneDrive, expiration des groupes : 9 contrôles de partage.", "inLanguage": "fr-FR", "url": "https://audit.m365intune.com/controles/partage-sharepoint-onedrive-teams", "dateModified": "2026-11-18", "image": "https://audit.m365intune.com/img/dashboard.png", "author": {"@id": "https://audit.m365intune.com/#org"}, "publisher": {"@id": "https://audit.m365intune.com/#org"}, "isPartOf": {"@type": "WebSite", "name": "AuditM365", "url": "https://audit.m365intune.com/"}}]}</script>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="sn-nav" role="navigation" aria-label="Navigation principale">
+  <div class="sn-nav-in sn-wrap">
+    <a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a>
+    <div class="sn-links">
+      <a href="/#features">Fonctionnalités</a>
+      <a href="/#conformite">Conformité</a>
+      <a href="/controles" class="on" aria-current="page">Contrôles</a>
+      <a href="/#demo">Démo</a>
+      <a href="/#pricing">Tarifs</a>
+      <a href="/nouveautes">Nouveautés</a>
+    </div>
+    <div class="sn-right">
+      <a class="sn-lnk" href="/#download"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Télécharger</a>
+      <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+      <button class="sn-burger" id="sn-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sn-menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="sn-menu" id="sn-menu">
+    <a href="/#features">Fonctionnalités</a>
+    <a href="/#conformite">Conformité</a>
+    <a href="/controles">Contrôles</a>
+    <a href="/#demo">Démo</a>
+    <a href="/#pricing">Tarifs</a>
+    <a href="/nouveautes">Nouveautés</a>
+    <a href="/#faq">FAQ</a>
+    <a href="/#download">Télécharger l'application</a>
+    <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+  </div>
+</div>
+
+<main>
+<div class="fam-hero sn-wrap">
+  <nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span>›</span><a href="/controles">Contrôles</a><span>›</span>Partage et collaboration</nav>
+  <p class="eyebrow">Guide de correction · 9 contrôles</p>
+  <h1>Audit du partage SharePoint, OneDrive et Teams</h1>
+  <p class="lead">SharePoint, OneDrive et Teams concentrent les documents de l&#x27;entreprise. Un lien « Tout le monde » sans expiration, une équipe sans propriétaire ou un groupe abandonné exposent des données sans que personne ne s&#x27;en rende compte. Ces 9 contrôles vérifient les réglages de partage externe et la gouvernance des équipes et des groupes Microsoft 365.</p>
+  <div class="chips"><span><b>9</b> contrôles</span><span><b>2</b> élevées</span><span><b>5</b> moyennes</span><span><b>2</b> faibles</span><span>Mis à jour le 18 novembre 2026</span></div>
+  <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Auditer mon tenant : essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/controles">Les 86 contrôles</a></div>
+</div>
+
+<div class="fam-body sn-wrap">
+  <aside class="toc" aria-label="Contrôles de cette page"><p>Dans cette page</p><ol><li><a href="#col-001"><i>COL-001</i>Niveau de partage externe SharePoint</a></li><li><a href="#col-002"><i>COL-002</i>Expiration des liens anonymes</a></li><li><a href="#col-003"><i>COL-003</i>Type de lien de partage par défaut</a></li><li><a href="#col-004"><i>COL-004</i>Domaines externes autorisés au partage</a></li><li><a href="#col-005"><i>COL-005</i>Équipes Teams sans propriétaire actif</a></li><li><a href="#col-006"><i>COL-006</i>Équipes Teams publiques</a></li><li><a href="#col-007"><i>COL-007</i>Synchronisation OneDrive limitée aux domaines autorisés</a></li><li><a href="#col-008"><i>COL-008</i>Groupes Microsoft 365 sans propriétaire actif</a></li><li><a href="#col-009"><i>COL-009</i>Stratégie d&#x27;expiration des groupes Microsoft 365</a></li></ol></aside>
+  <div class="ctls">
+<article class="ctl" id="col-001">
+<header><span class="cid">COL-001</span><h2>Niveau de partage externe SharePoint</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Vérifie que le partage externe SharePoint n&#x27;est pas réglé sur « Tout le monde », qui autorise les liens anonymes sans connexion.</dd></div><div><dt>Valeur attendue</dt><dd>Partage externe limité aux invités existants (ExistingExternalUserSharingOnly) ou désactivé.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min, plus la communication aux utilisateurs</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 6</span><span class="fw">ISO 27001 A.8.12</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">RGPD Art.32.1.b</span><span class="fw">RGPD Art.25</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Dès que les liens « Tout le monde » sont interdits, ceux déjà envoyés cessent de fonctionner. Prévenez les utilisateurs et listez d&#x27;abord les sites qui en dépendent. Le réglage d&#x27;un site ne peut pas être plus ouvert que celui de l&#x27;organisation.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration SharePoint &gt; Stratégies &gt; Partage.</li><li>Sous « Partage externe », descendez le curseur SharePoint sur « Invités nouveaux et existants » : les liens anonymes disparaissent, les invités doivent se connecter. C&#x27;est la première étape, sans bloquer la collaboration.</li><li>Pour la conformité complète, choisissez « Invités existants » : seuls les invités déjà présents dans l&#x27;annuaire peuvent recevoir un partage ; les nouveaux invités passent alors par l&#x27;équipe informatique.</li><li>Placez le curseur OneDrive au même niveau ou plus bas, puis enregistrez.</li></ol>
+<a class="portal" href="https://admin.microsoft.com/sharepoint?page=sharing&amp;modern=true" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Get-SPOTenant affiche SharingCapability = ExistingExternalUserSharingOnly (conforme) ou ExternalUserSharingOnly (partiel, sans lien anonyme).</li><li>Le bouton Partager ne propose plus « Toute personne disposant du lien ».</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/sharepoint/turn-external-sharing-on-or-off" rel="noopener" target="_blank">learn.microsoft.com/en-us/sharepoint/turn-external-sharing-on-or-off</a></p>
+</article>
+<article class="ctl" id="col-002">
+<header><span class="cid">COL-002</span><h2>Expiration des liens anonymes</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Si les liens anonymes sont autorisés, ils doivent expirer automatiquement.</dd></div><div><dt>Valeur attendue</dt><dd>Expiration des liens anonymes en 30 jours au plus.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>10 min</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 6</span><span class="fw">ISO 27001 A.8.12</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">RGPD Art.32.1.b</span><span class="fw">RGPD Art.25</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Si vous interdisez les liens « Tout le monde » (COL-001), ce contrôle devient sans objet. Le délai ne s&#x27;applique qu&#x27;aux liens créés après le changement.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration SharePoint &gt; Stratégies &gt; Partage.</li><li>Sous « Choisir les paramètres d&#x27;expiration et d&#x27;autorisations pour les liens Tout le monde », cochez « Ces liens doivent expirer dans un certain nombre de jours » et indiquez 30 jours au plus (7 jours pour un tenant sensible).</li><li>Réglez aussi les autorisations des liens « Tout le monde » sur « Afficher » pour les fichiers et les dossiers, puis enregistrez.</li></ol>
+<a class="portal" href="https://admin.microsoft.com/sharepoint?page=sharing&amp;modern=true" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Get-SPOTenant affiche RequireAnonymousLinksExpireInDays entre 1 et 30.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/sharepoint/manage-sharing-settings" rel="noopener" target="_blank">learn.microsoft.com/en-us/sharepoint/manage-sharing-settings</a></p>
+</article>
+<article class="ctl" id="col-003">
+<header><span class="cid">COL-003</span><h2>Type de lien de partage par défaut</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Le lien proposé par défaut au moment de partager ne doit pas être un lien « Tout le monde » (anonyme).</dd></div><div><dt>Valeur attendue</dt><dd>Lien par défaut « Personnes spécifiques » ou « Personnes de votre organisation ».</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>5 min</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 6</span><span class="fw">ISO 27001 A.8.12</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">RGPD Art.25</span><span class="fw">RGPD Art.32.1.b</span></p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration SharePoint &gt; Stratégies &gt; Partage &gt; « Liens de fichier et de dossier ».</li><li>Choisissez « Personnes spécifiques (uniquement les personnes spécifiées par l&#x27;utilisateur) » comme type de lien par défaut, puis enregistrez.</li></ol>
+<a class="portal" href="https://admin.microsoft.com/sharepoint?page=sharing&amp;modern=true" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Get-SPOTenant affiche DefaultSharingLinkType = Direct.</li><li>Le bouton Partager propose d&#x27;abord « Personnes spécifiques ».</li></ul>
+</article>
+<article class="ctl" id="col-004">
+<header><span class="cid">COL-004</span><h2>Domaines externes autorisés au partage</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Le partage externe doit être limité à une liste de domaines autorisés plutôt qu&#x27;ouvert à tous les domaines.</dd></div><div><dt>Valeur attendue</dt><dd>Liste de domaines autorisés configurée.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h (liste des partenaires à établir)</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 6</span><span class="fw">ISO 27001 A.8.13</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">ANSSI Hygiène mesure 25</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Une liste d&#x27;autorisation bloque aussitôt tout partage vers un domaine absent de la liste, y compris avec des partenaires actuels : partez des domaines de vos invités existants et faites valider la liste.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration SharePoint &gt; Stratégies &gt; Partage &gt; « Plus de paramètres de partage externe ».</li><li>Cochez « Limiter le partage externe par domaine » &gt; Ajouter des domaines &gt; « Autoriser uniquement les domaines spécifiés », puis saisissez les domaines de vos partenaires.</li><li>Enregistrez, puis testez un partage vers un domaine autorisé et vers un domaine non autorisé.</li></ol>
+<a class="portal" href="https://admin.microsoft.com/sharepoint?page=sharing&amp;modern=true" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Get-SPOTenant affiche SharingDomainRestrictionMode = AllowList avec la liste validée.</li></ul>
+</article>
+<article class="ctl" id="col-005">
+<header><span class="cid">COL-005</span><h2>Équipes Teams sans propriétaire actif</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Chaque équipe Teams doit avoir au moins un propriétaire actif pour gérer ses membres et son contenu.</dd></div><div><dt>Valeur attendue</dt><dd>Aucune équipe sans propriétaire actif.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>5 min par équipe</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 5</span><span class="fw">ISO 27001 A.5.15</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 6</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Le propriétaire doit être une personne qui utilise l&#x27;équipe. Avant de supprimer une équipe inutile, vérifiez qu&#x27;elle ne contient pas de documents à conserver (la suppression est restaurable 30 jours).</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Teams &gt; Équipes &gt; Gérer les équipes : triez par la colonne « Propriétaires ».</li><li>Ouvrez chaque équipe citée &gt; Membres : passez un membre actif en « Propriétaire » (ou ajoutez-en un).</li><li>Équipe abandonnée : archivez-la (lecture seule) ou supprimez-la.</li></ol>
+<a class="portal" href="https://admin.teams.microsoft.com/teams/manage" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script ne liste plus d&#x27;équipe sans propriétaire actif (ou seulement des équipes à archiver).</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoftteams/teams-adoption-governance-quick-start" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoftteams/teams-adoption-governance-quick-start</a></p>
+</article>
+<article class="ctl" id="col-006">
+<header><span class="cid">COL-006</span><h2>Équipes Teams publiques</h2><span class="sev low">Sévérité faible</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Une équipe publique est accessible à tous les employés sans invitation, avec ses fichiers et ses conversations.</dd></div><div><dt>Valeur attendue</dt><dd>Aucune équipe publique, ou chacune justifiée.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>5 min par équipe</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 5</span><span class="fw">ISO 27001 A.8.12</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">RGPD Art.25</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Une équipe publique est ouverte à tout le personnel, invités exclus. En la passant en privée, ses membres actuels gardent l&#x27;accès ; les autres perdent l&#x27;accès à son contenu. Demandez d&#x27;abord l&#x27;avis de son propriétaire.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Teams &gt; Équipes &gt; Gérer les équipes : filtrez sur Confidentialité = Public.</li><li>Pour chaque équipe dont le contenu n&#x27;a pas à être lu par tout le personnel : ouvrez-la &gt; Paramètres &gt; Confidentialité = Privé &gt; Appliquer.</li><li>Gardez publiques les équipes vraiment ouvertes (communication interne, entraide) et notez-les.</li></ol>
+<a class="portal" href="https://admin.teams.microsoft.com/teams/manage" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script ne liste plus que les équipes publiques volontairement ouvertes.</li></ul>
+</article>
+<article class="ctl" id="col-007">
+<header><span class="cid">COL-007</span><h2>Synchronisation OneDrive limitée aux domaines autorisés</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>La synchronisation OneDrive doit être limitée aux ordinateurs joints aux domaines Active Directory de l&#x27;entreprise, pour empêcher la copie des fichiers sur des appareils non gérés.</dd></div><div><dt>Valeur attendue</dt><dd>Synchronisation OneDrive limitée aux domaines autorisés.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 7</span><span class="fw">ISO 27001 A.8.12</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 7</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Cette restriction ne reconnaît que les PC joints à un domaine Active Directory local (ou hybrides). Si vos PC sont joints seulement à Entra ID, ne l&#x27;activez pas : OneDrive cesserait de se synchroniser. Limitez plutôt l&#x27;accès aux appareils conformes par l&#x27;accès conditionnel (Intune).</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>PC joints à un domaine Active Directory : Centre d&#x27;administration SharePoint &gt; Paramètres &gt; Synchronisation OneDrive &gt; cochez « Autoriser la synchronisation uniquement sur les PC joints à des domaines spécifiques » et saisissez le GUID de chaque domaine (Get-ADDomain | Select-Object ObjectGUID).</li><li>PC joints seulement à Entra ID : Centre d&#x27;administration Microsoft Entra &gt; Protection &gt; Accès conditionnel &gt; nouvelle stratégie pour Office 365 qui exige un « appareil marqué comme conforme » ou un « appareil joint Microsoft Entra hybride », d&#x27;abord en mode rapport seul.</li></ol>
+<a class="portal" href="https://admin.microsoft.com/sharepoint?page=settings&amp;modern=true" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Get-SPOTenantSyncClientRestriction affiche TenantRestrictionEnabled = True et la liste des domaines.</li><li>Un PC du domaine synchronise toujours ; un PC personnel ne peut plus synchroniser.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/sharepoint/allow-syncing-only-on-specific-domains" rel="noopener" target="_blank">learn.microsoft.com/en-us/sharepoint/allow-syncing-only-on-specific-domains</a></p>
+</article>
+<article class="ctl" id="col-008">
+<header><span class="cid">COL-008</span><h2>Groupes Microsoft 365 sans propriétaire actif</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Compte les groupes Microsoft 365 (hors équipes Teams, évaluées par COL-005) qui n&#x27;ont aucun propriétaire actif.</dd></div><div><dt>Valeur attendue</dt><dd>Chaque groupe Microsoft 365 a au moins un propriétaire actif, idéalement deux.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>5 min par groupe</p>
+<p class="meta"><b>Référentiels</b><span class="fw">ISO 27001 A.5.9</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 6</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Avant de supprimer un groupe, vérifiez sa boîte aux lettres partagée, son site SharePoint et son plan Planner : la suppression est restaurable 30 jours seulement.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft 365 &gt; Équipes et groupes &gt; Équipes et groupes actifs.</li><li>Ouvrez chaque groupe cité &gt; Membres &gt; Propriétaires : ajoutez au moins un propriétaire actif (de préférence deux).</li><li>Groupe qui ne sert plus : supprimez-le.</li><li>Pour l&#x27;avenir : Paramètres &gt; Paramètres de l&#x27;organisation &gt; Groupes Microsoft 365 &gt; « Groupes sans propriétaire » propose automatiquement aux membres actifs de devenir propriétaires.</li></ol>
+<a class="portal" href="https://admin.microsoft.com/#/groups" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script ne liste plus de groupe sans propriétaire actif (ou seulement des groupes à supprimer).</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/admin/create-groups/manage-groups" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/admin/create-groups/manage-groups</a></p>
+</article>
+<article class="ctl" id="col-009">
+<header><span class="cid">COL-009</span><h2>Stratégie d&#x27;expiration des groupes Microsoft 365</h2><span class="sev low">Sévérité faible</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Vérifie qu&#x27;une stratégie d&#x27;expiration s&#x27;applique à tous les groupes Microsoft 365 et équipes Teams, pour que les groupes abandonnés soient renouvelés par leur propriétaire ou supprimés.</dd></div><div><dt>Valeur attendue</dt><dd>Stratégie d&#x27;expiration appliquée à tous les groupes.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>15 min</p>
+<p class="meta"><b>Référentiels</b><span class="fw">ISO 27001 A.5.9</span><span class="fw">ISO 27001 A.8.10</span><span class="fw">ANSSI Hygiène mesure 6</span><span class="fw">RGPD Art.5.1.e</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Un groupe que personne ne renouvelle est supprimé à l&#x27;échéance (restaurable 30 jours). Donnez d&#x27;abord un propriétaire aux groupes qui n&#x27;en ont plus (COL-008) et indiquez une adresse de secours suivie. Les groupes utilisés sont renouvelés automatiquement. Fonction incluse dans Microsoft Entra ID P1.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft Entra &gt; Identité &gt; Groupes &gt; Expiration.</li><li>Durée de vie du groupe : 365 jours ; adresse e-mail pour les groupes sans propriétaire : une boîte suivie par l&#x27;équipe informatique.</li><li>« Activer l&#x27;expiration pour ces groupes Microsoft 365 » : commencez par « Sélectionné » sur quelques groupes de test, puis passez à « Tous ».</li></ol>
+<a class="portal" href="https://entra.microsoft.com/#view/Microsoft_AAD_IAM/GroupsManagementMenuBlade/~/Lifecycle" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Groupes &gt; Expiration affiche la durée de vie et « Tous ».</li><li>Le prochain audit classe COL-009 en Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/entra/identity/users/groups-lifecycle" rel="noopener" target="_blank">learn.microsoft.com/en-us/entra/identity/users/groups-lifecycle</a></p>
+</article>
+    <section class="fam-cta">
+      <h2>Ces 9 contrôles, sur votre tenant</h2>
+      <p>AuditM365 les évalue en lecture seule, depuis votre poste, et ajoute à chaque écart les chiffres de votre tenant (comptes, stratégies ou appareils concernés) et un script PowerShell à relire avant de l'exécuter.</p>
+      <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/#demo">Voir la démo</a></div>
+    </section>
+  </div>
+</div>
+
+<section class="fam-others sn-wrap" aria-label="Autres familles de contrôles">
+  <h2>Les autres familles de contrôles</h2>
+  <ul><li><a href="/controles/identites-acces-conditionnel">Identités et accès conditionnel<em>9</em></a></li><li><a href="/controles/protection-avancee-identites">Protection avancée des identités<em>5</em></a></li><li><a href="/controles/applications-entra-id">Applications Entra ID<em>5</em></a></li><li><a href="/controles/exchange-online">Messagerie Exchange Online<em>7</em></a></li><li><a href="/controles/defender-office-365">Defender for Office 365<em>5</em></a></li><li><a href="/controles/prevention-pertes-donnees-dlp">Prévention des pertes de données (DLP)<em>5</em></a></li><li><a href="/controles/appareils-intune">Appareils Intune<em>10</em></a></li><li><a href="/controles/defender-endpoint">Defender for Endpoint<em>5</em></a></li><li><a href="/controles/defender-cloud-apps">Defender for Cloud Apps<em>4</em></a></li><li><a href="/controles/purview-audit-secure-score">Purview, audit et Secure Score<em>7</em></a></li><li><a href="/controles/journaux-connexion-audit">Journaux de connexion et d&#x27;audit<em>4</em></a></li><li><a href="/controles/microsoft-sentinel">Microsoft Sentinel<em>4</em></a></li><li><a href="/controles/power-platform">Power Platform<em>2</em></a></li><li><a href="/controles/licences-microsoft-365">Licences et économies<em>5</em></a></li></ul>
+</section>
+</main>
+
+<div class="sn-foot sn-wrap" role="contentinfo">
+  <div class="sn-foot-g">
+    <div><a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a><p>L'audit de sécurité Microsoft 365 et Intune pour les équipes IT, les consultants et les MSP.</p></div>
+    <div><h4>Produit</h4><ul><li><a href="/#features">Fonctionnalités</a></li><li><a href="/controles">Les 86 contrôles</a></li><li><a href="/#conformite">Conformité</a></li><li><a href="/#pricing">Tarifs</a></li></ul></div>
+    <div><h4>Ressources</h4><ul><li><a href="/#demo">Démo vidéo</a></li><li><a href="/nouveautes">Nouveautés</a></li><li><a href="/#faq">FAQ</a></li><li><a href="/#download">Télécharger</a></li><li><a href="https://secuopstech.com/">Supervision continue : SecureOps 365</a></li></ul></div>
+    <div><h4>Compte</h4><ul><li><a href="/#essai">Essai gratuit</a></li><li><a href="https://billing.stripe.com/p/login/bJe00i2Eu1uf6yTe2s6wE00">Gérer mon abonnement</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="mailto:bonjour@m365intune.com">bonjour@m365intune.com</a></li></ul></div>
+  </div>
+  <div class="sn-legal"><span>© 2026 AuditM365. Tous droits réservés.</span><span>Microsoft 365, Entra ID et Intune sont des marques de Microsoft Corporation.</span></div>
+</div>
+
+<script src="/site.js" defer></script>
+<script src="/chat/chat.js" defer></script>
+</body>
+</html>

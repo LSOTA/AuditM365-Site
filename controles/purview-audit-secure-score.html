@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Microsoft Purview, journal d&#x27;audit et Secure Score : 7 contrôles</title>
+  <meta name="description" content="Journal d&#x27;audit unifié et conservation, étiquettes de confidentialité, stratégies d&#x27;alerte, Microsoft Secure Score, changements Microsoft à action requise : 7 contrôles.">
+  <link rel="canonical" href="https://audit.m365intune.com/controles/purview-audit-secure-score">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AuditM365">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Audit Microsoft Purview, journal d&#x27;audit et Secure Score : 7 contrôles">
+  <meta property="og:description" content="Journal d&#x27;audit unifié et conservation, étiquettes de confidentialité, stratégies d&#x27;alerte, Microsoft Secure Score, changements Microsoft à action requise : 7 contrôles.">
+  <meta property="og:url" content="https://audit.m365intune.com/controles/purview-audit-secure-score">
+  <meta property="og:image" content="https://audit.m365intune.com/img/dashboard.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/img/icon-192.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--sn-ink);color:var(--sn-on-d);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fam-hero{padding-top:48px;padding-bottom:40px;background:radial-gradient(ellipse 70% 70% at 25% -20%,rgba(47,107,255,.17),transparent 62%)}
+.crumbs{font-size:14px;color:var(--sn-on-d3);margin-bottom:30px}
+.crumbs a{color:var(--sn-on-d2);text-decoration:none}.crumbs a:hover{color:#fff}
+.crumbs span{margin:0 8px;color:var(--sn-on-d3)}
+.eyebrow{color:#9db8ff;font-weight:600;font-size:14px;margin-bottom:12px}
+.fam-hero h1{font:800 clamp(30px,4vw,50px)/1.1 'Inter Tight',Inter,sans-serif;letter-spacing:-.02em;max-width:980px}
+.lead{font-size:18px;color:var(--sn-on-d2);max-width:780px;margin:18px 0 24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.chips span{border:1px solid var(--sn-line-d);background:rgba(255,255,255,.03);border-radius:20px;padding:5px 12px;font-size:13px;color:var(--sn-on-d2)}
+.chips b{color:#fff}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.fam-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:56px;padding-top:28px;padding-bottom:64px;align-items:start}
+.toc{position:sticky;top:96px;font-size:14px;max-height:calc(100vh - 120px);overflow:auto}
+.toc p{font-weight:700;margin-bottom:10px}
+.toc ol{list-style:none;border-left:1px solid var(--sn-line-d)}
+.toc a{display:block;padding:6px 0 6px 14px;color:var(--sn-on-d3);text-decoration:none;line-height:1.35}
+.toc a:hover{color:#fff}
+.toc i{display:block;font:600 11px ui-monospace,Consolas,monospace;color:#7fa3ff;font-style:normal}
+.ctls{max-width:900px;min-width:0}
+.ctl{background:var(--sn-ink2);border:1px solid var(--sn-line-d);border-radius:16px;padding:28px 30px;margin-bottom:22px;scroll-margin-top:96px}
+.ctl header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:18px}
+.ctl h2{font:700 21px/1.3 'Inter Tight',Inter,sans-serif;flex:1 1 280px}
+.cid{font:600 12px ui-monospace,Consolas,monospace;color:#9db8ff;background:rgba(47,107,255,.14);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.sev{font-size:12px;font-weight:700;border-radius:6px;padding:3px 9px;white-space:nowrap}
+.sev.crit{background:rgba(239,68,68,.15);color:#f87171}.sev.high{background:rgba(245,158,11,.15);color:#fbbf24}
+.sev.med{background:rgba(59,130,246,.15);color:#93c5fd}.sev.low{background:rgba(16,185,129,.15);color:#6ee7b7}
+.facts{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-bottom:16px}
+.facts div{background:rgba(255,255,255,.025);border:1px solid var(--sn-line-d);border-radius:12px;padding:14px 16px}
+.facts dt{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--sn-on-d3);margin-bottom:6px}
+.facts dd{color:var(--sn-on-d2);font-size:15px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--sn-on-d3);margin-bottom:6px}
+.meta b{color:var(--sn-on-d2);font-weight:600;margin-right:6px}
+.fw{border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:1px 7px;font-size:12px;color:var(--sn-on-d2)}
+.caution{border-left:3px solid #f59e0b;background:rgba(245,158,11,.08);padding:12px 16px;border-radius:0 10px 10px 0;color:#f1e4c8;font-size:15px;margin-top:16px}
+.ctl h3{font:700 15px/1.3 Inter,sans-serif;margin:22px 0 10px}
+.steps{counter-reset:s;list-style:none}
+.steps li{counter-increment:s;position:relative;padding-left:38px;margin-bottom:10px;color:var(--sn-on-d2);font-size:15px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:rgba(47,107,255,.16);color:#9db8ff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.verify{list-style:none}
+.verify li{position:relative;padding-left:28px;margin-bottom:8px;color:var(--sn-on-d2);font-size:15px}
+.verify li::before{content:'';position:absolute;left:4px;top:7px;width:12px;height:7px;border-left:2px solid #10b981;border-bottom:2px solid #10b981;transform:rotate(-45deg)}
+.ctl a{color:#9db8ff;overflow-wrap:anywhere}
+.ctl li,.ctl dd,.caution,.ctl h2{overflow-wrap:anywhere}
+.portal{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:14px;font-weight:600;text-decoration:none}
+.portal:hover{text-decoration:underline}
+.refs{margin-top:16px;font-size:13px;color:var(--sn-on-d3)}
+.fam-cta{background:linear-gradient(135deg,rgba(47,107,255,.2),rgba(31,85,224,.06));border:1px solid rgba(47,107,255,.35);border-radius:18px;padding:32px;margin-top:34px}
+.fam-cta h2{font:700 26px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:10px}
+.fam-cta p{color:var(--sn-on-d2);margin-bottom:20px;max-width:680px}
+.fam-others{padding-bottom:96px}
+.fam-others h2{font:700 24px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:18px}
+.fam-others ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.fam-others a{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 16px;border:1px solid var(--sn-line-d);border-radius:12px;background:var(--sn-ink2);color:var(--sn-on-d);text-decoration:none;font-size:15px;font-weight:500;transition:border-color .2s}
+.fam-others a:hover{border-color:rgba(47,107,255,.6)}
+.fam-others em{font-style:normal;font-size:12px;color:#9db8ff;background:rgba(47,107,255,.12);border-radius:10px;padding:1px 9px;white-space:nowrap}
+@media(max-width:1000px){.fam-body{grid-template-columns:1fr;gap:0}.toc{display:none}}
+@media(max-width:640px){.facts{grid-template-columns:1fr}.ctl{padding:22px 18px}.fam-cta{padding:24px 20px}.lead{font-size:16px}}
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://audit.m365intune.com/"}, {"@type": "ListItem", "position": 2, "name": "Contrôles", "item": "https://audit.m365intune.com/controles"}, {"@type": "ListItem", "position": 3, "name": "Purview, audit et Secure Score", "item": "https://audit.m365intune.com/controles/purview-audit-secure-score"}]}, {"@type": "TechArticle", "headline": "Audit de Microsoft Purview, du journal d'audit et du Secure Score", "description": "Journal d'audit unifié et conservation, étiquettes de confidentialité, stratégies d'alerte, Microsoft Secure Score, changements Microsoft à action requise : 7 contrôles.", "inLanguage": "fr-FR", "url": "https://audit.m365intune.com/controles/purview-audit-secure-score", "dateModified": "2026-11-18", "image": "https://audit.m365intune.com/img/dashboard.png", "author": {"@id": "https://audit.m365intune.com/#org"}, "publisher": {"@id": "https://audit.m365intune.com/#org"}, "isPartOf": {"@type": "WebSite", "name": "AuditM365", "url": "https://audit.m365intune.com/"}}]}</script>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="sn-nav" role="navigation" aria-label="Navigation principale">
+  <div class="sn-nav-in sn-wrap">
+    <a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a>
+    <div class="sn-links">
+      <a href="/#features">Fonctionnalités</a>
+      <a href="/#conformite">Conformité</a>
+      <a href="/controles" class="on" aria-current="page">Contrôles</a>
+      <a href="/#demo">Démo</a>
+      <a href="/#pricing">Tarifs</a>
+      <a href="/nouveautes">Nouveautés</a>
+    </div>
+    <div class="sn-right">
+      <a class="sn-lnk" href="/#download"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Télécharger</a>
+      <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+      <button class="sn-burger" id="sn-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sn-menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="sn-menu" id="sn-menu">
+    <a href="/#features">Fonctionnalités</a>
+    <a href="/#conformite">Conformité</a>
+    <a href="/controles">Contrôles</a>
+    <a href="/#demo">Démo</a>
+    <a href="/#pricing">Tarifs</a>
+    <a href="/nouveautes">Nouveautés</a>
+    <a href="/#faq">FAQ</a>
+    <a href="/#download">Télécharger l'application</a>
+    <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+  </div>
+</div>
+
+<main>
+<div class="fam-hero sn-wrap">
+  <nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span>›</span><a href="/controles">Contrôles</a><span>›</span>Purview, audit et Secure Score</nav>
+  <p class="eyebrow">Guide de correction · 7 contrôles</p>
+  <h1>Audit de Microsoft Purview, du journal d&#x27;audit et du Secure Score</h1>
+  <p class="lead">Sans journal d&#x27;audit, impossible de reconstituer un incident ; sans étiquettes de confidentialité, impossible de protéger un document là où il circule. Ces 7 contrôles vérifient le journal d&#x27;audit unifié et sa durée de conservation, les étiquettes de confidentialité, les stratégies d&#x27;alerte, le Microsoft Secure Score et les changements annoncés par Microsoft qui demandent une action de l&#x27;administrateur.</p>
+  <div class="chips"><span><b>7</b> contrôles</span><span><b>1</b> élevée</span><span><b>5</b> moyennes</span><span><b>1</b> faible</span><span>Mis à jour le 18 novembre 2026</span></div>
+  <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Auditer mon tenant : essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/controles">Les 86 contrôles</a></div>
+</div>
+
+<div class="fam-body sn-wrap">
+  <aside class="toc" aria-label="Contrôles de cette page"><p>Dans cette page</p><ol><li><a href="#pur-001"><i>PUR-001</i>Journal d&#x27;audit unifié actif</a></li><li><a href="#pur-002"><i>PUR-002</i>Étiquettes de confidentialité configurées et publiées</a></li><li><a href="#pur-003"><i>PUR-003</i>Microsoft Secure Score</a></li><li><a href="#pur-004"><i>PUR-004</i>Conservation des journaux d&#x27;audit d&#x27;au moins 90 jours</a></li><li><a href="#pur-005"><i>PUR-005</i>Alertes de sécurité actives</a></li><li><a href="#pur-006"><i>PUR-006</i>Étiquettes de confidentialité appliquées aux groupes et équipes</a></li><li><a href="#pur-007"><i>PUR-007</i>Changements Microsoft à action requise</a></li></ol></aside>
+  <div class="ctls">
+<article class="ctl" id="pur-001">
+<header><span class="cid">PUR-001</span><h2>Journal d&#x27;audit unifié actif</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Vérifie que le journal d&#x27;audit unifié de Microsoft 365 est activé pour tracer les activités des utilisateurs et des administrateurs.</dd></div><div><dt>Valeur attendue</dt><dd>Journal d&#x27;audit unifié activé.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>5 min, puis jusqu&#x27;à 60 min avant les premiers événements</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 10</span><span class="fw">ISO 27001 A.8.15</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 36</span><span class="fw">RGPD Art.32.1.d</span><span class="fw">RGPD Art.33</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> L&#x27;activation ne se fait qu&#x27;une fois et ne coûte rien. Les activités antérieures à l&#x27;activation ne sont pas récupérables : activez dès maintenant, sans attendre un incident.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Microsoft Purview &gt; Solutions &gt; Audit.</li><li>Si un bandeau « Commencer l&#x27;enregistrement des activités des utilisateurs et des administrateurs » s&#x27;affiche, cliquez dessus : l&#x27;audit était désactivé.</li><li>Sans bandeau, l&#x27;audit est déjà actif : lancez une recherche sur les dernières 24 h pour vérifier que des événements remontent.</li></ol>
+<a class="portal" href="https://purview.microsoft.com/audit/auditsearch" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche « Journal d&#x27;audit unifié actif : True ».</li><li>Purview &gt; Audit : une recherche sur les dernières 24 h renvoie des événements.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/compliance/turn-audit-log-search-on-or-off" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/compliance/turn-audit-log-search-on-or-off</a></p>
+</article>
+<article class="ctl" id="pur-002">
+<header><span class="cid">PUR-002</span><h2>Étiquettes de confidentialité configurées et publiées</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Au moins une étiquette de confidentialité doit être publiée dans une stratégie pour permettre la classification des documents et des e-mails.</dd></div><div><dt>Valeur attendue</dt><dd>Au moins une étiquette publiée.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h pour créer et publier, plus la communication aux utilisateurs</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 10</span><span class="fw">ISO 27001 A.8.12</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 4</span><span class="fw">RGPD Art.32.1.a</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Publier une étiquette la fait apparaître dans Outlook, Word, Excel et Teams de tous les utilisateurs visés. Commencez par un groupe pilote, sans chiffrement ni étiquette obligatoire : une étiquette qui chiffre mal réglée peut rendre des documents illisibles pour des destinataires externes.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Microsoft Purview &gt; Solutions &gt; Protection des informations &gt; Étiquettes de confidentialité &gt; Créer une étiquette.</li><li>Créez une gamme simple, par exemple « Public », « Interne », « Confidentiel » : nom, info-bulle pour l&#x27;utilisateur, étendue « Fichiers et e-mails », sans chiffrement pour commencer.</li><li>Onglet « Stratégies de publication » &gt; Publier des étiquettes : choisissez les étiquettes, puis le groupe pilote ; laissez « étiquette par défaut » et « justification obligatoire » désactivées au début.</li><li>Après 2 à 4 semaines sans problème, élargissez la stratégie à tous les utilisateurs.</li></ol>
+<a class="portal" href="https://purview.microsoft.com/informationprotection/labels" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche au moins une étiquette et une stratégie de publication.</li><li>Dans Outlook ou Word, un utilisateur du groupe voit le bouton « Confidentialité » avec les étiquettes (jusqu&#x27;à 24 h après la publication).</li><li>Relancez un audit : PUR-002 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/compliance/create-sensitivity-labels" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/compliance/create-sensitivity-labels</a></p>
+</article>
+<article class="ctl" id="pur-003">
+<header><span class="cid">PUR-003</span><h2>Microsoft Secure Score</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Le Microsoft Secure Score doit atteindre au moins la moitié du score maximum pour indiquer un niveau de maturité acceptable.</dd></div><div><dt>Valeur attendue</dt><dd>50 % du score maximum au moins.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>Variable : quelques heures réparties sur plusieurs semaines</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 10</span><span class="fw">ISO 27001 A.8.16</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 38</span><span class="fw">RGPD Art.32.1.d</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Le Secure Score est un indicateur, pas une fin : traitez d&#x27;abord les actions à fort impact et faible effet sur les utilisateurs. Une action marquée « Risque accepté » ou « Résolu par un tiers » doit l&#x27;être pour une vraie raison, documentée.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Microsoft Defender &gt; Exposition &gt; Secure Score (ou security.microsoft.com/securescore) &gt; onglet Actions recommandées.</li><li>Triez par « Impact sur le score » et filtrez sur « À traiter » : commencez par les actions dont l&#x27;impact utilisateur est faible.</li><li>Ouvrez chaque action : la fiche donne la marche à suivre et le lien du portail concerné. Les contrôles d&#x27;AuditM365 renvoient à plusieurs de ces actions (MFA, accès conditionnel, Safe Links...).</li><li>Une action déjà couverte par un autre outil : statut « Résolu par un tiers », avec une note.</li></ol>
+<a class="portal" href="https://security.microsoft.com/securescore" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche un score d&#x27;au moins 50 %.</li><li>Relancez un audit : PUR-003 passe à Conforme (le Secure Score se met à jour une fois par jour).</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender/microsoft-secure-score" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/security/defender/microsoft-secure-score</a></p>
+</article>
+<article class="ctl" id="pur-004">
+<header><span class="cid">PUR-004</span><h2>Conservation des journaux d&#x27;audit d&#x27;au moins 90 jours</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Les journaux d&#x27;audit doivent être conservés au moins 90 jours pour permettre les investigations après un incident.</dd></div><div><dt>Valeur attendue</dt><dd>Conservation de 90 jours au moins.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>15 min</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 10</span><span class="fw">ISO 27001 A.8.15</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 36</span><span class="fw">RGPD Art.33</span><span class="fw">RGPD Art.32.1.d</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Les stratégies de conservation personnalisées demandent Audit (Premium) (E5, A5, G5 ou module complémentaire). Sans elle, la conservation par défaut s&#x27;applique (180 jours en Audit Standard) : rien à configurer. Le point à surveiller est une stratégie personnalisée PLUS COURTE que 90 jours, qui écourte la conservation des activités qu&#x27;elle vise.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Microsoft Purview &gt; Solutions &gt; Audit &gt; Stratégies &gt; Stratégies de conservation de l&#x27;audit.</li><li>Relisez chaque stratégie : durée, types d&#x27;enregistrements et utilisateurs visés. Toute stratégie de moins de 90 jours est à allonger ou à supprimer.</li><li>Avec Audit (Premium) : créez au besoin une stratégie « 1 an » (ou plus) pour les activités sensibles (connexions Entra, Exchange, SharePoint), priorité élevée.</li></ol>
+<a class="portal" href="https://purview.microsoft.com/audit/auditretentionpolicies" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script n&#x27;affiche aucune stratégie « MOINS DE 90 JOURS ».</li><li>PUR-004 reste « non évaluable » si l&#x27;application d&#x27;audit n&#x27;a pas le rôle de lecture des stratégies : c&#x27;est voulu (rôle d&#x27;écriture chez Microsoft), la vérification se fait ici.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/compliance/audit-log-retention-policies" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/compliance/audit-log-retention-policies</a></p>
+</article>
+<article class="ctl" id="pur-005">
+<header><span class="cid">PUR-005</span><h2>Alertes de sécurité actives</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Au moins une stratégie d&#x27;alerte doit être configurée et active pour prévenir les administrateurs en cas d&#x27;activité suspecte.</dd></div><div><dt>Valeur attendue</dt><dd>Au moins une stratégie d&#x27;alerte active.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>20 min</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 10</span><span class="fw">ISO 27001 A.8.16</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 36</span><span class="fw">ANSSI Hygiène mesure 40</span><span class="fw">RGPD Art.33</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Les stratégies d&#x27;alerte par défaut de Microsoft couvrent l&#x27;essentiel (transfert suspect, élévation de privilège, programme malveillant...). Le risque le plus courant est qu&#x27;elles soient désactivées, ou que personne ne reçoive les notifications : vérifiez les destinataires.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Portail Microsoft Defender &gt; E-mail et collaboration &gt; Stratégies et règles &gt; Stratégie d&#x27;alerte (ou Portail Purview &gt; Stratégies &gt; Stratégies d&#x27;alerte).</li><li>Filtrez sur « Gravité : Élevée » : chaque stratégie doit être « Activée ».</li><li>Ouvrez les stratégies importantes &gt; Modifier &gt; Destinataires : ajoutez une boîte suivie (équipe informatique ou prestataire), pas seulement les administrateurs généraux.</li></ol>
+<a class="portal" href="https://security.microsoft.com/alertpoliciesv2" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script n&#x27;affiche plus aucune stratégie de gravité élevée « Desactivee : True ».</li><li>Les stratégies importantes ont au moins un destinataire suivi.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/compliance/alert-policies" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/compliance/alert-policies</a></p>
+</article>
+<article class="ctl" id="pur-006">
+<header><span class="cid">PUR-006</span><h2>Étiquettes de confidentialité appliquées aux groupes et équipes</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Vérifie que les étiquettes de confidentialité sont activées pour les groupes et les sites (paramètre EnableMIPLabels) et appliquées à au moins 80 % des groupes Microsoft 365 et équipes Teams.</dd></div><div><dt>Valeur attendue</dt><dd>Étiquettes activées pour les groupes ; au moins 80 % des groupes et équipes étiquetés.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h, plus l&#x27;étiquetage des groupes existants</p>
+<p class="meta"><b>Référentiels</b><span class="fw">ISO 27001 A.5.12</span><span class="fw">ISO 27001 A.5.13</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 4</span><span class="fw">ANSSI Hygiène mesure 9</span><span class="fw">RGPD Art.25</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Prérequis : des étiquettes de confidentialité publiées (PUR-002). L&#x27;activation pour les groupes ne change rien aux groupes existants : ils restent sans étiquette tant qu&#x27;on ne leur en attribue pas une. Rendre l&#x27;étiquette obligatoire à la création des équipes ne s&#x27;applique qu&#x27;aux nouvelles équipes.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Activez d&#x27;abord les étiquettes pour les groupes avec le script (paramètre EnableMIPLabels), puis lancez la synchronisation (Execute-AzureAdLabelSync, dernière ligne du script).</li><li>Portail Microsoft Purview &gt; Protection des informations &gt; Étiquettes de confidentialité : modifiez chaque étiquette concernée &gt; Étendue : cochez « Groupes et sites », puis réglez la confidentialité (privé / public) et l&#x27;accès des invités.</li><li>Centre d&#x27;administration Teams ou SharePoint : ouvrez chaque équipe ou site sans étiquette et attribuez-lui l&#x27;étiquette adaptée (ou demandez-le aux propriétaires).</li></ol>
+<a class="portal" href="https://purview.microsoft.com/informationprotection/labels" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche « EnableMIPLabels : True » et moins de 20 % de groupes sans étiquette.</li><li>Relancez un audit : PUR-006 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/purview/sensitivity-labels-teams-groups-sites" rel="noopener" target="_blank">learn.microsoft.com/en-us/purview/sensitivity-labels-teams-groups-sites</a></p>
+</article>
+<article class="ctl" id="pur-007">
+<header><span class="cid">PUR-007</span><h2>Changements Microsoft à action requise</h2><span class="sev low">Sévérité faible</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Liste les annonces du centre de messages Microsoft 365 qui concernent l&#x27;administrateur avec une échéance d&#x27;action dans les 60 prochains jours ; celles des 30 prochains jours qui sont un changement majeur, un retrait ou une « Action required » sont à traiter en priorité.</dd></div><div><dt>Valeur attendue</dt><dd>Aucune action requise par Microsoft en attente, ou chacune suivie.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>15 à 30 min par semaine</p>
+<p class="meta"><b>Référentiels</b><span class="fw">ISO 27001 A.8.32</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 34</span><span class="fw">ANSSI Hygiène mesure 35</span><span class="fw">RGPD Art.32.1.d</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Toutes les annonces ne concernent pas le tenant : vérifiez le service et les fonctions visés avant d&#x27;agir. Un retrait non anticipé (ancien protocole, ancienne API) peut couper un logiciel métier ou un appareil (imprimante, scanner) à la date annoncée.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Microsoft 365 &gt; Santé &gt; Centre de messages : filtrez sur « Action requise » et triez par date d&#x27;action.</li><li>Pour chaque annonce : vérifiez si le tenant utilise le service ou la fonction, planifiez l&#x27;action avant l&#x27;échéance, puis archivez l&#x27;annonce.</li><li>Paramètres du centre de messages (« Préférences ») : activez le résumé hebdomadaire par e-mail vers une boîte suivie.</li></ol>
+<a class="portal" href="https://admin.microsoft.com/#/MessageCenter" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script n&#x27;affiche plus d&#x27;annonce non traitée dont l&#x27;échéance est dans les 30 jours.</li><li>Relancez un audit : PUR-007 passe à Conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/microsoft-365/admin/manage/message-center" rel="noopener" target="_blank">learn.microsoft.com/en-us/microsoft-365/admin/manage/message-center</a></p>
+</article>
+    <section class="fam-cta">
+      <h2>Ces 7 contrôles, sur votre tenant</h2>
+      <p>AuditM365 les évalue en lecture seule, depuis votre poste, et ajoute à chaque écart les chiffres de votre tenant (comptes, stratégies ou appareils concernés) et un script PowerShell à relire avant de l'exécuter.</p>
+      <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/#demo">Voir la démo</a></div>
+    </section>
+  </div>
+</div>
+
+<section class="fam-others sn-wrap" aria-label="Autres familles de contrôles">
+  <h2>Les autres familles de contrôles</h2>
+  <ul><li><a href="/controles/identites-acces-conditionnel">Identités et accès conditionnel<em>9</em></a></li><li><a href="/controles/protection-avancee-identites">Protection avancée des identités<em>5</em></a></li><li><a href="/controles/applications-entra-id">Applications Entra ID<em>5</em></a></li><li><a href="/controles/exchange-online">Messagerie Exchange Online<em>7</em></a></li><li><a href="/controles/defender-office-365">Defender for Office 365<em>5</em></a></li><li><a href="/controles/partage-sharepoint-onedrive-teams">Partage et collaboration<em>9</em></a></li><li><a href="/controles/prevention-pertes-donnees-dlp">Prévention des pertes de données (DLP)<em>5</em></a></li><li><a href="/controles/appareils-intune">Appareils Intune<em>10</em></a></li><li><a href="/controles/defender-endpoint">Defender for Endpoint<em>5</em></a></li><li><a href="/controles/defender-cloud-apps">Defender for Cloud Apps<em>4</em></a></li><li><a href="/controles/journaux-connexion-audit">Journaux de connexion et d&#x27;audit<em>4</em></a></li><li><a href="/controles/microsoft-sentinel">Microsoft Sentinel<em>4</em></a></li><li><a href="/controles/power-platform">Power Platform<em>2</em></a></li><li><a href="/controles/licences-microsoft-365">Licences et économies<em>5</em></a></li></ul>
+</section>
+</main>
+
+<div class="sn-foot sn-wrap" role="contentinfo">
+  <div class="sn-foot-g">
+    <div><a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a><p>L'audit de sécurité Microsoft 365 et Intune pour les équipes IT, les consultants et les MSP.</p></div>
+    <div><h4>Produit</h4><ul><li><a href="/#features">Fonctionnalités</a></li><li><a href="/controles">Les 86 contrôles</a></li><li><a href="/#conformite">Conformité</a></li><li><a href="/#pricing">Tarifs</a></li></ul></div>
+    <div><h4>Ressources</h4><ul><li><a href="/#demo">Démo vidéo</a></li><li><a href="/nouveautes">Nouveautés</a></li><li><a href="/#faq">FAQ</a></li><li><a href="/#download">Télécharger</a></li><li><a href="https://secuopstech.com/">Supervision continue : SecureOps 365</a></li></ul></div>
+    <div><h4>Compte</h4><ul><li><a href="/#essai">Essai gratuit</a></li><li><a href="https://billing.stripe.com/p/login/bJe00i2Eu1uf6yTe2s6wE00">Gérer mon abonnement</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="mailto:bonjour@m365intune.com">bonjour@m365intune.com</a></li></ul></div>
+  </div>
+  <div class="sn-legal"><span>© 2026 AuditM365. Tous droits réservés.</span><span>Microsoft 365, Entra ID et Intune sont des marques de Microsoft Corporation.</span></div>
+</div>
+
+<script src="/site.js" defer></script>
+<script src="/chat/chat.js" defer></script>
+</body>
+</html>

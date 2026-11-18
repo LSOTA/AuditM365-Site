@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Intune : conformité, chiffrement, mises à jour Windows</title>
+  <meta name="description" content="Conformité, BitLocker et FileVault, versions de système, appareils inactifs, MAM, Windows Hello, anneaux Windows Update, bases de sécurité : 10 contrôles Intune.">
+  <link rel="canonical" href="https://audit.m365intune.com/controles/appareils-intune">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="AuditM365">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Audit Intune : conformité, chiffrement, mises à jour Windows">
+  <meta property="og:description" content="Conformité, BitLocker et FileVault, versions de système, appareils inactifs, MAM, Windows Hello, anneaux Windows Update, bases de sécurité : 10 contrôles Intune.">
+  <meta property="og:url" content="https://audit.m365intune.com/controles/appareils-intune">
+  <meta property="og:image" content="https://audit.m365intune.com/img/dashboard.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="/img/icon-192.png">
+  <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
+  <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--sn-ink);color:var(--sn-on-d);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.fam-hero{padding-top:48px;padding-bottom:40px;background:radial-gradient(ellipse 70% 70% at 25% -20%,rgba(47,107,255,.17),transparent 62%)}
+.crumbs{font-size:14px;color:var(--sn-on-d3);margin-bottom:30px}
+.crumbs a{color:var(--sn-on-d2);text-decoration:none}.crumbs a:hover{color:#fff}
+.crumbs span{margin:0 8px;color:var(--sn-on-d3)}
+.eyebrow{color:#9db8ff;font-weight:600;font-size:14px;margin-bottom:12px}
+.fam-hero h1{font:800 clamp(30px,4vw,50px)/1.1 'Inter Tight',Inter,sans-serif;letter-spacing:-.02em;max-width:980px}
+.lead{font-size:18px;color:var(--sn-on-d2);max-width:780px;margin:18px 0 24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.chips span{border:1px solid var(--sn-line-d);background:rgba(255,255,255,.03);border-radius:20px;padding:5px 12px;font-size:13px;color:var(--sn-on-d2)}
+.chips b{color:#fff}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.fam-body{display:grid;grid-template-columns:250px minmax(0,1fr);gap:56px;padding-top:28px;padding-bottom:64px;align-items:start}
+.toc{position:sticky;top:96px;font-size:14px;max-height:calc(100vh - 120px);overflow:auto}
+.toc p{font-weight:700;margin-bottom:10px}
+.toc ol{list-style:none;border-left:1px solid var(--sn-line-d)}
+.toc a{display:block;padding:6px 0 6px 14px;color:var(--sn-on-d3);text-decoration:none;line-height:1.35}
+.toc a:hover{color:#fff}
+.toc i{display:block;font:600 11px ui-monospace,Consolas,monospace;color:#7fa3ff;font-style:normal}
+.ctls{max-width:900px;min-width:0}
+.ctl{background:var(--sn-ink2);border:1px solid var(--sn-line-d);border-radius:16px;padding:28px 30px;margin-bottom:22px;scroll-margin-top:96px}
+.ctl header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:18px}
+.ctl h2{font:700 21px/1.3 'Inter Tight',Inter,sans-serif;flex:1 1 280px}
+.cid{font:600 12px ui-monospace,Consolas,monospace;color:#9db8ff;background:rgba(47,107,255,.14);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.sev{font-size:12px;font-weight:700;border-radius:6px;padding:3px 9px;white-space:nowrap}
+.sev.crit{background:rgba(239,68,68,.15);color:#f87171}.sev.high{background:rgba(245,158,11,.15);color:#fbbf24}
+.sev.med{background:rgba(59,130,246,.15);color:#93c5fd}.sev.low{background:rgba(16,185,129,.15);color:#6ee7b7}
+.facts{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-bottom:16px}
+.facts div{background:rgba(255,255,255,.025);border:1px solid var(--sn-line-d);border-radius:12px;padding:14px 16px}
+.facts dt{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--sn-on-d3);margin-bottom:6px}
+.facts dd{color:var(--sn-on-d2);font-size:15px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-size:13px;color:var(--sn-on-d3);margin-bottom:6px}
+.meta b{color:var(--sn-on-d2);font-weight:600;margin-right:6px}
+.fw{border:1px solid rgba(255,255,255,.14);border-radius:6px;padding:1px 7px;font-size:12px;color:var(--sn-on-d2)}
+.caution{border-left:3px solid #f59e0b;background:rgba(245,158,11,.08);padding:12px 16px;border-radius:0 10px 10px 0;color:#f1e4c8;font-size:15px;margin-top:16px}
+.ctl h3{font:700 15px/1.3 Inter,sans-serif;margin:22px 0 10px}
+.steps{counter-reset:s;list-style:none}
+.steps li{counter-increment:s;position:relative;padding-left:38px;margin-bottom:10px;color:var(--sn-on-d2);font-size:15px}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:24px;height:24px;border-radius:50%;background:rgba(47,107,255,.16);color:#9db8ff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.verify{list-style:none}
+.verify li{position:relative;padding-left:28px;margin-bottom:8px;color:var(--sn-on-d2);font-size:15px}
+.verify li::before{content:'';position:absolute;left:4px;top:7px;width:12px;height:7px;border-left:2px solid #10b981;border-bottom:2px solid #10b981;transform:rotate(-45deg)}
+.ctl a{color:#9db8ff;overflow-wrap:anywhere}
+.ctl li,.ctl dd,.caution,.ctl h2{overflow-wrap:anywhere}
+.portal{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:14px;font-weight:600;text-decoration:none}
+.portal:hover{text-decoration:underline}
+.refs{margin-top:16px;font-size:13px;color:var(--sn-on-d3)}
+.fam-cta{background:linear-gradient(135deg,rgba(47,107,255,.2),rgba(31,85,224,.06));border:1px solid rgba(47,107,255,.35);border-radius:18px;padding:32px;margin-top:34px}
+.fam-cta h2{font:700 26px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:10px}
+.fam-cta p{color:var(--sn-on-d2);margin-bottom:20px;max-width:680px}
+.fam-others{padding-bottom:96px}
+.fam-others h2{font:700 24px/1.2 'Inter Tight',Inter,sans-serif;margin-bottom:18px}
+.fam-others ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.fam-others a{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 16px;border:1px solid var(--sn-line-d);border-radius:12px;background:var(--sn-ink2);color:var(--sn-on-d);text-decoration:none;font-size:15px;font-weight:500;transition:border-color .2s}
+.fam-others a:hover{border-color:rgba(47,107,255,.6)}
+.fam-others em{font-style:normal;font-size:12px;color:#9db8ff;background:rgba(47,107,255,.12);border-radius:10px;padding:1px 9px;white-space:nowrap}
+@media(max-width:1000px){.fam-body{grid-template-columns:1fr;gap:0}.toc{display:none}}
+@media(max-width:640px){.facts{grid-template-columns:1fr}.ctl{padding:22px 18px}.fam-cta{padding:24px 20px}.lead{font-size:16px}}
+  </style>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://audit.m365intune.com/"}, {"@type": "ListItem", "position": 2, "name": "Contrôles", "item": "https://audit.m365intune.com/controles"}, {"@type": "ListItem", "position": 3, "name": "Appareils Intune", "item": "https://audit.m365intune.com/controles/appareils-intune"}]}, {"@type": "TechArticle", "headline": "Audit des appareils Intune", "description": "Conformité, BitLocker et FileVault, versions de système, appareils inactifs, MAM, Windows Hello, anneaux Windows Update, bases de sécurité : 10 contrôles Intune.", "inLanguage": "fr-FR", "url": "https://audit.m365intune.com/controles/appareils-intune", "dateModified": "2026-11-18", "image": "https://audit.m365intune.com/img/dashboard.png", "author": {"@id": "https://audit.m365intune.com/#org"}, "publisher": {"@id": "https://audit.m365intune.com/#org"}, "isPartOf": {"@type": "WebSite", "name": "AuditM365", "url": "https://audit.m365intune.com/"}}]}</script>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="sn-nav" role="navigation" aria-label="Navigation principale">
+  <div class="sn-nav-in sn-wrap">
+    <a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a>
+    <div class="sn-links">
+      <a href="/#features">Fonctionnalités</a>
+      <a href="/#conformite">Conformité</a>
+      <a href="/controles" class="on" aria-current="page">Contrôles</a>
+      <a href="/#demo">Démo</a>
+      <a href="/#pricing">Tarifs</a>
+      <a href="/nouveautes">Nouveautés</a>
+    </div>
+    <div class="sn-right">
+      <a class="sn-lnk" href="/#download"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Télécharger</a>
+      <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+      <button class="sn-burger" id="sn-burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="sn-menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+  <div class="sn-menu" id="sn-menu">
+    <a href="/#features">Fonctionnalités</a>
+    <a href="/#conformite">Conformité</a>
+    <a href="/controles">Contrôles</a>
+    <a href="/#demo">Démo</a>
+    <a href="/#pricing">Tarifs</a>
+    <a href="/nouveautes">Nouveautés</a>
+    <a href="/#faq">FAQ</a>
+    <a href="/#download">Télécharger l'application</a>
+    <a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a>
+  </div>
+</div>
+
+<main>
+<div class="fam-hero sn-wrap">
+  <nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span>›</span><a href="/controles">Contrôles</a><span>›</span>Appareils Intune</nav>
+  <p class="eyebrow">Guide de correction · 10 contrôles</p>
+  <h1>Audit des appareils Intune</h1>
+  <p class="lead">Un appareil non chiffré, jamais mis à jour ou sorti du parc depuis des mois est un point d&#x27;entrée et un risque de fuite. Ces 10 contrôles vérifient la gestion des appareils par Microsoft Intune : stratégies et taux de conformité, chiffrement BitLocker et FileVault, versions de système, anneaux Windows Update, bases de sécurité, protection des applications mobiles et Windows Hello for Business.</p>
+  <div class="chips"><span><b>10</b> contrôles</span><span><b>5</b> élevées</span><span><b>4</b> moyennes</span><span><b>1</b> faible</span><span>Mis à jour le 18 novembre 2026</span></div>
+  <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Auditer mon tenant : essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/controles">Les 86 contrôles</a></div>
+</div>
+
+<div class="fam-body sn-wrap">
+  <aside class="toc" aria-label="Contrôles de cette page"><p>Dans cette page</p><ol><li><a href="#int-001"><i>INT-001</i>Taux de conformité des appareils Intune</a></li><li><a href="#int-002"><i>INT-002</i>Chiffrement des appareils (BitLocker / FileVault)</a></li><li><a href="#int-003"><i>INT-003</i>Politiques de conformité Intune par système</a></li><li><a href="#int-004"><i>INT-004</i>Appareils inactifs depuis plus de 90 jours</a></li><li><a href="#int-005"><i>INT-005</i>Appareils avec une version de système obsolète</a></li><li><a href="#int-006"><i>INT-006</i>Applications requises déployées par Intune</a></li><li><a href="#int-007"><i>INT-007</i>Politiques de protection des applications (MAM)</a></li><li><a href="#int-008"><i>INT-008</i>Windows Hello for Business configuré</a></li><li><a href="#int-009"><i>INT-009</i>Anneaux Windows Update configurés et attribués</a></li><li><a href="#int-010"><i>INT-010</i>Bases de sécurité Intune à jour</a></li></ol></aside>
+  <div class="ctls">
+<article class="ctl" id="int-001">
+<header><span class="cid">INT-001</span><h2>Taux de conformité des appareils Intune</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Mesure la part des appareils gérés par Intune qui respectent les stratégies de conformité.</dd></div><div><dt>Valeur attendue</dt><dd>90 % d&#x27;appareils conformes au moins.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 à 2 h, puis une semaine de suivi</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 8</span><span class="fw">ISO 27001 A.8.9</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 14</span><span class="fw">ANSSI Hygiène mesure 16</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Ne passez le réglage « appareils sans stratégie de conformité » à « Non conforme » qu&#x27;une fois chaque système utilisé couvert par une stratégie attribuée qui évalue vraiment des appareils. Sinon, les appareils non couverts deviennent non conformes d&#x27;un coup, et une stratégie d&#x27;accès conditionnel qui exige un appareil conforme les bloque.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Intune &gt; Appareils &gt; Conformité &gt; Stratégies : ouvrez chaque stratégie &gt; Propriétés &gt; Attributions. Une stratégie sans attribution n&#x27;évalue aucun appareil : attribuez-la à « Tous les appareils » ou au groupe des postes concernés.</li><li>Dans la même stratégie, « État de l&#x27;appareil » doit montrer des appareils évalués (conformes ou non). Zéro appareil évalué : l&#x27;attribution ne vise pas les bons appareils.</li><li>Appareils &gt; Tous les appareils, filtre Conformité = Non conforme : ouvrez un appareil &gt; Conformité de l&#x27;appareil pour voir le paramètre en cause (chiffrement, version du système, mot de passe…), et corrigez par lot.</li><li>Quand tous les systèmes sont couverts : Appareils &gt; Conformité &gt; Paramètres de stratégie de conformité &gt; « Marquer les appareils sans stratégie de conformité attribuée comme » = Non conforme.</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/DevicesComplianceMenu/~/policies" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Chaque système du parc a une stratégie avec au moins une attribution et des appareils évalués.</li><li>Relancez un audit : le taux de conformité réelle remonte, et le texte ne parle plus d&#x27;appareils « déclarés conformes par défaut ».</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/protect/device-compliance-get-started" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/protect/device-compliance-get-started</a></p>
+</article>
+<article class="ctl" id="int-002">
+<header><span class="cid">INT-002</span><h2>Chiffrement des appareils (BitLocker / FileVault)</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Tous les appareils gérés doivent avoir le disque chiffré : BitLocker sous Windows, FileVault sous macOS.</dd></div><div><dt>Valeur attendue</dt><dd>100 % des appareils chiffrés.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>2 à 4 h, puis déploiement progressif</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 8</span><span class="fw">ISO 27001 A.8.7</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 31</span><span class="fw">RGPD Art.32.1.a</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Vérifiez d&#x27;abord que les clés de récupération BitLocker sont bien sauvegardées dans Entra ID : un poste chiffré dont la clé est perdue ne se récupère pas. Testez sur un groupe pilote : les vieux PC sans TPM 2.0 ne se chiffrent pas sans intervention de l&#x27;utilisateur.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Intune &gt; Sécurité des points de terminaison &gt; Chiffrement de disque &gt; Créer une stratégie &gt; Windows &gt; BitLocker.</li><li>Réglages conseillés : exiger le chiffrement de l&#x27;appareil ; autoriser le chiffrement par les utilisateurs standard (chiffrement silencieux sur les postes joints à Entra ID) ; enregistrer les informations de récupération dans Entra ID avant d&#x27;activer BitLocker ; chiffrement XTS-AES 256 bits.</li><li>Attribuez d&#x27;abord à un groupe pilote, puis à tous les postes Windows. Pour les Mac : même chemin &gt; macOS &gt; FileVault.</li><li>Ajoutez « Exiger BitLocker » dans la stratégie de conformité Windows (Appareils &gt; Conformité), pour que les postes non chiffrés apparaissent non conformes.</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_Workflows/SecurityManagementMenu/~/diskencryption" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le nombre d&#x27;appareils non chiffrés baisse à chaque synchronisation des postes du groupe ciblé.</li><li>Entra ID &gt; Appareils &gt; un poste chiffré &gt; Clés de récupération BitLocker : la clé y figure.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/protect/encrypt-devices" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/protect/encrypt-devices</a> · <a href="https://learn.microsoft.com/en-us/mem/intune/protect/encrypt-devices-filevault" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/protect/encrypt-devices-filevault</a></p>
+</article>
+<article class="ctl" id="int-003">
+<header><span class="cid">INT-003</span><h2>Politiques de conformité Intune par système</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Au moins une stratégie de conformité active doit exister pour chaque système principal : Windows, iOS et Android.</dd></div><div><dt>Valeur attendue</dt><dd>Au moins une stratégie active par système (Windows, iOS, Android).</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min par système</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 8</span><span class="fw">ISO 27001 A.8.9</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 14</span><span class="fw">ANSSI Hygiène mesure 16</span><span class="fw">ANSSI Hygiène mesure 33</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Si une stratégie d&#x27;accès conditionnel exige un appareil conforme sur mobile, les téléphones non inscrits dans Intune seront bloqués. Pour les téléphones personnels, préférez la protection des applications (INT-007) à l&#x27;inscription obligatoire.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Intune &gt; Appareils &gt; Conformité &gt; Créer une stratégie &gt; iOS/iPadOS : version minimale du système (une version encore mise à jour par Apple), code secret exigé, appareils jailbreakés = Bloquer.</li><li>Même chemin &gt; Android Enterprise (profil professionnel personnel et appareils entièrement gérés) : appareils rootés = Bloquer, niveau de correctif de sécurité minimal, mot de passe exigé.</li><li>Actions en cas de non-conformité : marquer non conforme immédiatement, et envoyer un e-mail à l&#x27;utilisateur au bout d&#x27;un jour.</li><li>Attribuez chaque stratégie à « Tous les utilisateurs » (ou au groupe qui inscrit des mobiles).</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/DevicesComplianceMenu/~/policies" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Chaque système présent dans le parc a au moins une stratégie de conformité attribuée.</li><li>Dans chaque nouvelle stratégie, « État de l&#x27;appareil » montre des appareils évalués après quelques heures.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/protect/create-compliance-policy" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/protect/create-compliance-policy</a></p>
+</article>
+<article class="ctl" id="int-004">
+<header><span class="cid">INT-004</span><h2>Appareils inactifs depuis plus de 90 jours</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Aucun appareil ne doit rester plus de 90 jours sans se synchroniser avec Intune : c&#x27;est le signe d&#x27;un appareil abandonné, perdu ou compromis.</dd></div><div><dt>Valeur attendue</dt><dd>Aucun appareil inactif depuis plus de 90 jours.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min, puis automatique</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 8</span><span class="fw">ISO 27001 A.8.9</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 4</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Supprimer un appareil d&#x27;Intune n&#x27;efface pas son contenu. S&#x27;il sert encore, il se réinscrit à la prochaine connexion (postes joints à Entra ID avec inscription automatique). Les clés BitLocker et l&#x27;inscription Autopilot ne sont pas touchées.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Intune &gt; Appareils &gt; Tous les appareils : triez par « Dernier archivage » pour repérer les appareils muets depuis plus de 90 jours.</li><li>Demandez aux utilisateurs concernés si l&#x27;appareil existe encore (perdu, remplacé, rendu).</li><li>Appareils &gt; Règles de nettoyage des appareils : créez une règle par système qui supprime les appareils inactifs depuis 90 jours. Le ménage se fait ensuite seul.</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/DevicesMenu/~/deviceCleanUp" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script ne liste plus d&#x27;appareil muet depuis plus de 90 jours.</li><li>La règle de nettoyage apparaît dans Appareils &gt; Règles de nettoyage des appareils.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/remote-actions/devices-wipe" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/remote-actions/devices-wipe</a></p>
+</article>
+<article class="ctl" id="int-005">
+<header><span class="cid">INT-005</span><h2>Appareils avec une version de système obsolète</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Aucun appareil ne doit fonctionner avec une version de système qui n&#x27;est plus prise en charge : Windows antérieur à 10.0.19041, iOS antérieur à 16, Android antérieur à 12.</dd></div><div><dt>Valeur attendue</dt><dd>Aucun appareil avec une version de système obsolète.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>15 min, puis suivi par appareil</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 8</span><span class="fw">ISO 27001 A.8.7</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 34</span><span class="fw">ANSSI Hygiène mesure 35</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Exiger une version minimale rend non conformes, d&#x27;un coup, tous les appareils en dessous. Si l&#x27;accès conditionnel exige un appareil conforme, leurs utilisateurs perdent l&#x27;accès : prévenez-les et prévoyez la mise à jour ou le remplacement d&#x27;abord.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Contactez les utilisateurs des appareils cités : mise à jour du système si l&#x27;appareil le permet, sinon remplacement (Windows 10 n&#x27;a plus de correctifs gratuits depuis octobre 2025).</li><li>Centre d&#x27;administration Intune &gt; Appareils &gt; Conformité &gt; la stratégie Windows &gt; Propriétés des paramètres &gt; Propriétés de l&#x27;appareil &gt; Version minimale du système d&#x27;exploitation (par exemple 10.0.19045 pour Windows 10 22H2, ou une version de Windows 11).</li><li>Même réglage dans les stratégies iOS/iPadOS et Android.</li><li>Mises à jour Windows : anneaux de mise à jour et mises à jour de fonctionnalités (voir INT-009).</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/DevicesComplianceMenu/~/policies" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script ne liste plus d&#x27;appareil, ou seulement des appareils dont le remplacement est planifié.</li><li>La stratégie de conformité de chaque système contient une version minimale.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/protect/create-compliance-policy" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/protect/create-compliance-policy</a> · <a href="https://learn.microsoft.com/en-us/windows/deployment/update/waas-overview" rel="noopener" target="_blank">learn.microsoft.com/en-us/windows/deployment/update/waas-overview</a></p>
+</article>
+<article class="ctl" id="int-006">
+<header><span class="cid">INT-006</span><h2>Applications requises déployées par Intune</h2><span class="sev low">Sévérité faible</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Des déploiements obligatoires doivent être configurés dans Intune pour les applications de sécurité (EDR, VPN, application d&#x27;authentification).</dd></div><div><dt>Valeur attendue</dt><dd>Déploiements d&#x27;applications obligatoires configurés.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>15 min par application en échec</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 9</span><span class="fw">ISO 27001 A.8.9</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 16</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Un échec d&#x27;installation peut venir de l&#x27;appareil (place disque, redémarrage en attente, version déjà installée à la main) plutôt que de l&#x27;application. Regardez le code d&#x27;erreur avant de republier un paquet.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Intune &gt; Applications &gt; Toutes les applications : ouvrez une application citée par le script &gt; État d&#x27;installation de l&#x27;appareil, filtre « Échec ».</li><li>Le code d&#x27;erreur et son explication s&#x27;affichent par appareil. Cas fréquents : redémarrage en attente, règle de détection d&#x27;une application Win32 qui ne trouve pas l&#x27;application installée, dépendance manquante.</li><li>Après correction (paquet, règle de détection, dépendance), les appareils réessaient seuls ; pour un poste précis : Appareils &gt; le poste &gt; Synchroniser.</li><li>Applications de sécurité attendues (agent de sécurité, VPN, Microsoft Authenticator) : vérifiez qu&#x27;elles sont attribuées en « Obligatoire » aux bons groupes.</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/AppsMenu/~/allApps" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le nombre d&#x27;installations en échec baisse pour les applications corrigées (relancez le script après quelques jours).</li><li>Relancez un audit : INT-006 passe conforme quand il ne reste plus d&#x27;échec.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/apps/apps-add" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/apps/apps-add</a></p>
+</article>
+<article class="ctl" id="int-007">
+<header><span class="cid">INT-007</span><h2>Politiques de protection des applications (MAM)</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Des stratégies de protection des applications (MAM) doivent être configurées pour iOS et Android. Elles protègent les données de l&#x27;entreprise dans les applications mobiles, même sur un téléphone personnel non inscrit dans Intune.</dd></div><div><dt>Valeur attendue</dt><dd>Au moins une stratégie MAM active pour iOS et pour Android.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h, puis communication aux utilisateurs</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 9</span><span class="fw">ISO 27001 A.8.7</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 33</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Les utilisateurs devront saisir un code ou utiliser la biométrie pour ouvrir Outlook, Teams ou OneDrive sur leur téléphone, et le copier-coller vers leurs applications personnelles sera bloqué. Prévenez-les avant d&#x27;activer la stratégie.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Intune &gt; Applications &gt; Stratégies de protection des applications &gt; Créer une stratégie &gt; iOS/iPadOS.</li><li>Applications : « Toutes les applications Microsoft » (ou au moins Outlook, Teams, OneDrive, Edge).</li><li>Protection des données : envoyer les données de l&#x27;organisation vers les applications gérées par la stratégie seulement ; copier-coller limité aux applications gérées ; enregistrement des copies dans OneDrive et SharePoint seulement.</li><li>Conditions d&#x27;accès : code PIN (ou biométrie) exigé. Lancement conditionnel : appareils jailbreakés ou rootés = Bloquer l&#x27;accès ; hors ligne depuis 90 jours = Effacer les données.</li><li>Attribuez à « Tous les utilisateurs » (ou à un groupe pilote d&#x27;abord), puis faites la même stratégie pour Android.</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/AppsMenu/~/protection" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script montre au moins une stratégie attribuée pour iOS et une pour Android.</li><li>Sur un téléphone de test, Outlook demande un code PIN et refuse le copier-coller vers une application personnelle.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/apps/app-protection-policy" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/apps/app-protection-policy</a></p>
+</article>
+<article class="ctl" id="int-008">
+<header><span class="cid">INT-008</span><h2>Windows Hello for Business configuré</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Windows Hello for Business doit être déployé pour remplacer le mot de passe par une authentification biométrique ou un code PIN lié à l&#x27;appareil sur les postes Windows gérés.</dd></div><div><dt>Valeur attendue</dt><dd>Stratégie Windows Hello for Business active sur les appareils Windows.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>30 min</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS M365 v3.0 section 1</span><span class="fw">ISO 27001 A.8.5</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 13</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Windows Hello Entreprise s&#x27;active à la prochaine connexion de l&#x27;utilisateur, qui doit alors créer un code PIN (avec la MFA). Prévenez les utilisateurs et testez d&#x27;abord sur quelques postes.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Intune &gt; Appareils &gt; Inscription &gt; Windows &gt; Windows Hello Entreprise : « Configurer Windows Hello Entreprise » = Activé (réglage pour tout le tenant, appliqué à l&#x27;inscription).</li><li>Ou, pour cibler un groupe : Sécurité des points de terminaison &gt; Protection de compte &gt; Créer une stratégie &gt; Windows &gt; Protection de compte, Windows Hello Entreprise activé.</li><li>Longueur minimale du PIN : 6 chiffres au moins ; autorisez la biométrie si les postes ont une caméra ou un lecteur d&#x27;empreinte compatibles.</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/DevicesEnrollmentMenu/~/windowsEnrollment" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche state = enabled pour la configuration par défaut (ou une stratégie Protection de compte est attribuée).</li><li>Sur un poste de test, la connexion propose le code PIN Windows Hello après la prochaine ouverture de session.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/" rel="noopener" target="_blank">learn.microsoft.com/en-us/windows/security/identity-protection/hello-for-business/</a> · <a href="https://learn.microsoft.com/en-us/mem/intune/protect/windows-hello" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/protect/windows-hello</a></p>
+</article>
+<article class="ctl" id="int-009">
+<header><span class="cid">INT-009</span><h2>Anneaux Windows Update configurés et attribués</h2><span class="sev high">Sévérité élevée</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Vérifie qu&#x27;au moins un anneau de mises à jour Windows est attribué aux appareils, sans pause, avec un report des correctifs de 14 jours au plus et une échéance d&#x27;installation de 7 jours au plus.</dd></div><div><dt>Valeur attendue</dt><dd>Anneau attribué, sans pause, report des correctifs de 14 jours au plus, échéance de 7 jours au plus.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>20 min</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS Intune Windows</span><span class="fw">ISO 27001 A.8.8</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 34</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Une échéance courte redémarre les postes rapidement après l&#x27;installation des correctifs. Gardez 2 jours de grâce, et testez sur un anneau pilote (l&#x27;équipe informatique) avant tous les postes.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Intune &gt; Appareils &gt; Windows &gt; Anneaux de mise à jour Windows 10 et ultérieur : ouvrez l&#x27;anneau cité (ou créez-en un).</li><li>Paramètres : report des mises à jour de qualité de 0 à 7 jours ; échéance des mises à jour de qualité de 2 à 7 jours ; période de grâce de 2 jours ; aucune pause en cours.</li><li>Attributions : « Tous les appareils » ou le groupe de tous les postes Windows ; un anneau pilote avec un report de 0 jour pour l&#x27;informatique est recommandé.</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_DeviceSettings/DevicesWindowsMenu/~/windows10UpdateRings" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Le script affiche pour chaque anneau attribué : report de 14 jours au plus, échéance de 7 jours au plus, pas de pause.</li><li>Rapports &gt; Mises à jour Windows : les postes installent les correctifs du mois dans la semaine.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/protect/windows-10-update-rings" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/protect/windows-10-update-rings</a></p>
+</article>
+<article class="ctl" id="int-010">
+<header><span class="cid">INT-010</span><h2>Bases de sécurité Intune à jour</h2><span class="sev med">Sévérité moyenne</span></header>
+<dl class="facts"><div><dt>Ce qui est vérifié</dt><dd>Vérifie que les bases de sécurité Intune attribuées (Windows, Defender for Endpoint, Edge, Microsoft 365 Apps) utilisent la dernière version publiée par Microsoft.</dd></div><div><dt>Valeur attendue</dt><dd>Toutes les bases de sécurité attribuées sur la dernière version.</dd></div></dl>
+<p class="meta"><b>Temps estimé</b>1 h par base, test pilote compris</p>
+<p class="meta"><b>Référentiels</b><span class="fw">CIS Intune Windows</span><span class="fw">ISO 27001 A.8.9</span><span class="fw">NIS2 Art.21</span><span class="fw">ANSSI Hygiène mesure 14</span><span class="fw">ANSSI Hygiène mesure 16</span><span class="fw">RGPD Art.32.1.b</span></p>
+<p class="caution"><strong>À savoir avant de commencer :</strong> Une nouvelle version de base peut ajouter des règles plus strictes (blocage de macros, de pilotes, de protocoles anciens). Comparez les paramètres et testez sur un groupe pilote avant de l&#x27;attribuer à tous les postes.</p>
+<h3>Corriger dans le portail</h3><ol class="steps"><li>Centre d&#x27;administration Intune &gt; Sécurité des points de terminaison &gt; Bases de sécurité : ouvrez le type de base cité (Windows, Microsoft Defender for Endpoint, Edge, Microsoft 365 Apps).</li><li>Ouvrez le profil sur une version dépassée &gt; « Mettre à jour » (ou « Changer de version ») vers la dernière version, en gardant vos personnalisations.</li><li>Si la mise à jour directe n&#x27;est pas proposée : créez un profil sur la dernière version, reprenez vos exceptions, attribuez-le au groupe pilote, puis à tous, et supprimez l&#x27;ancien profil.</li><li>Supprimez aussi les profils non attribués restés sur une ancienne version.</li></ol>
+<a class="portal" href="https://intune.microsoft.com/#view/Microsoft_Intune_Workflows/SecurityManagementMenu/~/securityBaselines" rel="noopener" target="_blank">Ouvrir la page dans le portail Microsoft <span aria-hidden="true">↗</span></a>
+<h3>Vérifier la correction</h3><ul class="verify"><li>Chaque base attribuée est sur la dernière version proposée dans le portail.</li><li>Relancez un audit : INT-010 passe conforme.</li></ul>
+<p class="refs">Documentation Microsoft : <a href="https://learn.microsoft.com/en-us/mem/intune/protect/security-baselines-configure" rel="noopener" target="_blank">learn.microsoft.com/en-us/mem/intune/protect/security-baselines-configure</a></p>
+</article>
+    <section class="fam-cta">
+      <h2>Ces 10 contrôles, sur votre tenant</h2>
+      <p>AuditM365 les évalue en lecture seule, depuis votre poste, et ajoute à chaque écart les chiffres de votre tenant (comptes, stratégies ou appareils concernés) et un script PowerShell à relire avant de l'exécuter.</p>
+      <div class="cta-row"><a class="sn-btn sn-btn-p" href="/#essai">Essai gratuit 24 h</a><a class="sn-btn sn-btn-g" href="/#demo">Voir la démo</a></div>
+    </section>
+  </div>
+</div>
+
+<section class="fam-others sn-wrap" aria-label="Autres familles de contrôles">
+  <h2>Les autres familles de contrôles</h2>
+  <ul><li><a href="/controles/identites-acces-conditionnel">Identités et accès conditionnel<em>9</em></a></li><li><a href="/controles/protection-avancee-identites">Protection avancée des identités<em>5</em></a></li><li><a href="/controles/applications-entra-id">Applications Entra ID<em>5</em></a></li><li><a href="/controles/exchange-online">Messagerie Exchange Online<em>7</em></a></li><li><a href="/controles/defender-office-365">Defender for Office 365<em>5</em></a></li><li><a href="/controles/partage-sharepoint-onedrive-teams">Partage et collaboration<em>9</em></a></li><li><a href="/controles/prevention-pertes-donnees-dlp">Prévention des pertes de données (DLP)<em>5</em></a></li><li><a href="/controles/defender-endpoint">Defender for Endpoint<em>5</em></a></li><li><a href="/controles/defender-cloud-apps">Defender for Cloud Apps<em>4</em></a></li><li><a href="/controles/purview-audit-secure-score">Purview, audit et Secure Score<em>7</em></a></li><li><a href="/controles/journaux-connexion-audit">Journaux de connexion et d&#x27;audit<em>4</em></a></li><li><a href="/controles/microsoft-sentinel">Microsoft Sentinel<em>4</em></a></li><li><a href="/controles/power-platform">Power Platform<em>2</em></a></li><li><a href="/controles/licences-microsoft-365">Licences et économies<em>5</em></a></li></ul>
+</section>
+</main>
+
+<div class="sn-foot sn-wrap" role="contentinfo">
+  <div class="sn-foot-g">
+    <div><a class="sn-logo" href="/"><span class="sn-logo-mark"><svg class="sn-ico" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span>AuditM365</a><p>L'audit de sécurité Microsoft 365 et Intune pour les équipes IT, les consultants et les MSP.</p></div>
+    <div><h4>Produit</h4><ul><li><a href="/#features">Fonctionnalités</a></li><li><a href="/controles">Les 86 contrôles</a></li><li><a href="/#conformite">Conformité</a></li><li><a href="/#pricing">Tarifs</a></li></ul></div>
+    <div><h4>Ressources</h4><ul><li><a href="/#demo">Démo vidéo</a></li><li><a href="/nouveautes">Nouveautés</a></li><li><a href="/#faq">FAQ</a></li><li><a href="/#download">Télécharger</a></li><li><a href="https://secuopstech.com/">Supervision continue : SecureOps 365</a></li></ul></div>
+    <div><h4>Compte</h4><ul><li><a href="/#essai">Essai gratuit</a></li><li><a href="https://billing.stripe.com/p/login/bJe00i2Eu1uf6yTe2s6wE00">Gérer mon abonnement</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="mailto:bonjour@m365intune.com">bonjour@m365intune.com</a></li></ul></div>
+  </div>
+  <div class="sn-legal"><span>© 2026 AuditM365. Tous droits réservés.</span><span>Microsoft 365, Entra ID et Intune sont des marques de Microsoft Corporation.</span></div>
+</div>
+
+<script src="/site.js" defer></script>
+<script src="/chat/chat.js" defer></script>
+</body>
+</html>
