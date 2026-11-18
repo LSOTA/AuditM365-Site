@@ -7,3 +7,6 @@
 
 # dépendances
 node_modules
+
+# cache Python des générateurs
+__pycache__/
